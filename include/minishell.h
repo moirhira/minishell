@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/19 21:13:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:17:34 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,30 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "../libraries/libft/libft.h"
 
+typedef enum e_token_type {
+    TOKEN_WORD,        // word
+    TOKEN_PIPE,        // |
+    TOKEN_INPUT,       // <
+    TOKEN_OUTPUT,      // >
+    TOKEN_APPEND,      // >>
+    TOKEN_HEREDOC,     // <<
+    TOKEN_EOL          // end of
+} t_token_type;
+
+typedef struct s_token {
+    t_token_type type;
+    char *value;
+    int flag;
+    struct s_token *next;
+} t_token;
+
+
+typedef struct s_command
+{
+    char **argv;
+    
+
+} t_command;
 #endif

@@ -1,7 +1,9 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra
-SRC = src/parser/parser.c src/main.c
+CFLAGS = -Wall
+SRC = src/parser/parser.c src/main.c \
+	  libraries/libft/ft_strcat.c libraries/libft/ft_strlen.c libraries/libft/ft_split.c\
+	  libraries/libft/ft_strchr.c libraries/libft/ft_strdup.c
 OBJ = ${SRC:.c=.o}
 
 all: $(NAME)
