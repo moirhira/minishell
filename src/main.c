@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/22 15:41:53 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:30:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,19 @@ void tokinisition(t_token **token, char *command)
         j = 0;
         if(ft_strchr(arr_commands[i], '|')) // pipe
         {
+            // j = ft_strlen(arr_commands[i]);
             // if (ft_strlen(arr_commands[i]) > 1)
             // {
-            //     while(arr_commands[i])
+            //     // printf("len before %d", j);
+            //     char *str_befor;
+            //     char *str_after;
+            //     while (arr_commands[i][j] != ' ' && arr_commands[i][j] != '\t')
+            //     {
+            //         printf("len and char : %d %c\n",j, arr_commands[i][j]);
+            //         j--;
+            //     }
+            //     // printf("len before %d", j);
+            //     // printf("char :%c\n", arr_commands[i][j]);
             // }
             add_token(token, create_token(arr_commands[i], 1));
         }
