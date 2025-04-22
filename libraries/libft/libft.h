@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/21 15:38:12 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:13:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ int	ft_strlen(const char *str);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *str, int ch);
 char	*ft_strdup(const char *str);
+char	**split_token(char *s);
 
 # endif

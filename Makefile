@@ -1,23 +1,27 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall
-SRC = src/parser/parser.c src/main.c \
-	  libraries/libft/ft_strcat.c libraries/libft/ft_strlen.c libraries/libft/ft_split.c\
-	  libraries/libft/ft_strchr.c libraries/libft/ft_strdup.c
+SRC = src/main.c
 OBJ = ${SRC:.c=.o}
-
+LIBFT_DIR = libraries/libft
+LIBFT_LIB = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) -lreadline -o $(NAME)
+$(NAME): $(OBJ) $(LIBFT_LIB)
+	$(CC) $(OBJ) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
+
+$(LIBFT_LIB):
+	make -C $(LIBFT_DIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
+	make clean -C $(LIBFT_DIR)
 	rm -f $(OBJ)
 
 fclean:clean
+	make fclean -C $(LIBFT_DIR)
 	rm -f $(NAME)
 
 re:fclean all

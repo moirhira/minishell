@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/21 22:35:21 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:41:53 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,6 @@ char *read_input()
     return (input);
 }
 
-// t_node	*push(char *str, t_stack *stacka)
-// {
-// 	t_node	*new_number;
-// 	t_node	*ptr;
-
-// 	new_number = (t_node *)malloc(sizeof(t_node));
-// 	if (!new_number)
-// 		return (NULL);
-// 	new_number->value = ft_atoi(str);
-// 	new_number->next = NULL;
-// 	if (stacka->top == NULL)
-// 	{
-// 		stacka->top = new_number;
-// 		stacka->size++;
-// 	}
-// 	else
-// 	{
-// 		ptr = stacka->top;
-// 		while (ptr->next)
-// 			ptr = ptr->next;
-// 		ptr->next = new_number;
-// 		stacka->size++;
-// 	}
-// 	return (stacka->top);
-// }
 t_token *create_token(char *str, int type)
 {
     t_token *new;
@@ -89,20 +64,20 @@ void tokinisition(t_token **token, char *command)
     int j;
     char **arr_commands;
     i = 0;
-    arr_commands = ft_split(command, ' ');
+    arr_commands = split_token(command);
     while(arr_commands[i] != NULL)
     {
         j = 0;
         if(ft_strchr(arr_commands[i], '|')) // pipe
         {
-            if (ft_strlen(arr_commands[i]) > 1)
-            {
-                exit(1);
-            }
-            add_token(token, create_token("|", 1));
+            // if (ft_strlen(arr_commands[i]) > 1)
+            // {
+            //     while(arr_commands[i])
+            // }
+            add_token(token, create_token(arr_commands[i], 1));
         }
         else
-            add_token(token, create_token(arr_commands[i], 0));
+            add_token(token, create_token(arr_commands[i], 0)); 
         i++;
     }
     
@@ -120,6 +95,22 @@ void parse_command(t_token **token_list, char *cmd_line)
     }
     // parsing();
 }
+void	free_token(t_token **stacka)
+{
+	t_token *current;
+	t_token	*next;
+
+	if (!stacka || !*stacka)
+		return ;
+	current = *stacka;
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	*stacka = NULL;
+}
 int main()
 {
     char *cmd_line;
@@ -129,7 +120,7 @@ int main()
     token_list = (t_token *)malloc(sizeof(t_token));
     if (!token_list)
         write(2, "Malloc faild!\n", 13);
-    token_list->next = NULL;
+    token_list = NULL;
     // list_cmd = NULL;
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, sigint_handler);
@@ -137,7 +128,7 @@ int main()
     {
         cmd_line = read_input();
         parse_command(&token_list, cmd_line);
-        
+        free_token(&token_list);
     }
     return(0);
 }

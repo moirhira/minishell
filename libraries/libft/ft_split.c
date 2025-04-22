@@ -6,11 +6,12 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/21 13:59:51 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:10:52 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 // counting the number of words
 static int	ft_ctrword(char const *s, char c)
@@ -51,8 +52,7 @@ static char	*ft_memalloc(char const *s, size_t len)
 }
 
 static char	*copy_word(const char **s, char c)
-{
-	const char	*start;
+{	const char	*start;
 	size_t		len;
 
 	start = *s;
