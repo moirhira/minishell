@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/23 15:04:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/23 22:13:49 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,17 @@ int split_symbols(char **res, char *str, int k, char symb)
 	int len = ft_strlen(str);				
 	while (x < len)
 	{
-		if (str[x] == symb)
+		if ((str[x] == '>' && str[x + 1] == '>') || (str[x] == '<' && str[x + 1] == '<'))
+		{
+			char symb_alloc[3] ;
+			symb_alloc[0] = str[x];
+			symb_alloc[1] = str[x];
+			symb_alloc[2] = '\0';
+			res[k++] = ft_strdup(symb_alloc);
+			x += 2;
+			// break;
+		}
+		else if (str[x] == symb)
 		{
 			char symb_alloc[2] ;
 			symb_alloc[0] = symb;
@@ -102,6 +112,7 @@ char	**split_token(char *s)
 				i++;
 		}
 		else
+		else
 		{
 			start = i;
 			while (s[i] && s[i] != ' ' && s[i] != '\t')
@@ -119,10 +130,6 @@ char	**split_token(char *s)
 				k = split_symbols(res, crnt_str, k, '>');
 			else if(ft_strchr(crnt_str, '<')) 
 				k = split_symbols(res, crnt_str, k, '<');
-			else if(ft_strchr(crnt_str, '>>')) 
-				k = split_symbols(res, crnt_str, k, '>>');
-			else if(ft_strchr(crnt_str, '<<')) 
-				k = split_symbols(res, crnt_str, k, '<<');
 			else
 				k++;
 		}

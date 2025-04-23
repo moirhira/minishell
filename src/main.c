@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/23 14:18:53 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/23 22:12:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,11 @@ void add_token(t_token **token_lst, t_token *new_token)
 void tokinisition(t_token **token, char *command)
 {
     int i;
-    int j;
     char **arr_commands;
     i = 0;
     arr_commands = split_token(command);
     while(arr_commands[i] != NULL)
     {
-        j = 0;
         if(ft_strcmp(arr_commands[i], "|") == 0)
         {
             add_token(token, create_token(arr_commands[i], 1));
@@ -88,6 +86,8 @@ void tokinisition(t_token **token, char *command)
         {
             add_token(token, create_token(arr_commands[i], 5));
         }
+        else if (ft_strchr(arr_commands[i], '$'))
+            add_token(token, create_token(arr_commands[i], 6));
         else
             add_token(token, create_token(arr_commands[i], 0)); 
         i++;
