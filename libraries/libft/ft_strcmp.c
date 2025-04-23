@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/23 14:09:51 by moirhira         ###   ########.fr       */
+/*   Created: 2025/04/23 14:08:41 by moirhira          #+#    #+#             */
+/*   Updated: 2025/04/23 14:09:41 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef LIBFT_H
-# define LIBFT_H
+#include "libft.h"
 
-# include <string.h>
-# include <unistd.h>
-# include <stdlib.h>
-
-
-size_t	ft_strcat(char *dst, const char src);
-int	ft_strlen(const char *str);
-char	**ft_split(char const *s, char c);
-char	*ft_strchr(const char *str, int ch);
-char	*ft_strdup(const char *str);
-char	**split_token(char *s);
-int	ft_strcmp(const char *s1, const char *s2);
-
-# endif
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 != '\0' || *s2 != '\0') 
+	{
+		if (*s1 != *s2)
+		{
+			return ((unsigned char)*s1 - (unsigned char)*s2);
+		}
+		s1++;
+		s2++;
+	}
+	return (0);
+}

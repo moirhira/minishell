@@ -6,60 +6,13 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/22 23:12:05 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:04:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-// counting the number of words
-// static int	ft_ctrword(char const *s, char c)
-// {
-// 	size_t	wordctr;
-// 	size_t	i;
-
-// 	if (s == NULL)
-// 		return (0);
-// 	i = 0;
-// 	wordctr = 0;
-// 	while (s[i] != '\0')
-// 	{
-// 		if (s[i] != c && (i == 0 || c == s[i - 1]))
-// 			wordctr++;
-// 		i++;
-// 	}
-// 	return (wordctr);
-// }
-
-// // Allocate Memory for the Array of Substrings
-
-
-// static char	*copy_word(const char **s, char c)
-// {
-// 	int i;
-// 	const char	*start;
-// 	size_t		len;
-
-// 	start = *s;
-// 	len = 0;
-// 	i = 0;
-// 	while (*s[i] && *s[i] != c)
-// 	{
-// 		if (*s[i] == '\"')
-// 		{
-// 			while (*s[i] != '\"')
-// 			{
-// 				*s[i++];
-// 				len++;
-// 			}
-// 			break;
-// 		}
-// 		len++;
-// 		*s[i]++;
-// 	}
-// 	return (ft_memalloc(start, len));
-// }
 
 // static char	**free_split(char **res, size_t indx)
 // {
@@ -90,7 +43,30 @@ static char	*ft_memalloc(char const *s, int start, int end)
 	ptr[len] = '\0';
 	return (ptr);
 }
-
+int split_symbols(char **res, char *str, int k, char symb)
+{
+	int x = 0;
+	int len = ft_strlen(str);				
+	while (x < len)
+	{
+		if (str[x] == symb)
+		{
+			char symb_alloc[2] ;
+			symb_alloc[0] = symb;
+			symb_alloc[1] = '\0';
+			res[k++] = ft_strdup(symb_alloc);
+			x++;
+		}
+		else
+		{
+			int s_start = x;
+			while (str[x] && str[x] != symb && str[x] != ' ' && str[x] != '\t')
+				x++;
+			res[k++] = ft_memalloc(str, s_start,x);
+		}
+	}
+	return (k);
+}
 char	**split_token(char *s)
 {
 	char	**res;
@@ -115,7 +91,7 @@ char	**split_token(char *s)
 			char *string = &s[i];
 			if (!ft_strchr(string, quote))
 			{
-				printf("minishell: syntax error: unexpected EOF while looking for matching '\"' \n");
+				printf("minishell: syntax error: unexpected EOL while looking for matching \"\n");
 				exit(1);
 			}
 			start = i;
@@ -125,15 +101,6 @@ char	**split_token(char *s)
 			if (s[i] == quote)
 				i++;
 		}
-		// else if (s[i] == '|')
-		// {
-		// 	printf("here\n");
-		// 	// char *str_befor;
-		// 	// char *str_after;
-		// 	// while (s[i] != ' ' && s[i] != '\t')
-		// 	// 	i--;
-		// 	// printf("char :%c\n", s[i]);
-		// }
 		else
 		{
 			start = i;
@@ -143,24 +110,21 @@ char	**split_token(char *s)
 			while (s[i] == ' ' || s[i] == '\t')
 				i++;
 			res[k] = ft_memalloc(s, start, end);
+			if(!res[k])
+				exit(1);
 			char *crnt_str = ft_strdup(res[k]);
 			if(ft_strchr(crnt_str, '|')) 
-        	{
-				int x = ft_strlen(crnt_str) - 1;
-				char *str_befor;
-				// char *str_after;
-				while (crnt_str[x] != ' ' && crnt_str[x] != '\t' && x >= 0)
-				{
-					// printf("len and char : %d %c\n",x, crnt_str[x]);
-					x--;
-				}
-				while (crnt_str[x] != '|')
-					*str_befor++ = crnt_str[x++];
-				printf("tttttttttttttttttttttttt %s\n", str_befor);
-				// printf("len before %d", j);
-				// printf("char :%c\n", arr_commands[i][j]);
-			}
-			k++;
+				k = split_symbols(res, crnt_str, k, '|');
+			else if(ft_strchr(crnt_str, '>')) 
+				k = split_symbols(res, crnt_str, k, '>');
+			else if(ft_strchr(crnt_str, '<')) 
+				k = split_symbols(res, crnt_str, k, '<');
+			else if(ft_strchr(crnt_str, '>>')) 
+				k = split_symbols(res, crnt_str, k, '>>');
+			else if(ft_strchr(crnt_str, '<<')) 
+				k = split_symbols(res, crnt_str, k, '<<');
+			else
+				k++;
 		}
 		while (s[i] == ' ' || s[i] == '\t')
 			i++;

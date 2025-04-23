@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/21 22:17:34 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:20:44 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef enum e_token_type {
 typedef struct s_token {
     t_token_type type;
     char *value;
-    int flag;
     struct s_token *next;
 } t_token;
 
