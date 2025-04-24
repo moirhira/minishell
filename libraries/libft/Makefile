@@ -1,5 +1,6 @@
 NAME = libft.a
-SRC  = ft_split.c ft_strcat.c ft_strchr.c ft_strdup.c ft_strlen.c split_token.c ft_strcmp.c
+SRC  = 	ft_split.c ft_strcat.c ft_strchr.c ft_strdup.c \
+		ft_strlen.c split_token.c ft_strcmp.c ft_strlcpy.c
 OBJ  = $(SRC:.c=.o)
 CC   = cc
 FLAGS = -Wall

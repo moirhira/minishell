@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/23 22:13:49 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/24 22:01:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ char	**split_token(char *s)
 	int	i;
 	int start;
 	int end ;
-	char quote;
 	res = (char **)malloc(sizeof(char *) * 100);
 	if (!res)
 		return (NULL);
@@ -96,22 +95,33 @@ char	**split_token(char *s)
 			i++;
 		if (s[i] == '\"' || s[i] == '\'')
 		{
-			quote = s[i];
-			i++;
-			char *string = &s[i];
-			if (!ft_strchr(string, quote))
-			{
-				printf("minishell: syntax error: unexpected EOL while looking for matching \"\n");
+			char *quoted_str;
+			quoted_str = malloc(ft_strlen(&s[i]) + 1);
+			if (!quoted_str)
 				exit(1);
+			int j = 0;
+			while (s[i] == '\'' || s[i] == '"')
+			{
+				char quote = s[i++];
+				int start = i;
+				while (s[i] && s[i] != quote)
+					i++;
+				if (!s[i])
+				{
+					printf("minishell: syntax error: unexpected EOL while looking for matching %c\n",quote);
+					free(quoted_str);
+					exit(1);
+				}
+				while (start < i)
+					quoted_str[j++] = s[start++];
+				i++;
 			}
-			start = i;
-			while (s[i] && s[i] != quote)
-				i++;
-			res[k++] = ft_memalloc(s, start, i);
-			if (s[i] == quote)
-				i++;
+			while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\'' && s[i] != '"')
+				quoted_str[j++] = s[i++];
+			quoted_str[j] = '\0';
+			res[k++] = ft_strdup(quoted_str);
+			free(quoted_str);
 		}
-		else
 		else
 		{
 			start = i;
@@ -130,11 +140,47 @@ char	**split_token(char *s)
 				k = split_symbols(res, crnt_str, k, '>');
 			else if(ft_strchr(crnt_str, '<')) 
 				k = split_symbols(res, crnt_str, k, '<');
+			else if (ft_strchr(crnt_str, '"') || ft_strchr(crnt_str, '\''))
+			{
+				int i = 0;
+				int j = 0;
+				char *final_str = malloc(ft_strlen(crnt_str));
+				while (crnt_str[i] != '\'' && crnt_str[i] != '"')
+				{
+					final_str[j] = crnt_str[i];
+					j++;
+					i++;
+				}
+				while (crnt_str[i] == '\'' || crnt_str[i] == '"')
+				{
+					char quote = crnt_str[i++];
+					int start = i;
+					while (crnt_str[i] && crnt_str[i] != quote)
+						i++;
+					if (!crnt_str[i])
+					{
+						printf("minishell: syntax error: unexpected EOL while looking for matching %c\n",quote);
+						free(final_str);
+						exit(1);
+					}
+					while (start < i)
+					final_str[j++] = crnt_str[start++];
+					i++;
+				}
+				while (crnt_str[i] && crnt_str[i] != ' ' && crnt_str[i] != '\t' && crnt_str[i] != '\'' && crnt_str[i] != '"')
+					final_str[j++] = crnt_str[i++];
+				final_str[j] = '\0';
+				res[k++] = ft_strdup(final_str);
+				free(final_str);
+			}
 			else
-				k++;
+					k++;
 		}
 		while (s[i] == ' ' || s[i] == '\t')
 			i++;
 	}
 	return (res);
 }
+
+
+//check the env variabless

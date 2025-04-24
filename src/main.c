@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/23 22:12:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:59:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,34 @@ void tokinisition(t_token **token, char *command)
     while(arr_commands[i] != NULL)
     {
         if(ft_strcmp(arr_commands[i], "|") == 0)
-        {
             add_token(token, create_token(arr_commands[i], 1));
-        }
         else if(ft_strcmp(arr_commands[i], "<") == 0)
-        {
             add_token(token, create_token(arr_commands[i], 2));
-        }
         else if(ft_strcmp(arr_commands[i], ">") == 0)
-        {
             add_token(token, create_token(arr_commands[i], 3));
-        }
         else if(ft_strcmp(arr_commands[i], ">>") == 0)
-        {
             add_token(token, create_token(arr_commands[i], 4));
-        }
         else if(ft_strcmp(arr_commands[i], "<<") == 0)
-        {
             add_token(token, create_token(arr_commands[i], 5));
-        }
         else if (ft_strchr(arr_commands[i], '$'))
-            add_token(token, create_token(arr_commands[i], 6));
+        {
+            if (ft_strchr(arr_commands[i],'"'))
+            {
+                ft_strlcpy(arr_commands[i], arr_commands[i], ft_strlen(arr_commands[i]));
+                add_token(token, create_token(arr_commands[i], 6));
+            }
+            else if (ft_strchr(arr_commands[i],'\''))
+            {
+                ft_strlcpy(arr_commands[i], arr_commands[i], ft_strlen(arr_commands[i]));
+                add_token(token, create_token(arr_commands[i], 0));
+            }
+            else
+                add_token(token, create_token(arr_commands[i], 6));
+        }
         else
             add_token(token, create_token(arr_commands[i], 0)); 
         i++;
-    }
-    
+    }  
 }
 void parse_command(t_token **token_list, char *cmd_line)
 {
