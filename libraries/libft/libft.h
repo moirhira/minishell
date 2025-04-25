@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/24 10:22:44 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:22:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ char	*ft_strdup(const char *str);
 char	**split_token(char *s);
 int	ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlcpy(char *dst, char *src, size_t size);
-
+int	ft_isalnum(int c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char const *s1, char const *s2);
 # endif

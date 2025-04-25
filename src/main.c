@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/24 21:59:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/25 21:58:00 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void tokinisition(t_token **token, char *command)
     char **arr_commands;
     i = 0;
     arr_commands = split_token(command);
+    if (!arr_commands)
+        return;
     while(arr_commands[i] != NULL)
     {
         if(ft_strcmp(arr_commands[i], "|") == 0)
