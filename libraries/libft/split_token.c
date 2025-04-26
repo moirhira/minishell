@@ -6,14 +6,28 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/25 22:25:13 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:17:16 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
+char *get_env_value(char **my_env, const char *var_name)
+{
+	int i = 0;
+	size_t len = ft_strlen(var_name);
+	
+	while (my_env[i])
+	{
+		if (ft_strncmp(my_env[i], var_name, len) == 0 && my_env[i][len] == '=')
+			return(my_env[i] + len + 1);
+		i++;
 
+	}
+	return (NULL);
+	
+}
 static char	**free_split(char **res, size_t indx)
 {
 	while (indx > 0)
@@ -77,14 +91,13 @@ int split_symbols(char **res, char *str, int k, char symb)
 	}
 	return (k);
 }
-char	**split_token(char *s)
+char	**split_token(char *s, char **my_env)
 {
 	char	**res = (char **)malloc(sizeof(char *) * 100);
 	if (!res)
 		return (NULL);
 	int i = 0;
 	int k = 0;
-	char *prev_quote_end = NULL;
 	while (s[i])
 	{
 		while (s[i] == ' ' || s[i] == '\t')
@@ -94,48 +107,73 @@ char	**split_token(char *s)
 		if (s[i] == '\'' || s[i] == '"')
 		{
 			char quote = s[i++];
-			int start = i;
+			char *final_str = ft_calloc(ft_strlen(s) * 2 + 1, 1);
 			while (s[i] && s[i] != quote)
-				i++;
+			{
+				if (s[i] == '$' && quote == '"')
+				{
+					i++;
+					int var_start = i;
+					while (s[i]  && (ft_isalnum(s[i]) || s[i] == '_'))
+						i++;
+					char *var_name = ft_substr(s, var_start, i - var_start);
+					char *var_value = get_env_value(my_env, var_name);
+					if (var_value)
+					{
+						char *temp = ft_strjoin(final_str, var_value);
+						free(final_str);
+						final_str = temp;
+						
+					}
+					free(var_name);
+				}
+				else 
+				{
+					char ch[2] = {s[i++], '\0'};
+					char *temp = ft_strjoin(final_str, ch);
+					free(final_str);
+					final_str = temp;
+				}
+			}
 			if (!s[i])
 			{
 				printf("msh: Unclose quote: %c\n",quote);
 				free_split(res, k);
 				return (NULL);
 			}
-			char *quoted_str = ft_memalloc(s, start, i++);
-
-            // If previous token was a quote, concatenate
-            if (prev_quote_end && prev_quote_end == &s[start - 1]) {
-                char *merged = ft_strjoin(res[k - 1], quoted_str);
-                free(res[k - 1]);
-                free(quoted_str);
-                res[k - 1] = merged;
-            }
-			else
-                res[k++] = quoted_str;
-            prev_quote_end = &s[i]; 
+			printf("%s\n", final_str);
+            res[k++] = final_str;
+			i++;
 		}
-		else if (ft_strchr(&s[i], '|') || ft_strchr(&s[i], '>') || ft_strchr(&s[i], '<'))
-		{
-			char *crnt_str = ft_strdup(res[k]);
-			if(ft_strchr(crnt_str, '|')) 
-				k = split_symbols(res, crnt_str, k, '|');
-			else if(ft_strchr(crnt_str, '>')) 
-				k = split_symbols(res, crnt_str, k, '>');
-			else if(ft_strchr(crnt_str, '<')) 
-				k = split_symbols(res, crnt_str, k, '<');
+		else if (s[i] == '|' || s[i] == '>' || s[i] == '<')
+		{	
+			if ((s[i] == '>' && s[i + 1] == '>') || (s[i] == '<' && s[i + 1] == '<'))
+			{
+				char symb_alloc[3] ;
+				symb_alloc[0] = s[i];
+				symb_alloc[1] = s[i];
+				symb_alloc[2] = '\0';
+				res[k++] = ft_strdup(symb_alloc);
+				i += 2;
+			}
+			else
+			{
+				char symb_alloc[2] ;
+				symb_alloc[0] = s[i];
+				symb_alloc[1] = '\0';
+				res[k++] = ft_strdup(symb_alloc);
+				i++;
+			}
 		}
 		else
 		{
 			int start = i;
-			while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != ' ' &&
-					 s[i] != '\'' && s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<' )
+			while (s[i] && s[i] != ' ' && s[i] != '\t'  && s[i] != '\'' &&
+				 s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<' )
 			{
 				i++;
 			}
 			res[k++] = ft_memalloc(s, start, i);
-			
 		}
 	}
 	res[k] = NULL;

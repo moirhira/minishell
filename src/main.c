@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/25 21:58:00 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:13:52 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ void add_token(t_token **token_lst, t_token *new_token)
         ptr = ptr->next;
     ptr->next = new_token;
 }
-void tokinisition(t_token **token, char *command)
+void tokinisition(t_token **token, char *command, char **my_env)
 {
     int i;
     char **arr_commands;
     i = 0;
-    arr_commands = split_token(command);
+    arr_commands = split_token(command, my_env);
     if (!arr_commands)
         return;
     while(arr_commands[i] != NULL)
@@ -98,9 +98,9 @@ void tokinisition(t_token **token, char *command)
         i++;
     }  
 }
-void parse_command(t_token **token_list, char *cmd_line)
+void parse_command(t_token **token_list, char *cmd_line, char **my_env)
 {
-    tokinisition(token_list, cmd_line);
+    tokinisition(token_list, cmd_line, my_env);
     t_token *ptr;
     ptr = *token_list;
     while (ptr)
@@ -127,12 +127,53 @@ void	free_token(t_token **stacka)
 	}
 	*stacka = NULL;
 }
-int main()
+
+char **retrieve_envp(char **env)
+{
+    int i = 0;
+    int len = 0;
+    while (env[len])
+        len++;
+    char **my_envp = (char **)malloc(sizeof(char *) * (len + 1));
+    if (!my_envp)
+        return (NULL);
+    while (i < len)
+    {
+        my_envp[i] = ft_strdup(env[i]);
+        if (!my_envp[i])
+        {
+            while (i--)
+                free(my_envp[i]);
+            free(my_envp);
+            return (NULL);
+        }
+        i++;
+    }
+    my_envp[i] = NULL;
+    return (my_envp);
+}
+void add_or_update_env(char ***my_env, const char *new_var)
+{
+    int i = 0;
+    
+    // Find the current size of the array
+    while ((*my_env)[i])
+        i++;
+    
+    // Reallocate space for the new variable
+    *my_env = realloc(*my_env, sizeof(char *) * (i + 2)); // +1 for new element, +1 for NULL terminator
+    
+    // Add the new variable
+    (*my_env)[i] = strdup(new_var);
+    (*my_env)[i + 1] = NULL;  // Null-terminate the array
+}
+int main(int ac, char **av, char **env)
 {
     char *cmd_line;
     t_token *token_list;
     // t_command *list_cmd;
-    
+    char **my_env = retrieve_envp(env);
+    add_or_update_env(&my_env, "VAR=hello");
     token_list = (t_token *)malloc(sizeof(t_token));
     if (!token_list)
         write(2, "Malloc faild!\n", 13);
@@ -143,8 +184,9 @@ int main()
     while (1)
     {
         cmd_line = read_input();
-        parse_command(&token_list, cmd_line);
+        parse_command(&token_list, cmd_line, my_env);
         free_token(&token_list);
+        
     }
     return(0);
 }

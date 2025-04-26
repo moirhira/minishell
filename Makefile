@@ -6,23 +6,24 @@ OBJ = ${SRC:.c=.o}
 LIBFT_DIR = libraries/libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 all: $(NAME)
+	@echo "Compiling..."
 
-$(NAME): $(OBJ) $(LIBFT_LIB)
-	$(CC) $(OBJ) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
+$(NAME): $(OBJ) $(LIBFT_LIB) $(LIBFT_DIR)/libft.h
+	@$(CC) $(OBJ) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
 
 $(LIBFT_LIB):
-	make -C $(LIBFT_DIR)
+	@make -s -C $(LIBFT_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	make clean -C $(LIBFT_DIR)
-	rm -f $(OBJ)
+	@make -s clean -C $(LIBFT_DIR)
+	@rm -f $(OBJ)
 
 fclean:clean
-	make fclean -C $(LIBFT_DIR)
-	rm -f $(NAME)
+	@make -s fclean -C $(LIBFT_DIR)
+	@rm -f $(NAME)
 
 re:fclean all
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/23 22:11:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:35:17 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ typedef struct s_token {
     struct s_token *next;
 } t_token;
 
+// typedef struct s_envp
+// {
+//     char key;
+// }   t_envp;
 
 typedef struct s_command
 {
