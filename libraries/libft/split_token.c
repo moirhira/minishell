@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/26 16:17:16 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/26 21:08:14 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ char	**split_token(char *s, char **my_env)
 				free_split(res, k);
 				return (NULL);
 			}
-			printf("%s\n", final_str);
             res[k++] = final_str;
 			i++;
 		}
@@ -167,13 +166,36 @@ char	**split_token(char *s, char **my_env)
 		}
 		else
 		{
-			int start = i;
+			char *simple_str = ft_calloc(ft_strlen(s) * 2 + 1, 1);
+			int j = 0;
 			while (s[i] && s[i] != ' ' && s[i] != '\t'  && s[i] != '\'' &&
 				 s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<' )
 			{
-				i++;
+				if(s[i] == '$')
+				{
+					i++;
+					int var_start = i;
+					while(s[i] && (ft_isalnum(s[i]) || s[i] == '_'))
+						i++;
+					char *var_name = ft_substr(s, var_start, i - var_start);
+					char *var_value = get_env_value(my_env, var_name);
+					if (var_value)
+					{
+						char *temp = ft_strjoin(simple_str,var_value);
+						free(simple_str);
+						simple_str = temp;
+					}
+					free(var_name);
+				}
+				else
+				{
+					char ch[2] = {s[i++], '\0'};
+					char *temp = ft_strjoin(simple_str, ch);
+					free(simple_str);
+					simple_str = temp;
+				}
 			}
-			res[k++] = ft_memalloc(s, start, i);
+			res[k++] = simple_str;
 		}
 	}
 	res[k] = NULL;
