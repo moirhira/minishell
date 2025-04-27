@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall
-SRC = src/main.c
+SRC = src/main.c src/parser/tokenizer.c src/parser/tokenizer_utils.c src/parser/parser.c
 OBJ = ${SRC:.c=.o}
 LIBFT_DIR = libraries/libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a

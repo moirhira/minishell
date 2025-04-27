@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/26 15:35:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/27 15:51:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum e_token_type {
 typedef struct s_token {
     t_token_type type;
     char *value;
+    int attached;
     struct s_token *next;
 } t_token;
 
@@ -47,4 +48,17 @@ typedef struct s_command
     
 
 } t_command;
+
+// tokenizer.c
+t_token *split_token(char *s, char **my_env, t_token **token);
+
+// tokenizer_utils.c
+t_token *create_token(char *str, int type, int is_attached);
+void add_token(t_token **token_lst, t_token *new_token);
+char *get_env_value(char **my_env, const char *var_name);
+int was_previous_space(char *s, int i);
+
+
+// parse.c
+void parse_command(t_token **token_list, char *cmd_line, char **my_env);
 #endif

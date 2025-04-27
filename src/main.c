@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/26 16:13:52 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/27 14:45:24 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,101 +33,6 @@ char *read_input()
         add_history(input);
     return (input);
 }
-
-t_token *create_token(char *str, int type)
-{
-    t_token *new;
-    new = (t_token *)malloc(sizeof(t_token));
-    if (!new)
-        return (NULL);
-    new->value = ft_strdup(str);
-    new->type = type;
-    new->next = NULL;
-    return (new);
-}
-void add_token(t_token **token_lst, t_token *new_token)
-{
-    t_token *ptr;
-    if (!*token_lst)
-    {
-        *token_lst = new_token;
-        return;
-    }
-    ptr = *token_lst;
-    while (ptr->next)
-        ptr = ptr->next;
-    ptr->next = new_token;
-}
-void tokinisition(t_token **token, char *command, char **my_env)
-{
-    int i;
-    char **arr_commands;
-    i = 0;
-    arr_commands = split_token(command, my_env);
-    if (!arr_commands)
-        return;
-    while(arr_commands[i] != NULL)
-    {
-        if(ft_strcmp(arr_commands[i], "|") == 0)
-            add_token(token, create_token(arr_commands[i], 1));
-        else if(ft_strcmp(arr_commands[i], "<") == 0)
-            add_token(token, create_token(arr_commands[i], 2));
-        else if(ft_strcmp(arr_commands[i], ">") == 0)
-            add_token(token, create_token(arr_commands[i], 3));
-        else if(ft_strcmp(arr_commands[i], ">>") == 0)
-            add_token(token, create_token(arr_commands[i], 4));
-        else if(ft_strcmp(arr_commands[i], "<<") == 0)
-            add_token(token, create_token(arr_commands[i], 5));
-        else if (ft_strchr(arr_commands[i], '$'))
-        {
-            if (ft_strchr(arr_commands[i],'"'))
-            {
-                ft_strlcpy(arr_commands[i], arr_commands[i], ft_strlen(arr_commands[i]));
-                add_token(token, create_token(arr_commands[i], 6));
-            }
-            else if (ft_strchr(arr_commands[i],'\''))
-            {
-                ft_strlcpy(arr_commands[i], arr_commands[i], ft_strlen(arr_commands[i]));
-                add_token(token, create_token(arr_commands[i], 0));
-            }
-            else
-                add_token(token, create_token(arr_commands[i], 6));
-        }
-        else
-            add_token(token, create_token(arr_commands[i], 0)); 
-        i++;
-    }  
-}
-void parse_command(t_token **token_list, char *cmd_line, char **my_env)
-{
-    tokinisition(token_list, cmd_line, my_env);
-    t_token *ptr;
-    ptr = *token_list;
-    while (ptr)
-    {
-        printf("value : %s\n", ptr->value);
-        printf("type : %d\n", ptr->type);
-        ptr = ptr->next;
-    }
-    // parsing();
-}
-void	free_token(t_token **stacka)
-{
-	t_token *current;
-	t_token	*next;
-
-	if (!stacka || !*stacka)
-		return ;
-	current = *stacka;
-	while (current)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-	*stacka = NULL;
-}
-
 char **retrieve_envp(char **env)
 {
     int i = 0;
@@ -152,28 +57,31 @@ char **retrieve_envp(char **env)
     my_envp[i] = NULL;
     return (my_envp);
 }
-void add_or_update_env(char ***my_env, const char *new_var)
+
+
+void	free_token(t_token **stacka)
 {
-    int i = 0;
-    
-    // Find the current size of the array
-    while ((*my_env)[i])
-        i++;
-    
-    // Reallocate space for the new variable
-    *my_env = realloc(*my_env, sizeof(char *) * (i + 2)); // +1 for new element, +1 for NULL terminator
-    
-    // Add the new variable
-    (*my_env)[i] = strdup(new_var);
-    (*my_env)[i + 1] = NULL;  // Null-terminate the array
+	t_token *current;
+	t_token	*next;
+
+	if (!stacka || !*stacka)
+		return ;
+	current = *stacka;
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	*stacka = NULL;
 }
+
 int main(int ac, char **av, char **env)
 {
     char *cmd_line;
     t_token *token_list;
     // t_command *list_cmd;
     char **my_env = retrieve_envp(env);
-    add_or_update_env(&my_env, "VAR=hello");
     token_list = (t_token *)malloc(sizeof(t_token));
     if (!token_list)
         write(2, "Malloc faild!\n", 13);
@@ -186,7 +94,6 @@ int main(int ac, char **av, char **env)
         cmd_line = read_input();
         parse_command(&token_list, cmd_line, my_env);
         free_token(&token_list);
-        
     }
     return(0);
 }
