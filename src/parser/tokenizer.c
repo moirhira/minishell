@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 16:01:23 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/27 22:17:50 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static char *handel_env_var(char *s, int *i, char **my_env, char *curnt_str)
 static int handel_operator(char *s, int i, t_token **token)
 {
 	char *symb;
-	int type;
 	
 	if ((s[i] == '>' && s[i + 1] == '>') || (s[i] == '<' && s[i + 1] == '<'))
 	{

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 21:53:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/27 22:43:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,35 +59,6 @@ char **retrieve_envp(char **env)
 }
 
 
-void	free_token(t_token **stacka)
-{
-	t_token *current;
-	t_token	*next;
-
-	if (!stacka || !*stacka)
-		return ;
-	current = *stacka;
-	while (current)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-	*stacka = NULL;
-}
-
-static char	*free_arr(char **res)
-{
-    int len;
-    len = ft_strlen_2d(res);
-	while (len > 0)
-	{
-		free(res[--len]);
-	}
-	free(res);
-	return (NULL);
-}
-
 int main(int ac, char **av, char **env)
 {
     char *cmd_line;
@@ -105,8 +76,9 @@ int main(int ac, char **av, char **env)
     {
         cmd_line = read_input();
         parse_command(&token_list, cmd_line, my_env);
-        free_arr(my_env);
+        free(cmd_line);
         free_token(&token_list);
     }
+    free_arr(my_env);
     return(0);
 }

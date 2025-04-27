@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 22:09:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/27 22:33:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,8 @@ int was_previous_space(char *s, int i);
 
 // parse.c
 void parse_command(t_token **token_list, char *cmd_line, char **my_env);
+
+// utils.c
+void	free_token(t_token **stacka);
+char	*free_arr(char **res);
 #endif

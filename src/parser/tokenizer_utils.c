@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 15:50:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/27 22:19:01 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,13 @@ char *get_env_value(char **my_env, const char *var_name)
 
 int was_previous_space(char *s, int i)
 {
-	if (i > 0 && (s[i - 1] == ' ' || s[i - 1] == '\t'))
+    if (i == 0)
+    {
+        return (0);
+    }
+	if (s[i - 1] == ' ' || s[i - 1] == '\t')
+    {
 		return (0);
+    }
 	return (1);
 }
