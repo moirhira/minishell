@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 22:34:08 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/28 12:35:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,22 @@ void	free_token(t_token **stacka)
 		current = next;
 	}
 	*stacka = NULL;
+}
+void	free_command(t_command **command)
+{
+	t_command *current;
+	t_command	*next;
+
+	if (!command || !*command)
+		return ;
+	current = *command;
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	*command = NULL;
 }
 
 char	*free_arr(char **res)

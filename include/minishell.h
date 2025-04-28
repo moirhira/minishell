@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 22:33:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:36:38 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef enum e_token_type {
     TOKEN_OUTPUT,      // >
     TOKEN_APPEND,      // >>
     TOKEN_HEREDOC,     // <<
-    TOKEN_ENV,
     TOKEN_EOL        // end of
 } t_token_type;
 
@@ -40,13 +39,13 @@ typedef struct s_token {
 
 typedef struct s_command
 {
-    char **argv;    // command argument
+    char **args;    // command argument
     char *infile;   // fro < 
     char *outfile;  // for > or >>
     int append;     // 1 if >>
     int pipe;       // 1 if followed by |
     char *herdoc;   // for <<
-    struct s_commad *next;
+    struct s_command *next;
 } t_command;
 
 // tokenizer.c
@@ -60,9 +59,10 @@ int was_previous_space(char *s, int i);
 
 
 // parse.c
-void parse_command(t_token **token_list, char *cmd_line, char **my_env);
+void parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, char **my_env);
 
 // utils.c
 void	free_token(t_token **stacka);
 char	*free_arr(char **res);
+void	free_command(t_command **command);
 #endif

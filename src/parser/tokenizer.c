@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 22:17:50 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/28 09:49:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,3 +196,12 @@ t_token	*split_token(char *s, char **my_env, t_token **token)
 // 	ptr[len] = '\0';
 // 	return (ptr);
 // }
+
+/*
+❯ echo $USER
+moirhira
+❯ echo $USER-4
+moirhira-4
+❯ echo $USE#R
+#R
+*/

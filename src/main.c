@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/27 22:43:25 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:43:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,22 @@ int main(int ac, char **av, char **env)
 {
     char *cmd_line;
     t_token *token_list;
-    // t_command *list_cmd;
+    t_command *list_cmd;
     char **my_env = retrieve_envp(env);
     token_list = (t_token *)malloc(sizeof(t_token));
     if (!token_list)
         write(2, "Malloc faild!\n", 13);
     token_list = NULL;
-    // list_cmd = NULL;
+    list_cmd = NULL;
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, sigint_handler);
     while (1)
     {
         cmd_line = read_input();
-        parse_command(&token_list, cmd_line, my_env);
+        parse_command(&token_list, &list_cmd, cmd_line, my_env);
         free(cmd_line);
         free_token(&token_list);
+        free_command(&list_cmd);
     }
     free_arr(my_env);
     return(0);
