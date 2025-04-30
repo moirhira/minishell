@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/28 14:03:21 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:37:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,11 @@ int was_previous_space(char *s, int i)
 		return (0);
     }
 	return (1);
+}
+
+t_token *get_last_token(t_token *lst)
+{
+    while (lst && lst->next)
+        lst = lst->next;
+    return (lst);
 }

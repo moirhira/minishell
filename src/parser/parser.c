@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/28 16:05:54 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/30 21:49:01 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,17 @@ t_command *creat_command(void)
 
 void add_command(t_command **command_lst, t_command *new_command)
 {
-    t_command *ptr;
+    t_command *ptr_next;
     if (!*command_lst)
     {
         *command_lst = new_command;
         return;
     }
-    ptr = *command_lst;
-    while (ptr->next)
-        ptr = ptr->next;
-    ptr->next = new_command;
+    ptr_next = *command_lst;
+    while (ptr_next->next)
+        ptr_next = ptr_next->next;
+    ptr_next->next = new_command;
+    
 }
 void tokinisition(t_token **token, char *command, char **my_env)
 {
@@ -73,7 +74,6 @@ void print_commands(t_command **commads)
         printf("....................................\n");
         ptr = ptr->next;
     }
-    printf("here im \n");
 }
 
 void add_argument(t_command *cmd, char *arg)
@@ -137,10 +137,12 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             head->infile = ft_strdup(token->value);
             token = token->next;
         }
-        else if (token->type == 4) // > and  >>
+        else if (token->type == 4 || token->type == 3) // >> and  >
         {
             if (!token->next)
                 return (NULL);
+            if (token->type == 3)
+                head->append = 1;
             token = token->next;
             head->outfile = ft_strdup(token->value);
             token = token->next;
@@ -155,7 +157,15 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         }
         else
         {
-            add_argument(head, token->value);
+            char *full_str = ft_strdup(token->value);
+            while (token->attached)
+            {
+    
+                token = token->next;
+                full_str = ft_strjoin(full_str, token->value);
+            }
+            add_argument(head, full_str);
+            free(full_str);
             token = token->next;
         }
     }
@@ -180,7 +190,7 @@ void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line,
 
 
 
-
+// ls -l > hello.c >> ty.v 
 
 
 

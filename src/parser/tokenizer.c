@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/28 09:49:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/30 21:05:40 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static int handel_operator(char *s, int i, t_token **token)
 
 static int handel_simple_str(char *s, int i, char **my_env, t_token **token)
 {
-	int was_space;
-	was_space = was_previous_space(s, i);
+	int attached;
+	attached = was_previous_space(s, i);
 	char *simple_str = ft_calloc(ft_strlen(s) * 2 + 1, 1);
 	while (s[i] && s[i] != ' ' && s[i] != '\t'  && s[i] != '\'' &&
 		s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<' )
@@ -77,14 +77,17 @@ static int handel_simple_str(char *s, int i, char **my_env, t_token **token)
 			simple_str = temp;
 		}
 	}
-	add_token(token, create_token(simple_str, 0, was_space));
+	t_token *new = create_token(simple_str, 0, 0);
+	if (*token && attached)
+		get_last_token(*token)->attached = 1;
+	add_token(token,new);
 	return (i);
 }
 
 static int handel_quoted_str(char *s, int i, char **my_env, t_token **token)
 {
-	int was_space;
-	was_space = was_previous_space(s,i);
+	int attached;
+	attached = was_previous_space(s, i);
 	char quote = s[i++];
 	char *final_str = ft_calloc(ft_strlen(s) * 2 + 1, 1);
 	while (s[i] && s[i] != quote)
@@ -105,7 +108,10 @@ static int handel_quoted_str(char *s, int i, char **my_env, t_token **token)
 		free(final_str);
 		return (-1);
 	}
-	add_token(token, create_token(final_str, 0, was_space));
+	t_token *new = create_token(final_str, 0, 0);
+	if (*token && attached)
+		get_last_token(*token)->attached = 1;
+	add_token(token,new);
 	i++;
 	return(i);
 }

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/28 15:36:38 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:37:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_token *create_token(char *str, int type, int is_attached);
 void add_token(t_token **token_lst, t_token *new_token);
 char *get_env_value(char **my_env, const char *var_name);
 int was_previous_space(char *s, int i);
-
+t_token *get_last_token(t_token *lst);
 
 // parse.c
 void parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, char **my_env);
