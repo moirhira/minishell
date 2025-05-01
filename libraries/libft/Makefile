@@ -2,7 +2,7 @@ NAME = libft.a
 SRC  = 	ft_split.c ft_strcat.c ft_strchr.c ft_strdup.c \
 		ft_strlen.c  ft_strcmp.c ft_strlcpy.c ft_strlen_2d.c\
 		ft_isalnum.c ft_substr.c ft_strjoin.c ft_calloc.c\
-		ft_bzero.c ft_strncmp.c
+		ft_bzero.c ft_strncmp.c ft_itoa.c
 OBJ  = $(SRC:.c=.o)
 CC   = cc
 FLAGS = -Wall

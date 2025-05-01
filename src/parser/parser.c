@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/30 21:49:01 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/01 11:41:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,7 @@ void add_command(t_command **command_lst, t_command *new_command)
 }
 void tokinisition(t_token **token, char *command, char **my_env)
 {
-    if (!split_token(command, my_env, token))
-    {
-        free_arr(my_env);
-        free_token(token);
-        exit(EXIT_FAILURE);
-    }
+    split_token(command, my_env, token);
 }
 void print_commands(t_command **commads)
 {
@@ -120,10 +115,23 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             add_command(cmd_lst, creat_command());
             head = *cmd_lst;
         }
+        if((*token_lst)->type != 0)
+        {
+            printf("minishell: syntax error expected command at begining\n");
+            return (NULL);
+        }
         if (token->type == 1) // | 
         {
             if (!token->next)
+            {
+                printf("minishell: syntax error near unexpected token `newline'\n");
                 return (NULL);
+            }
+            if (token->next->type != 0)
+            {
+                printf("minishell: syntax error near unexpected token `%s'\n", token->next->value); 
+                return (NULL);
+            }
             add_command(cmd_lst, creat_command());
             head->pipe = 1;
             head = head->next;
@@ -131,16 +139,32 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         }
         else if (token->type == 2) // < 
         {
-            if (!token->next)
+            if (!token->next )
+            {
+                printf("minishell: syntax error near unexpected token `newline'\n");
                 return (NULL);
+            }
+            if (token->next->type != 0)
+            {
+                printf("minishell: syntax error near unexpected token `%s'\n", token->next->value);;
+                return (NULL);
+            }
             token = token->next;
             head->infile = ft_strdup(token->value);
             token = token->next;
         }
         else if (token->type == 4 || token->type == 3) // >> and  >
         {
-            if (!token->next)
+            if (!token->next )
+            {
+                printf("minishell: syntax error near unexpected token `newline'\n");
                 return (NULL);
+            }
+            if (token->next->type != 0)
+            {
+                printf("minishell: syntax error near unexpected token `%s'\n", token->next->value); 
+                return (NULL);
+            }
             if (token->type == 3)
                 head->append = 1;
             token = token->next;
@@ -149,8 +173,11 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         }
         else if (token->type == 5) // << herdoc
         {
-            if (!token->next)
+            if (!token->next )
+            {
+                printf("minishell: syntax error near unexpected token `newline'\n");
                 return (NULL);
+            }
             token = token->next;
             head->herdoc = ft_strdup(token->value);
             token = token->next;
@@ -169,16 +196,15 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             token = token->next;
         }
     }
-    return (*cmd_lst);
+    return (t_command *)(1);
 }
 void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, char **my_env)
 {
     tokinisition(token_lst, cmd_line, my_env);
     if (!parsing(token_lst, command_lst))
     {
-        printf("msh: syntax error near unexpected token `newline'\n");
-        free_command(command_lst);
         free_token(token_lst);
+        free_command(command_lst);
         free_arr(my_env);
         exit (EXIT_FAILURE);
     }
@@ -191,8 +217,19 @@ void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line,
 
 
 // ls -l > hello.c >> ty.v 
+/*
+echo $
+# → empty string or warn user (depends on your logic)
 
+echo $$
+# → syntax error (unless you implement PID)
 
+echo $!
+# → syntax error (unless you implement job control)
+
+echo $?
+
+*/
 
 
 

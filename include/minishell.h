@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/30 15:37:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:02:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libraries/libft/libft.h"
+
+extern int g_last_exit_status;
 
 typedef enum e_token_type {
     TOKEN_WORD,        // word

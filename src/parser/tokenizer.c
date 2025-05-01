@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/30 21:05:40 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:05:58 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 static char *handel_env_var(char *s, int *i, char **my_env, char *curnt_str)
 {
 	(*i)++;
+	if (s[*i] == '?')
+	{
+		(*i)++;
+		char *exit_str = ft_itoa(g_last_exit_status);
+		char *temp = ft_strjoin(curnt_str, exit_str);
+		free(curnt_str);
+		free(exit_str);
+		return (temp);
+	}
 	int var_start = *i;
 	while (s[*i]  && (ft_isalnum(s[*i]) || s[*i] == '_'))
 		(*i)++;
@@ -104,7 +113,7 @@ static int handel_quoted_str(char *s, int i, char **my_env, t_token **token)
 	}
 	if (!s[i])
 	{
-		printf("msh: Unclose quote: %c\n",quote);
+		printf("minishell: Unclose quote: %c\n",quote);
 		free(final_str);
 		return (-1);
 	}
@@ -129,14 +138,18 @@ t_token	*split_token(char *s, char **my_env, t_token **token)
 		{
 			i = handel_quoted_str(s, i, my_env, token);
 			if (i == -1)
-				return (NULL);
+			{	
+				free_arr(my_env);
+				free_token(token);
+				exit(EXIT_FAILURE);
+			}
 		}
 		else if (s[i] == '|' || s[i] == '>' || s[i] == '<')
 			i = handel_operator(s, i, token);
 		else
 			i = handel_simple_str(s,i,my_env,token);
 	}
-	return (*token);
+	return (t_token *)(1);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/28 14:43:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/01 21:03:15 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../include/minishell.h"
 #include "../libraries/libft/libft.h"
 
+int g_last_exit_status = 0;
 void sigint_handler(int signum)
 {
     (void)signum;
@@ -63,12 +64,13 @@ int main(int ac, char **av, char **env)
 {
     char *cmd_line;
     t_token *token_list;
-    t_command *list_cmd;
+    t_command *list_cmd;    
     char **my_env = retrieve_envp(env);
     token_list = (t_token *)malloc(sizeof(t_token));
     if (!token_list)
         write(2, "Malloc faild!\n", 13);
     token_list = NULL;
+    
     list_cmd = NULL;
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, sigint_handler);
