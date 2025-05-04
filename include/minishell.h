@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/02 21:52:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/04 20:56:02 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,20 @@ t_token *get_last_token(t_token *lst);
 
 // parse.c
 void parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, char **my_env);
+
+//parser_utils.c
+int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst);
+int handel_input_redirection(t_token **token, t_command *head);
+int handel_output_redirection(t_token **token, t_command *head);
+int handel_heredoc(t_token **token, t_command *head);
+void handel_argument(t_token **token, t_command *head);
+
+//parser_utils_1.c
+t_command *creat_command(void);
+void add_command(t_command **command_lst, t_command *new_command);
+void add_argument(t_command *cmd, char *arg);
+int check_next_token(t_token *token, t_command *head);
+
 
 // utils.c
 void	free_token(t_token **stacka);
