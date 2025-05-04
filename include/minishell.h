@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/01 21:02:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/02 21:52:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "../libraries/libft/libft.h"
 
 extern int g_last_exit_status;
+#define SIZE_ENV 1024
 
 typedef enum e_token_type {
     TOKEN_WORD,        // word
@@ -42,11 +43,18 @@ typedef struct s_token {
 typedef struct s_command
 {
     char **args;    // command argument
-    char *infile;   // fro < 
-    char *outfile;  // for > or >>
+    char **heredocs;   // for <<
+    int heredoc_count;
+    
+    char **infiles;   // fro < 
+    int infile_count;
+    
+    char **outfiles;  // for > or >>
     int append;     // 1 if >>
+    int outfile_count;
+    
     int pipe;       // 1 if followed by |
-    char *herdoc;   // for <<
+    
     struct s_command *next;
 } t_command;
 

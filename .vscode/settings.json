@@ -4,6 +4,7 @@
         "readline.h": "c",
         "charconv": "c",
         "chrono": "c",
-        "functional": "c"
+        "functional": "c",
+        "cstdlib": "c"
     }
 }

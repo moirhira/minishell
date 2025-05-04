@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/01 21:05:58 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:37:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,76 +151,3 @@ t_token	*split_token(char *s, char **my_env, t_token **token)
 	}
 	return (t_token *)(1);
 }
-
-
-
-
-
-
-
-// int split_symbols(char **res, char *str, int k, char symb)
-// {
-// 	int x = 0;
-// 	int len = ft_strlen(str);				
-// 	while (x < len)
-// 	{
-		
-// 		if ((str[x] == '>' && str[x + 1] == '>') || (str[x] == '<' && str[x + 1] == '<'))
-// 		{
-// 			char symb_alloc[3] ;
-// 			symb_alloc[0] = str[x];
-// 			symb_alloc[1] = str[x];
-// 			symb_alloc[2] = '\0';
-// 			res[k++] = ft_strdup(symb_alloc);
-// 			x += 2;
-// 			// break;
-// 		}
-// 		else if (str[x] == symb)
-// 		{
-// 			char symb_alloc[2] ;
-// 			symb_alloc[0] = symb;
-// 			symb_alloc[1] = '\0';
-// 			res[k++] = ft_strdup(symb_alloc);
-// 			x++;
-// 		}
-// 		else
-// 		{
-// 			int s_start = x;
-// 			while (str[x] && str[x] != symb && str[x] != ' ' && str[x] != '\t')
-// 				x++;
-// 			res[k++] = ft_memalloc(str, s_start,x);
-// 		}
-// 	}
-// 	return (k);
-// }
-
-
-// static char	*ft_memalloc(char const *s, int start, int end)
-// {
-// 	int		i;
-// 	char		*ptr;
-// 	int len;
-
-// 	len = end - start;
-// 	ptr = (char *)malloc(sizeof(char) * (len + 1));
-// 	if (!ptr)
-// 		return (NULL);
-// 	i = 0;
-// 	while (start < end)
-// 	{
-// 		ptr[i] = s[start];
-// 		i++;
-// 		start++;
-// 	}
-// 	ptr[len] = '\0';
-// 	return (ptr);
-// }
-
-/*
-❯ echo $USER
-moirhira
-❯ echo $USER-4
-moirhira-4
-❯ echo $USE#R
-#R
-*/

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/01 21:03:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:35:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char **retrieve_envp(char **env)
     int len = 0;
     while (env[len])
         len++;
-    char **my_envp = (char **)malloc(sizeof(char *) * (len + 1));
+    char **my_envp = (char **)malloc(sizeof(char *) * SIZE_ENV); // ADD MACRO 1024
     if (!my_envp)
         return (NULL);
     while (i < len)
@@ -71,6 +71,9 @@ int main(int ac, char **av, char **env)
         write(2, "Malloc faild!\n", 13);
     token_list = NULL;
     
+    list_cmd = (t_command *)malloc(sizeof(t_command));
+    if (!list_cmd)
+        write(2, "Malloc faild!\n", 13);
     list_cmd = NULL;
     signal(SIGQUIT, SIG_IGN);
     signal(SIGINT, sigint_handler);
@@ -79,9 +82,12 @@ int main(int ac, char **av, char **env)
         cmd_line = read_input();
         parse_command(&token_list, &list_cmd, cmd_line, my_env);
         free(cmd_line);
-        free_token(&token_list);
         free_command(&list_cmd);
+        free_token(&token_list);
     }
     free_arr(my_env);
     return(0);
 }
+
+
+// VAR=VALUE handel this 
