@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/04 20:55:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:06:20 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ t_command *creat_command(void)
     new_cmd->infile_count = 0;
     new_cmd->outfiles = NULL;
     new_cmd->outfile_count = 0;
-    new_cmd->append = 0;
+    new_cmd->appends = NULL;
+    new_cmd->append_count = 0;
     new_cmd->pipe = 0;
+    new_cmd->infos = NULL;
     new_cmd->next = NULL;
     return (new_cmd);
 }

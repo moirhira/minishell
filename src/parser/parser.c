@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/04 21:02:20 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:46:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,14 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             if (!handel_input_redirection(&token, head))
                 return (NULL);
         }
-        else if (token->type == 4 || token->type == 3) // >> and  >
+        else if (token->type == 3) // >
         {
            if (!handel_output_redirection(&token, head))
+                return (NULL);
+        }
+        else if (token->type == 4) // >>
+        {
+            if (!handel_append_redirection(&token, head))
                 return (NULL);
         }
         else if (token->type == 5) // << herdoc
@@ -51,9 +56,7 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
                 return (NULL);
         }
         else
-        {
             handel_argument(&token, head);
-        }
     }
     return (t_command *)(1);
 }
@@ -127,12 +130,18 @@ void print_commands(t_command **commads)
                 i++;
             }
         }
-        printf("appending     : %d\n", ptr->append);
         i = 0;
         printf("output files  :\n");
         while (i < ptr->outfile_count)
         {
             printf("     number %d -> : %s\n", i + 1, ptr->outfiles[i]);
+            i++;
+        }
+        i = 0;
+        printf("append files  :\n");
+        while (i < ptr->append_count)
+        {
+            printf("     number %d -> : %s\n", i + 1, ptr->appends[i]);
             i++;
         }
         i = 0;

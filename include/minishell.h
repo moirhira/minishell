@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/04 20:56:02 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:05:35 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ typedef struct s_token {
     struct s_token *next;
 } t_token;
 
+typedef struct s_command_info
+{
+    char *filename;
+    t_token_type type;
+}   t_command_info;
 
 typedef struct s_command
 {
@@ -49,12 +54,15 @@ typedef struct s_command
     char **infiles;   // fro < 
     int infile_count;
     
-    char **outfiles;  // for > or >>
-    int append;     // 1 if >>
+    char **outfiles;  // for >
     int outfile_count;
+    
+    char **appends;  // for >>
+    int append_count; 
     
     int pipe;       // 1 if followed by |
     
+    struct s_command_info *infos;
     struct s_command *next;
 } t_command;
 
@@ -75,6 +83,7 @@ void parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, 
 int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst);
 int handel_input_redirection(t_token **token, t_command *head);
 int handel_output_redirection(t_token **token, t_command *head);
+int handel_append_redirection(t_token **token, t_command *head);
 int handel_heredoc(t_token **token, t_command *head);
 void handel_argument(t_token **token, t_command *head);
 

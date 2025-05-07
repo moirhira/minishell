@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/04 20:48:32 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:44:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ int handel_output_redirection(t_token **token, t_command *head)
 {
     if (!check_next_token(*token, head))
         return (0);
-    if ((*token)->type == 4)
-        head->append = 1;
-    if ((*token)->type == 3)
-        head->append = 2;
     *token = (*token)->next;
     char **new_arr = realloc(head->outfiles, sizeof(char *) * (head->outfile_count + 2));
     if (!new_arr)
@@ -60,6 +56,23 @@ int handel_output_redirection(t_token **token, t_command *head)
     head->outfiles[head->outfile_count] = ft_strdup((*token)->value);
     head->outfile_count++;
     head->outfiles[head->outfile_count] = NULL; 
+   *token = (*token)->next;
+   return (1);
+}
+int handel_append_redirection(t_token **token, t_command *head)
+{
+    if (!check_next_token(*token, head))
+        return (0);
+    *token = (*token)->next;
+    char **new_arr = realloc(head->appends, sizeof(char *) * (head->append_count + 2));
+    if (!new_arr)
+    {
+        printf("error from realloc!\n");
+        exit(1);
+    }
+    head->appends = new_arr;
+    head->appends[head->append_count++] = ft_strdup((*token)->value);
+    head->appends[head->append_count] = NULL; 
    *token = (*token)->next;
    return (1);
 }
