@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 10:46:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:25:32 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 {
     t_command *head;
     t_token *token;
+    t_redirect *info_redirect;
     
     head = NULL;      
     token = *token_lst;

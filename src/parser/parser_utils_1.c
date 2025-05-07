@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 11:06:20 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:26:03 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ t_command *creat_command(void)
     new_cmd->infos = NULL;
     new_cmd->next = NULL;
     return (new_cmd);
+}
+
+t_redirect *create_info_command()
+{
+    t_redirect *new_info;
+    new_info = malloc(sizeof(t_redirect));
+    if (!new_info)
+        return (NULL);
+    new_info->filename = NULL;
+    new_info->type = 0;
+    return (new_info);
 }
 
 void add_command(t_command **command_lst, t_command *new_command)

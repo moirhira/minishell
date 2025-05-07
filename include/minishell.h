@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 11:05:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:24:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ typedef struct s_token {
     struct s_token *next;
 } t_token;
 
-typedef struct s_command_info
+typedef struct s_redirect
 {
     char *filename;
-    t_token_type type;
-}   t_command_info;
+    int type;
+    struct s_redirect *next;
+}   t_redirect;
 
 typedef struct s_command
 {
@@ -62,7 +63,7 @@ typedef struct s_command
     
     int pipe;       // 1 if followed by |
     
-    struct s_command_info *infos;
+    struct s_redirect *infos;
     struct s_command *next;
 } t_command;
 
