@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 12:03:08 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/08 22:49:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,39 @@ char *read_input()
         add_history(input);
     return (input);
 }
-char **retrieve_envp(char **env)
+t_envp  *retrieve_envp(char **env)
 {
     int i = 0;
     int len = 0;
+    t_envp *envp_struct;
+    
     while (env[len])
         len++;
-    char **my_envp = (char **)malloc(sizeof(char *) * SIZE_ENV); // ADD MACRO 1024
-    if (!my_envp)
+        
+    envp_struct = (t_envp *)malloc(sizeof(t_envp));
+    if (!envp_struct)
+        return(NULL);
+    envp_struct->vars = (char **)malloc(sizeof(char *) * len);
+    if (!envp_struct->vars )
+    {
+        free(envp_struct);
         return (NULL);
+    }
     while (i < len)
     {
-        my_envp[i] = ft_strdup(env[i]);
-        if (!my_envp[i])
+        envp_struct->vars[i] = ft_strdup(env[i]);
+        if (!envp_struct->vars[i])
         {
             while (i--)
-                free(my_envp[i]);
-            free(my_envp);
+                free(envp_struct->vars[i]);
+            free(envp_struct->vars);
+            free(envp_struct);
             return (NULL);
         }
         i++;
     }
-    my_envp[i] = NULL;
-    return (my_envp);
+    envp_struct->vars[i] = NULL;
+    return (envp_struct);
 }
 
 
@@ -64,7 +74,9 @@ int main(int ac, char **av, char **env)
     char *cmd_line;
     t_token *token_list;
     t_command *list_cmd;    
-    char **my_env = retrieve_envp(env);
+    t_envp *my_env ;
+    
+    my_env = retrieve_envp(env);
     token_list = (t_token *)malloc(sizeof(t_token));
     if (!token_list)
         write(2, "Malloc faild!\n", 13);
@@ -79,12 +91,12 @@ int main(int ac, char **av, char **env)
     while (1)
     {
         cmd_line = read_input();
-        parse_command(&token_list, &list_cmd, cmd_line, my_env);
+        parse_command(&token_list, &list_cmd, cmd_line, &my_env);
         free(cmd_line);
         free_command(&list_cmd);
         free_token(&token_list);
     }
-    free_arr(my_env);
+    // free_arr(my_env);
     return(0);
 }
 

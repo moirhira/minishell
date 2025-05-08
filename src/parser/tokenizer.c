@@ -6,13 +6,13 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/03 20:37:26 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/08 22:45:38 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static char *handel_env_var(char *s, int *i, char **my_env, char *curnt_str)
+static char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 {
 	(*i)++;
 	if (s[*i] == '?')
@@ -28,7 +28,7 @@ static char *handel_env_var(char *s, int *i, char **my_env, char *curnt_str)
 	while (s[*i]  && (ft_isalnum(s[*i]) || s[*i] == '_'))
 		(*i)++;
 	char *var_name = ft_substr(s, var_start, *i - var_start);
-	char *var_value = get_env_value(my_env, var_name);
+	char *var_value = get_env_value(*my_env, var_name);
 	if (var_value)
 	{
 		char *temp = ft_strjoin(curnt_str, var_value);
@@ -68,7 +68,7 @@ static int handel_operator(char *s, int i, t_token **token)
 	return (i);
 }
 
-static int handel_simple_str(char *s, int i, char **my_env, t_token **token)
+static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	int attached;
 	attached = was_previous_space(s, i);
@@ -93,7 +93,7 @@ static int handel_simple_str(char *s, int i, char **my_env, t_token **token)
 	return (i);
 }
 
-static int handel_quoted_str(char *s, int i, char **my_env, t_token **token)
+static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	int attached;
 	attached = was_previous_space(s, i);
@@ -125,7 +125,7 @@ static int handel_quoted_str(char *s, int i, char **my_env, t_token **token)
 	return(i);
 }
 
-t_token	*split_token(char *s, char **my_env, t_token **token)
+t_token	*split_token(char *s, t_envp **my_env, t_token **token)
 {
 	int i = 0;
 	while (s[i])
@@ -139,7 +139,7 @@ t_token	*split_token(char *s, char **my_env, t_token **token)
 			i = handel_quoted_str(s, i, my_env, token);
 			if (i == -1)
 			{	
-				free_arr(my_env);
+				// free_arr(my_env);
 				free_token(token);
 				exit(EXIT_FAILURE);
 			}
@@ -147,7 +147,7 @@ t_token	*split_token(char *s, char **my_env, t_token **token)
 		else if (s[i] == '|' || s[i] == '>' || s[i] == '<')
 			i = handel_operator(s, i, token);
 		else
-			i = handel_simple_str(s,i,my_env,token);
+			i = handel_simple_str(s, i, my_env,token);
 	}
 	return (t_token *)(1);
 }
