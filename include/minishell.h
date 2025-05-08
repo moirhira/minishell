@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 11:24:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:24:49 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_command
     
     int pipe;       // 1 if followed by |
     
-    struct s_redirect *infos;
+    struct s_redirect *redirects;
     struct s_command *next;
 } t_command;
 
@@ -73,7 +73,7 @@ t_token *split_token(char *s, char **my_env, t_token **token);
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached);
 void add_token(t_token **token_lst, t_token *new_token);
-char *get_env_value(char **my_env, const char *var_name);
+char *get_env_value(char **my_env, const char *var_name); // get the value of the env vars 
 int was_previous_space(char *s, int i);
 t_token *get_last_token(t_token *lst);
 
@@ -93,7 +93,7 @@ t_command *creat_command(void);
 void add_command(t_command **command_lst, t_command *new_command);
 void add_argument(t_command *cmd, char *arg);
 int check_next_token(t_token *token, t_command *head);
-
+void  add_redirect(t_command *cmd, int type, const char *filename);
 
 // utils.c
 void	free_token(t_token **stacka);

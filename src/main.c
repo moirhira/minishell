@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/03 20:35:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:03:08 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void sigint_handler(int signum)
     printf("\n");
     rl_on_new_line();
     rl_redisplay();  
-    
 }
 char *read_input()
 {
@@ -75,7 +74,7 @@ int main(int ac, char **av, char **env)
     if (!list_cmd)
         write(2, "Malloc faild!\n", 13);
     list_cmd = NULL;
-    signal(SIGQUIT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN); // /
     signal(SIGINT, sigint_handler);
     while (1)
     {

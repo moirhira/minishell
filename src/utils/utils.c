@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/01 09:30:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:11:31 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*free_arr(char **res)
     len = ft_strlen_2d(res);
 	while (len > 0)
 	{
-		free(res[--len]);
+		free(res[--len]); // if NULL is it segfault
 	}
 	free(res);
 	return (NULL);

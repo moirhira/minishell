@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 11:26:03 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:37:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,30 @@ t_command *creat_command(void)
     new_cmd->appends = NULL;
     new_cmd->append_count = 0;
     new_cmd->pipe = 0;
-    new_cmd->infos = NULL;
+    new_cmd->redirects = NULL;
     new_cmd->next = NULL;
     return (new_cmd);
 }
 
-t_redirect *create_info_command()
+void  add_redirect(t_command *cmd, int type, const char *filename)
 {
-    t_redirect *new_info;
-    new_info = malloc(sizeof(t_redirect));
-    if (!new_info)
-        return (NULL);
-    new_info->filename = NULL;
-    new_info->type = 0;
-    return (new_info);
+    t_redirect *new;
+    new = malloc(sizeof(t_redirect));
+    if (!new)
+        exit (1);
+    new->filename = ft_strdup(filename);
+    new->type = type;
+    new->next = NULL;
+    if (!cmd->redirects)
+        cmd->redirects = new;
+    else
+    {
+        t_redirect *ptr;
+        ptr = cmd->redirects;
+        while (ptr->next)
+            ptr = ptr->next;
+        ptr->next = new;
+    }
 }
 
 void add_command(t_command **command_lst, t_command *new_command)

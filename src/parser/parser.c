@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 11:25:32 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:00:00 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 {
     t_command *head;
     t_token *token;
-    t_redirect *info_redirect;
     
     head = NULL;      
     token = *token_lst;
@@ -131,36 +130,44 @@ void print_commands(t_command **commads)
                 i++;
             }
         }
-        i = 0;
-        printf("output files  :\n");
-        while (i < ptr->outfile_count)
-        {
-            printf("     number %d -> : %s\n", i + 1, ptr->outfiles[i]);
-            i++;
-        }
-        i = 0;
-        printf("append files  :\n");
-        while (i < ptr->append_count)
-        {
-            printf("     number %d -> : %s\n", i + 1, ptr->appends[i]);
-            i++;
-        }
-        i = 0;
-        printf("input files   :\n");
-        while (i < ptr->infile_count)
-        {
-            printf("     number %d -> : %s\n", i + 1, ptr->infiles[i]);
-            i++;
-        }
-        i = 0;
-        printf("herdocs       :\n");
-        while (i < ptr->heredoc_count)
-        {
-            printf("     number %d -> : %s\n", i + 1 , ptr->heredocs[i]);
-            i++;
-        }
+        // i = 0;
+        // printf("output files  :\n");
+        // while (i < ptr->outfile_count)
+        // {
+        //     printf("     number %d -> : %s\n", i + 1, ptr->outfiles[i]);
+        //     i++;
+        // }
+        // i = 0;
+        // printf("append files  :\n");
+        // while (i < ptr->append_count)
+        // {
+        //     printf("     number %d -> : %s\n", i + 1, ptr->appends[i]);
+        //     i++;
+        // }
+        // i = 0;
+        // printf("input files   :\n");
+        // while (i < ptr->infile_count)
+        // {
+        //     printf("     number %d -> : %s\n", i + 1, ptr->infiles[i]);
+        //     i++;
+        // }
+        // i = 0;
+        // printf("herdocs       :\n");
+        // while (i < ptr->heredoc_count)
+        // {
+        //     printf("     number %d -> : %s\n", i + 1 , ptr->heredocs[i]);
+        //     i++;
+        // }
         
-        printf("is a pipe     : %d\n", ptr->pipe);
+        // printf("is a pipe     : %d\n", ptr->pipe);
+        printf("==============order==================\n");
+        while (ptr->redirects)
+        {
+            printf("filename : %s\n", ptr->redirects->filename);
+            printf("type : %d\n", ptr->redirects->type);
+            ptr->redirects = ptr->redirects->next;
+        }
+        printf("=====================================\n");
         printf("....................................\n");
         ptr = ptr->next;
     }
