@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/08 22:45:53 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:16:13 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ typedef struct s_command
 
 typedef struct s_envp
 {
-    char **vars;
+    char *key;
+    char *value;
+    struct s_envp *next;
 }   t_envp;
 // tokenizer.c
 t_token *split_token(char *s, t_envp **my_env, t_token **token);
@@ -101,6 +103,6 @@ void  add_redirect(t_command *cmd, int type, const char *filename);
 
 // utils.c
 void	free_token(t_token **stacka);
-char	*free_arr(char **res);
+void	free_env(t_envp **env);
 void	free_command(t_command **command);
 #endif

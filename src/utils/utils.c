@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 12:11:31 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:17:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,26 @@ void	free_command(t_command **command)
 	*command = NULL;
 }
 
-char	*free_arr(char **res)
+void	free_env(t_envp **env)
 {
-    int len;
-    len = ft_strlen_2d(res);
-	while (len > 0)
+	
+	t_envp *current;
+	t_envp	*next;
+
+	if (!env || !*env)
+		return ;
+	current = *env;
+	if (!(*env)->next)
 	{
-		free(res[--len]); // if NULL is it segfault
+		free(current);
+		*env = NULL;
+		return;
 	}
-	free(res);
-	return (NULL);
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	*env = NULL;
 }

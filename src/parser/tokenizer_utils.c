@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/08 22:45:14 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/09 18:42:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ void add_token(t_token **token_lst, t_token *new_token)
 }
 char *get_env_value(t_envp *my_env, const char *var_name)
 {
-	int i = 0;
+    t_envp *ptr;
 	size_t len = ft_strlen(var_name);
 	
-	while (my_env->vars[i])
+    ptr = my_env;
+	while (ptr)
 	{
-		if (ft_strncmp(my_env->vars[i], var_name, len) == 0 && my_env->vars[i][len] == '=')
-			return(my_env->vars[i] + len + 1);
-		i++;
-
+		if (ft_strncmp(ptr->key, var_name, len) == 0 && ptr->key[len] == '\0')
+			return(ptr->value);
+		ptr = ptr->next;
 	}
 	return (NULL);
 }

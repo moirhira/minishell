@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/08 22:49:37 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:16:38 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,36 +36,35 @@ char *read_input()
 t_envp  *retrieve_envp(char **env)
 {
     int i = 0;
-    int len = 0;
-    t_envp *envp_struct;
-    
-    while (env[len])
-        len++;
-        
-    envp_struct = (t_envp *)malloc(sizeof(t_envp));
-    if (!envp_struct)
-        return(NULL);
-    envp_struct->vars = (char **)malloc(sizeof(char *) * len);
-    if (!envp_struct->vars )
+    t_envp *head;
+    t_envp *last;
+    t_envp *new_node;
+    char **split;
+
+    head = NULL;
+    last = NULL;
+    while (env[i])
     {
-        free(envp_struct);
-        return (NULL);
-    }
-    while (i < len)
-    {
-        envp_struct->vars[i] = ft_strdup(env[i]);
-        if (!envp_struct->vars[i])
-        {
-            while (i--)
-                free(envp_struct->vars[i]);
-            free(envp_struct->vars);
-            free(envp_struct);
-            return (NULL);
-        }
+        split = ft_split(env[i], '=');
+        if (!split || !split[0] || !split[1])
+            return (printf ("error at spliting\n"),NULL);
+        new_node = (t_envp *)malloc(sizeof(t_envp));
+        if (!new_node)
+            return (printf("Error from malloc\n"), NULL);
+        new_node->key = ft_strdup(split[0]);
+        new_node->value = ft_strdup(split[1]);
+        new_node->next = NULL;
+        if (!head)
+            head = new_node;
+        else
+            last->next = new_node;
+        last = new_node;
         i++;
+        free(split[0]);
+        free(split[1]);
+        free(split);
     }
-    envp_struct->vars[i] = NULL;
-    return (envp_struct);
+    return (head);
 }
 
 
@@ -77,6 +76,8 @@ int main(int ac, char **av, char **env)
     t_envp *my_env ;
     
     my_env = retrieve_envp(env);
+    if (!my_env)
+        printf("Erorr at revieving envsn\n");
     token_list = (t_token *)malloc(sizeof(t_token));
     if (!token_list)
         write(2, "Malloc faild!\n", 13);
@@ -96,7 +97,7 @@ int main(int ac, char **av, char **env)
         free_command(&list_cmd);
         free_token(&token_list);
     }
-    // free_arr(my_env);
+    free_env(&my_env);
     return(0);
 }
 
