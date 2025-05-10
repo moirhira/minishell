@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/09 19:16:38 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/10 12:40:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,27 @@ void sigint_handler(int signum)
     rl_on_new_line();
     rl_redisplay();  
 }
-char *read_input()
+char *read_input(void)
 {
-    char *input;
-    input = readline("minishell$ ");
-    if (!input)
-        exit(EXIT_FAILURE);
-    else
-        add_history(input);
-    return (input);
+    char *line;
+    line = readline("minishell$ ");
+    if (!line)
+        return (NULL);
+    if (*line)
+        add_history(line);
+    return (line);
 }
+void	free_split(char **split)
+{
+	int i = 0;
+
+	if (!split)
+		return;
+	while (split[i])
+		free(split[i++]);
+	free(split);
+}
+
 t_envp  *retrieve_envp(char **env)
 {
     int i = 0;
@@ -43,10 +54,10 @@ t_envp  *retrieve_envp(char **env)
 
     head = NULL;
     last = NULL;
-    while (env[i])
+    while (env[i] != NULL)
     {
         split = ft_split(env[i], '=');
-        if (!split || !split[0] || !split[1])
+        if (!split || !split[1])
             return (printf ("error at spliting\n"),NULL);
         new_node = (t_envp *)malloc(sizeof(t_envp));
         if (!new_node)
@@ -59,10 +70,8 @@ t_envp  *retrieve_envp(char **env)
         else
             last->next = new_node;
         last = new_node;
+        free_split(split);
         i++;
-        free(split[0]);
-        free(split[1]);
-        free(split);
     }
     return (head);
 }
@@ -77,29 +86,26 @@ int main(int ac, char **av, char **env)
     
     my_env = retrieve_envp(env);
     if (!my_env)
-        printf("Erorr at revieving envsn\n");
-    token_list = (t_token *)malloc(sizeof(t_token));
-    if (!token_list)
-        write(2, "Malloc faild!\n", 13);
+        printf("Error at retrieving envs\n");
     token_list = NULL;
-    
-    list_cmd = (t_command *)malloc(sizeof(t_command));
-    if (!list_cmd)
-        write(2, "Malloc faild!\n", 13);
     list_cmd = NULL;
     signal(SIGQUIT, SIG_IGN); // /
     signal(SIGINT, sigint_handler);
     while (1)
     {
         cmd_line = read_input();
+        if (!cmd_line)
+        {
+            free_command(&list_cmd);
+            free_token(&token_list);
+            free_env(&my_env);
+            exit(EXIT_FAILURE);
+        }
         parse_command(&token_list, &list_cmd, cmd_line, &my_env);
         free(cmd_line);
         free_command(&list_cmd);
         free_token(&token_list);
+        free_env(&my_env);
     }
-    free_env(&my_env);
     return(0);
 }
-
-
-// VAR=VALUE handel this 

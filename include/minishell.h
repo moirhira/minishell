@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/09 19:16:13 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/10 12:03:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_token {
     t_token_type type;
     char *value;
     int attached;
+    int was_quoted;
     struct s_token *next;
 } t_token;
 
@@ -49,16 +50,13 @@ typedef struct s_redirect
 typedef struct s_command
 {
     char **args;    // command argument
-    char **heredocs;   // for <<
     int heredoc_count;
-    
-    char **infiles;   // fro < 
+    int is_file_quoted;
+
     int infile_count;
     
-    char **outfiles;  // for >
     int outfile_count;
     
-    char **appends;  // for >>
     int append_count; 
     
     int pipe;       // 1 if followed by |
@@ -77,7 +75,7 @@ typedef struct s_envp
 t_token *split_token(char *s, t_envp **my_env, t_token **token);
 
 // tokenizer_utils.c
-t_token *create_token(char *str, int type, int is_attached);
+t_token *create_token(char *str, int type, int is_attached, int was_quoted);
 void add_token(t_token **token_lst, t_token *new_token);
 char *get_env_value(t_envp *my_env, const char *var_name); // get the value of the env vars 
 int was_previous_space(char *s, int i);

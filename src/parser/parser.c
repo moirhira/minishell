@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/08 22:40:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:35:38 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line,
     if (!parsing(token_lst, command_lst))
     {
         free_token(token_lst);
-        // free_arr(my_env);
-        // free_command(command_lst);
+        free_env(my_env);
+        free_command(command_lst);
         exit (EXIT_FAILURE);
     }
     print_commands(command_lst);
+    
 }
 
 
@@ -163,8 +164,9 @@ void print_commands(t_command **commads)
         printf("==============order==================\n");
         while (ptr->redirects)
         {
-            printf("filename : %s\n", ptr->redirects->filename);
-            printf("type : %d\n", ptr->redirects->type);
+            printf("filename        : %s\n", ptr->redirects->filename);
+            printf("type            : %d\n", ptr->redirects->type);
+            printf("is was quoted   : %d\n", ptr->is_file_quoted);
             ptr->redirects = ptr->redirects->next;
         }
         printf("=====================================\n");
@@ -189,13 +191,14 @@ echo $!
 
 
 // t_token *ptr;
-    // ptr = *token_lst;
-    // while (ptr)
-    // {
-    //     printf("value : %s\n", ptr->value);
-    //     printf("type : %d\n", ptr->type);
-    //     printf("attached : %d\n", ptr->attached);
-    //     printf("....................................\n");
-    //     ptr = ptr->next;
-    // }
+//     ptr = *token_lst;
+//     while (ptr)
+//     {
+//         printf("value       : %s\n", ptr->value);
+//         printf("type        : %d\n", ptr->type);
+//         printf("attached    : %d\n", ptr->attached);
+//         printf("was quoted  : %d\n", ptr->was_quoted);
+//         printf("....................................\n");
+//         ptr = ptr->next;
+//     }
     

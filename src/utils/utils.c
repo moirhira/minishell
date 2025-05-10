@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/09 19:17:04 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/10 12:12:33 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,46 @@ void	free_token(t_token **token)
 	while (current)
 	{
 		next = current->next;
+		free(current->value);
 		free(current);
 		current = next;
 	}
 	*token = NULL;
 }
+static void	free_redirects(t_redirect *redirect)
+{
+	t_redirect *next;
+
+	while (redirect)
+	{
+		next = redirect->next;
+		free(redirect->filename);
+		free(redirect);
+		redirect = next;
+	}
+}
+
 void	free_command(t_command **command)
 {
-	
+	int	i;
 	t_command *current;
 	t_command	*next;
 
 	if (!command || !*command)
 		return ;
 	current = *command;
-	if (!(*command)->next)
-	{
-		free(current);
-		*command = NULL;
-		return;
-	}
 	while (current)
 	{
 		next = current->next;
+		i = 0;
+		if (current->args)
+		{
+			while(current->args[i])
+				free(current->args[i++]);
+			free(current->args);
+		}
+		if (current->redirects)
+			free_redirects(current->redirects);
 		free(current);
 		current = next;
 	}
@@ -70,6 +87,8 @@ void	free_env(t_envp **env)
 	while (current)
 	{
 		next = current->next;
+		free(current->key);
+		free(current->value);
 		free(current);
 		current = next;
 	}

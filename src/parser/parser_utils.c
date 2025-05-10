@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/08 22:12:04 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/10 09:57:45 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int handel_heredoc(t_token **token, t_command *head)
         return (0);
     *token = (*token)->next;
     head->heredoc_count++;
+    head->is_file_quoted = (*token)->was_quoted;
     add_redirect(head, 5, (*token)->value);
     *token = (*token)->next;
     return (1);

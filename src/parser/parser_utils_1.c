@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/07 11:37:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/10 12:03:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@ t_command *creat_command(void)
     if (!new_cmd)
         return (NULL);
     new_cmd->args = NULL;
-    new_cmd->heredocs = NULL;
     new_cmd->heredoc_count = 0;
-    new_cmd->infiles = NULL;
+    new_cmd->is_file_quoted = 0;
     new_cmd->infile_count = 0;
-    new_cmd->outfiles = NULL;
     new_cmd->outfile_count = 0;
-    new_cmd->appends = NULL;
     new_cmd->append_count = 0;
     new_cmd->pipe = 0;
     new_cmd->redirects = NULL;
@@ -112,13 +109,11 @@ int check_next_token(t_token *token, t_command *head)
     if (!token->next)
     {
         printf("minishell: syntax error near unexpected token `newline'\n");
-        free(head);
         return (0);
     }
     if (token->next->type != 0)
     {
         printf("minishell: syntax error near unexpected token `%s'\n", token->next->value); 
-        free(head);
         return (0);
     }
     return (1);

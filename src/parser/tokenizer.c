@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/08 22:45:38 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/10 11:52:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ static int handel_operator(char *s, int i, t_token **token)
 		char symb_alloc[3] = {s[i], s[i], '\0'};
 		symb = ft_strdup(symb_alloc);
 		if(ft_strcmp(symb, ">>") == 0)
-			add_token(token, create_token(symb, 4, 0));
+			add_token(token, create_token(symb, 4, 0, 0));
 		else if(ft_strcmp(symb, "<<") == 0)
-			add_token(token, create_token(symb, 5, 0));
+			add_token(token, create_token(symb, 5, 0, 0));
+		free(symb);
 		i += 2;
 	}
 	else
@@ -58,11 +59,12 @@ static int handel_operator(char *s, int i, t_token **token)
 		char symb_alloc[2] = {s[i], '\0'};
 		symb = ft_strdup(symb_alloc);
 		if(ft_strcmp(symb, "|") == 0)
-			add_token(token, create_token(symb, 1, 0));
+			add_token(token, create_token(symb, 1, 0, 0));
 		else if(ft_strcmp(symb, "<") == 0)
-			add_token(token, create_token(symb, 2, 0));
+			add_token(token, create_token(symb, 2, 0, 0));
 		else if(ft_strcmp(symb, ">") == 0)
-			add_token(token, create_token(symb, 3, 0));
+			add_token(token, create_token(symb, 3, 0, 0));
+		free(symb);
 		i++;
 	}
 	return (i);
@@ -86,10 +88,11 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 			simple_str = temp;
 		}
 	}
-	t_token *new = create_token(simple_str, 0, 0);
+	t_token *new = create_token(simple_str, 0, 0, 0);
 	if (*token && attached)
 		get_last_token(*token)->attached = 1;
 	add_token(token,new);
+	free(simple_str);
 	return (i);
 }
 
@@ -117,7 +120,7 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 		free(final_str);
 		return (-1);
 	}
-	t_token *new = create_token(final_str, 0, 0);
+	t_token *new = create_token(final_str, 0, 0, 1);
 	if (*token && attached)
 		get_last_token(*token)->attached = 1;
 	add_token(token,new);
@@ -139,7 +142,7 @@ t_token	*split_token(char *s, t_envp **my_env, t_token **token)
 			i = handel_quoted_str(s, i, my_env, token);
 			if (i == -1)
 			{	
-				// free_arr(my_env);
+				free_env(my_env);
 				free_token(token);
 				exit(EXIT_FAILURE);
 			}

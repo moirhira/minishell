@@ -1,0 +1,7 @@
+total 32
+drwxr-xr-x 2 moirhira 2024_rabat    25 Apr 17 21:56 include
+drwxr-xr-x 3 moirhira 2024_rabat    19 Apr 20 14:52 libraries
+-rw-r--r-- 1 moirhira 2024_rabat   667 May  4 21:00 Makefile
+-rwxr-xr-x 1 moirhira 2024_rabat 27032 May 10 11:42 minishell
+-rw-r--r-- 1 moirhira 2024_rabat     0 May 10 11:43 sdcsd
+drwxr-xr-x 5 moirhira 2024_rabat    77 May 10 11:42 src

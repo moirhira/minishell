@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:58:14 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/20 15:17:05 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:17:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int	ft_strlen(const char *str)
 {
 	int	i;
-
+	
+	if (!str)
+		return(0);
 	i = 0;
 	while (str[i])
 		i++;
