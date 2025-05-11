@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/10 12:03:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/11 20:50:48 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_command *creat_command(void)
         return (NULL);
     new_cmd->args = NULL;
     new_cmd->heredoc_count = 0;
-    new_cmd->is_file_quoted = 0;
     new_cmd->infile_count = 0;
     new_cmd->outfile_count = 0;
     new_cmd->append_count = 0;

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/10 11:52:36 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/11 21:33:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	int attached;
 	attached = was_previous_space(s, i);
 	char quote = s[i++];
-	char *final_str = ft_calloc(ft_strlen(s) * 2 + 1, 1);
+	char *final_str =ft_calloc(ft_strlen(s),1);
+	if (!final_str)
+		return(-1);
+	printf("im arrived  here \n");
 	while (s[i] && s[i] != quote)
 	{
 		if (s[i] == '$' && quote == '"')
@@ -110,13 +113,15 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 		{
 			char ch[2] = {s[i++], '\0'};
 			char *temp = ft_strjoin(final_str, ch);
+			if (!temp)
+				return (free(final_str), -1);
 			free(final_str);
 			final_str = temp;
 		}
 	}
 	if (!s[i])
 	{
-		printf("minishell: Unclose quote: %c\n",quote);
+		printf("minishell: Unclosed quote: %c\n",quote);
 		free(final_str);
 		return (-1);
 	}

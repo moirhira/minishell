@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/10 11:35:38 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/11 21:06:45 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line,
     {
         free_token(token_lst);
         free_env(my_env);
-        free_command(command_lst);
         exit (EXIT_FAILURE);
     }
     print_commands(command_lst);
@@ -131,42 +130,12 @@ void print_commands(t_command **commads)
                 i++;
             }
         }
-        // i = 0;
-        // printf("output files  :\n");
-        // while (i < ptr->outfile_count)
-        // {
-        //     printf("     number %d -> : %s\n", i + 1, ptr->outfiles[i]);
-        //     i++;
-        // }
-        // i = 0;
-        // printf("append files  :\n");
-        // while (i < ptr->append_count)
-        // {
-        //     printf("     number %d -> : %s\n", i + 1, ptr->appends[i]);
-        //     i++;
-        // }
-        // i = 0;
-        // printf("input files   :\n");
-        // while (i < ptr->infile_count)
-        // {
-        //     printf("     number %d -> : %s\n", i + 1, ptr->infiles[i]);
-        //     i++;
-        // }
-        // i = 0;
-        // printf("herdocs       :\n");
-        // while (i < ptr->heredoc_count)
-        // {
-        //     printf("     number %d -> : %s\n", i + 1 , ptr->heredocs[i]);
-        //     i++;
-        // }
-        
         // printf("is a pipe     : %d\n", ptr->pipe);
         printf("==============order==================\n");
         while (ptr->redirects)
         {
             printf("filename        : %s\n", ptr->redirects->filename);
             printf("type            : %d\n", ptr->redirects->type);
-            printf("is was quoted   : %d\n", ptr->is_file_quoted);
             ptr->redirects = ptr->redirects->next;
         }
         printf("=====================================\n");

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/10 12:12:33 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/11 21:04:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ void	free_command(t_command **command)
 	if (!command || !*command)
 		return ;
 	current = *command;
+	if (!(*command)->next)
+	{
+		free(current);
+		*command = NULL;
+		return;
+	}
 	while (current)
 	{
 		next = current->next;
