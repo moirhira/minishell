@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/11 21:06:45 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/14 21:34:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         if((*token_lst)->type == 1)
         {
             printf("minishell: syntax error near unexpected token `%s'\n", token->value); 
-            free(head);
+            // free(head);
             return (NULL);
         }
         if (token->type == 1 && !handel_pipe(&token, &head, cmd_lst)) // | 
@@ -66,14 +66,15 @@ void print_commands(t_command **commads);
 void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, t_envp **my_env)
 {
     split_token(cmd_line, my_env, token_lst);
+    *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
     {
         free_token(token_lst);
         free_env(my_env);
-        exit (EXIT_FAILURE);
+        free_command(command_lst);
+        return;
     }
     print_commands(command_lst);
-    
 }
 
 
