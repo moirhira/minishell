@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/14 21:19:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:14:08 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static void	free_redirects(t_redirect *redirect)
 		free(redirect);
 		redirect = next;
 	}
+	free(redirect);
 }
 
 void	free_command(t_command **command)
@@ -60,12 +61,8 @@ void	free_command(t_command **command)
 				free(current->args[i++]);
 			free(current->args);
 		}
-		// free(current->redirects->filename);
 		if (current->redirects)
-		{
-			printf("redir\n");
 			free_redirects(current->redirects);
-		}
 		free(current);
 		*command = NULL;
 		return;

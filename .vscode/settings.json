@@ -5,6 +5,13 @@
         "charconv": "c",
         "chrono": "c",
         "functional": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "array": "c",
+        "compare": "c",
+        "ratio": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c"
     }
 }

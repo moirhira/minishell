@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/14 21:34:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/16 19:12:41 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,11 +133,12 @@ void print_commands(t_command **commads)
         }
         // printf("is a pipe     : %d\n", ptr->pipe);
         printf("==============order==================\n");
-        while (ptr->redirects)
+        t_redirect *ptr_red = ptr->redirects;
+        while (ptr_red)
         {
-            printf("filename        : %s\n", ptr->redirects->filename);
-            printf("type            : %d\n", ptr->redirects->type);
-            ptr->redirects = ptr->redirects->next;
+            printf("filename        : %s\n", ptr_red->filename);
+            printf("type            : %d\n", ptr_red->type);
+            ptr_red = ptr_red->next;
         }
         printf("=====================================\n");
         printf("....................................\n");

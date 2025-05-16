@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/14 21:00:45 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/16 18:50:16 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,6 @@ t_command *creat_command(void)
     return (new_cmd);
 }
 
-void  add_redirect(t_command *cmd, int type, const char *filename)
-{
-    t_redirect *new;
-    new = malloc(sizeof(t_redirect));
-    if (!new)
-        return;
-    new->filename = ft_strdup(filename);
-    new->type = type;
-    new->next = NULL;
-    if (!cmd->redirects)
-        cmd->redirects = new;
-    else
-    {
-        t_redirect *ptr;
-        ptr = cmd->redirects;
-        while (ptr->next)
-            ptr = ptr->next;
-        ptr->next = new;
-    }
-}
-
 void add_command(t_command **command_lst, t_command *new_command)
 {
     t_command *ptr;
@@ -63,9 +42,32 @@ void add_command(t_command **command_lst, t_command *new_command)
     ptr = *command_lst;
     while (ptr->next)
         ptr = ptr->next;
-    ptr->next = new_command;
-    
+    ptr->next = new_command;    
 }
+
+void  add_redirect(t_command *cmd, int type, const char *filename)
+{
+    t_redirect *new, *ptr;
+    
+    ptr = NULL;
+    new = (t_redirect *)malloc(sizeof(t_redirect));
+    if (!new)
+        return;
+    new->filename = ft_strdup(filename);
+    new->type = type;
+    new->next = NULL;
+    if (!cmd->redirects)
+        cmd->redirects = new;
+    else
+    {
+        ptr = cmd->redirects;
+        while (ptr->next)
+            ptr = ptr->next;
+        ptr->next = new;
+    }   
+}
+
+
 
     
 
