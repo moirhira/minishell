@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/16 19:12:41 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:40:15 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void print_commands(t_command **commads);
 void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, t_envp **my_env)
 {
     split_token(cmd_line, my_env, token_lst);
+    
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
     {

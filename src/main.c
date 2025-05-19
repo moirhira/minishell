@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/16 19:00:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:42:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int main(int ac, char **av, char **env)
         if (!cmd_line)
             break;
         parse_command(&token_list, &list_cmd, cmd_line, &my_env);
+        // your code 
         free(cmd_line);
         free_command(&list_cmd);
         free_token(&token_list);

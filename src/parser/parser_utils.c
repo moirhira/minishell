@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/11 20:48:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:49:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,14 @@ int handel_heredoc(t_token **token, t_command *head)
 void handel_argument(t_token **token, t_command *head)
 {
     char *full_str = ft_strdup((*token)->value);
+    if (!full_str)
+        return;
     while ((*token)->attached)
     {
+        char *old = full_str;
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
+        free(old);
     }
     add_argument(head, full_str);
     free(full_str);

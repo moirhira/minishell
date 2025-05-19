@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/11 21:33:04 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/05/19 21:22:48 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	if (*token && attached)
 		get_last_token(*token)->attached = 1;
 	add_token(token,new);
+	free(final_str);
 	i++;
 	return(i);
 }
