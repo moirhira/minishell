@@ -7,6 +7,5 @@ ex:
 cmd << 'DEL' || cmd << "DEL"
 '''
 ---
-### Zakaria
 * if you notice or need any thing, Write him here!
 

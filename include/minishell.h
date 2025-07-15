@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/11 20:50:40 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 10:06:15 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <readline/history.h>
 #include "../libraries/libft/libft.h"
 
-extern int g_last_exit_status;
 #define SIZE_ENV 1024
 
 typedef enum e_token_type {
@@ -45,6 +44,7 @@ typedef struct s_redirect
 {
     char *filename;
     int type;
+    char *content;
     struct s_redirect *next;
 }   t_redirect;
 
@@ -103,4 +103,11 @@ void  add_redirect(t_command *cmd, int type, const char *filename);
 void	free_token(t_token **stacka);
 void	free_env(t_envp **env);
 void	free_command(t_command **command);
+int exit_status(int new_status);
+
+// executer.c
+int execute_commands(t_command *command);
 #endif
+
+
+//minishell$ echo hello << a dfs  > d

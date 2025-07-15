@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/19 21:42:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/14 15:55:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "../include/minishell.h"
 #include "../libraries/libft/libft.h"
 
-int g_last_exit_status = 0;
 void sigint_handler(int signum)
 {
     (void)signum;
@@ -100,7 +99,9 @@ int main(int ac, char **av, char **env)
         if (!cmd_line)
             break;
         parse_command(&token_list, &list_cmd, cmd_line, &my_env);
-        // your code 
+        // execute part
+        execute_commands(list_cmd);
+        // execute end
         free(cmd_line);
         free_command(&list_cmd);
         free_token(&token_list);
@@ -118,3 +119,4 @@ int main(int ac, char **av, char **env)
     free_env(&my_env);
     return(EXIT_SUCCESS);
 }
+
