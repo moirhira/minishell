@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 10:09:25 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 11:15:04 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,11 @@ void	free_env(t_envp **env)
 	*env = NULL;
 }
 
-
-// this is the function that e will use to handel the exit status
-// if we need to change the exist status wich mean != 0 we 
-// we pass number != -1 else if we want keep the 0 we pass -1 
 int exit_status(int new_status)
 {
-	static int status = 0;
+    static int status = 0;
 
-	if (new_status != -1)
-		status = new_status;
-	return (status);
+    if (new_status != -1)
+        status = new_status;
+    return (status);
 }

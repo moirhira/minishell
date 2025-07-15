@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 10:06:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 22:24:16 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,25 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <string.h>
 #include "../libraries/libft/libft.h"
+#include <linux/limits.h>
+#include <fcntl.h> 
 
+extern int g_last_exit_status;
 #define SIZE_ENV 1024
 
 typedef enum e_token_type {
-    TOKEN_WORD,        // word
+    TOKEN_WORD,       // word
     TOKEN_PIPE,        // |
     TOKEN_INPUT,       // <
-    TOKEN_OUTPUT,      // >
+    TOKEN_OUTPUT,     // >
     TOKEN_APPEND,      // >>
     TOKEN_HEREDOC,     // <<
-    TOKEN_HEREDOC_QUOTED,
+    TOKEN_HEREDOC_QUOTED, 
     TOKEN_EOL        // end of
 } t_token_type;
 
@@ -38,7 +45,7 @@ typedef struct s_token {
     int attached;
     int was_quoted;
     struct s_token *next;
-} t_token;
+}   t_token;
 
 typedef struct s_redirect
 {
@@ -63,7 +70,7 @@ typedef struct s_command
     
     struct s_redirect *redirects;
     struct s_command *next;
-} t_command;
+}   t_command;
 
 typedef struct s_envp
 {
@@ -71,6 +78,7 @@ typedef struct s_envp
     char *value;
     struct s_envp *next;
 }   t_envp;
+
 // tokenizer.c
 t_token *split_token(char *s, t_envp **my_env, t_token **token);
 
@@ -103,11 +111,109 @@ void  add_redirect(t_command *cmd, int type, const char *filename);
 void	free_token(t_token **stacka);
 void	free_env(t_envp **env);
 void	free_command(t_command **command);
-int exit_status(int new_status);
+int     exit_status(int new_status);
 
-// executer.c
-int execute_commands(t_command *command);
+
+
+// execution.c
+int     exit_status(int new_status);
+int     execute_commands(t_command *command, t_envp **env);
+int     execute_builtin(t_command *cmd, t_envp **env);
+int    builtin_cd(t_command *cmd, t_envp **env);
+void    setup_redirections(t_command *cmd);
+static int  is_executable(const char *path);
+char    *find_command_in_path(const char *cmd, t_envp *env);
+void    handle_heredoc(const char *delimiter);
+void    setup_redirections(t_command *cmd);
+ssize_t ft_getline(char **lineptr, size_t *n, FILE *stream);
+void    ft_swap(int *a, int *b);
+void    free_env_array(char **envp);
+
+// for export 
+int     print_sorted_export(t_envp *env);
+int     is_valid_identifier(const char *str);
+int     builtin_export(t_command *cmd, t_envp **env);
+int     count_env(t_envp *env);
+void    sort_in_tab(char **array, int size);
+int     print_sorted_export(t_envp *env);
+
+// unset
+int    builtin_unset(char **args, t_envp **env);
+
+// exit
+int	    builtin_exit(char **args, t_envp **env);
+void    free_env(t_envp **env);
+long    my_strtol(const char *str, char **endptr, int base);
+
+// echo
+int     is_new_line(char *cmd);
+int    builtin_echo(char **cmd);
+
+// helper
+int is_valid_identifier(const char *str);
+int is_alpha(char c);
+int is_digit(char c);
+int is_alnum(char c);
+
+
+// env
+int   builtin_env(t_envp *envp);
+
+
+//helper 1
+int is_alpha(char c);
+int is_digit(char c);
+int is_alnum(char c);
+
+// helper 2
+char	*find_command_in_path(const char *cmd, t_envp *env);
+char    *ft_strdup(const char *s);
+char    *get_env_value(t_envp *env, const char *key);
+static int  is_executable(const char *path);
+void    sort_in_tab(char **array, int size);
+int     count_env(t_envp *env);
+int	    print_sorted_export(t_envp *env);
+char	*create_export_entry(char *key, char *value);
+void	print_and_free_array(char **arr);
+void	free_array(char **arr, int size);
+
+
+// execute single command 
+
+void        execute_single_command(t_command *cmd, t_envp **env);
+static void reset_redirections(void);
+static char **convert_env_to_array(t_envp *env);
+char        *is_builtin(const char *cmd);
+
+// setup_redirctions 
+
+ssize_t     ft_getline(char **lineptr, size_t *n, FILE *stream);
+void        handle_heredoc(const char *delimiter);
+void        setup_redirections(t_command *cmd);
+
+
+
 #endif
 
 
-//minishell$ echo hello << a dfs  > d
+
+
+
+ 
+/*
+
+path_env = /home/ekhallaf/.local/nvim/bin:/home/ekhallaf/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+path_copy = /home/ekhallaf/.local/nvim/bin:/home/ekhallaf/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dir = /home/ekhallaf/.local/nvim/bin
+full_path = 
+
+dir_len = 20 + 1;
+cmd_len = 2
+full path = "/home/ekhallaf/.local/nvim/bin/ls"
+result = "/home/ekhallaf/.local/nvim/bin/ls" ; 
+
+
+
+*/
+
+// ls -l 

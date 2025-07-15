@@ -1,28 +1,31 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall
-SRC = 	src/main.c src/parser/tokenizer.c src/parser/tokenizer_utils.c src/parser/parser.c\
-		src/parser/parser_utils.c src/parser/parser_utils_1.c src/utils/utils.c src/executor/executor.c
-OBJ = ${SRC:.c=.o}
+SRC = src/main.c src/parser/tokenizer.c src/parser/tokenizer_utils.c src/parser/parser.c\
+      src/parser/parser_utils.c src/parser/parser_utils_1.c src/utils/utils.c src/executor/builtin_cd.c src/executor/builtin_cmd.c src/executor/builtin_env.c\
+      src/executor/builtin_export.c src/executor/builtin_pwd.c  src/executor/builtin_exit.c src/executor/builtin_echo.c src/executor/builtin_unset.c src/executor/find_command_in_path.c  src/executor/helper.c \
+	  src/executor/setup_redirections.c src/executor/single_command.c src/executor/sort_in_tab.c src/executor/sorted_env.c src/executor/executor.c
+
+OBJ = $(SRC:.c=.o)
 LIBFT_DIR = libraries/libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a
 all: $(NAME)
 	@echo "Compiling..."
 
-$(NAME): $(OBJ) $(LIBFT_LIB) $(LIBFT_DIR)/libft.h
-	@$(CC) $(OBJ) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
-
+$(NAME): $(OBJ) $(LIBFT_LIB)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT_LIB) -lreadline -o $(NAME)
+	
 $(LIBFT_LIB):
-	@make -s -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@make -s clean -C $(LIBFT_DIR)
 	@rm -f $(OBJ)
 
-fclean:clean
+fclean: clean
 	@make -s fclean -C $(LIBFT_DIR)
 	@rm -f $(NAME)
 

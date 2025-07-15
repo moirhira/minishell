@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils_1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 10:08:54 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 11:05:53 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,6 @@ void  add_redirect(t_command *cmd, int type, const char *filename)
     }   
 }
 
-
-
-    
-
-
 void add_argument(t_command *cmd, char *arg)
 {
     int len;
@@ -111,13 +106,11 @@ int check_next_token(t_token *token, t_command *head)
     if (!token->next)
     {
         printf("minishell: syntax error near unexpected token `newline'\n");
-        exit_status(2);
         return (0);
     }
     if (token->next->type != 0)
     {
         printf("minishell: syntax error near unexpected token `%s'\n", token->next->value); 
-        exit_status(2);
         return (0);
     }
     return (1);

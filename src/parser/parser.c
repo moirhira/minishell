@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 15:18:13 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 10:35:56 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         if((*token_lst)->type == 1)
         {
             printf("minishell: syntax error near unexpected token `%s'\n", token->value); 
-            exit_status(2);
             // free(head);
             return (NULL);
         }
@@ -76,58 +75,24 @@ void parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line,
         free_command(command_lst);
         return;
     }
-    
-    // print_commands(command_lst);
+    print_commands(command_lst);
 }
-
-
-
-
-//echo hello << a dfs > d
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void print_commands(t_command **commads)
 {
-    
     t_command *ptr;
     ptr = (*commads);
     while (ptr)
     {
+        printf("==============order==================\n");
+        t_redirect *ptr_red = ptr->redirects;
+        while (ptr_red)
+        {
+            printf("filename        : %s\n", ptr_red->filename);
+            printf("type            : %d\n", ptr_red->type);
+            ptr_red = ptr_red->next;
+        }
+        printf("=====================================\n");
         int i = 0;
         if (ptr->args)
         {
@@ -138,15 +103,6 @@ void print_commands(t_command **commads)
             }
         }
         // printf("is a pipe     : %d\n", ptr->pipe);
-        printf("==============order==================\n");
-        t_redirect *ptr_red = ptr->redirects;
-        while (ptr_red)
-        {
-            printf("filename        : %s\n", ptr_red->filename);
-            printf("type            : %d\n", ptr_red->type);
-            ptr_red = ptr_red->next;
-        }
-        printf("=====================================\n");
         printf("....................................\n");
         ptr = ptr->next;
     }
