@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 10:06:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/16 10:35:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_envp
     struct s_envp *next;
 }   t_envp;
 // tokenizer.c
+char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
 t_token *split_token(char *s, t_envp **my_env, t_token **token);
 
 // tokenizer_utils.c
@@ -82,7 +83,7 @@ int was_previous_space(char *s, int i);
 t_token *get_last_token(t_token *lst);
 
 // parse.c
-void parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, t_envp **my_env);
+int parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, t_envp **my_env);
 
 //parser_utils.c
 int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst);
@@ -106,7 +107,9 @@ void	free_command(t_command **command);
 int exit_status(int new_status);
 
 // executer.c
-int execute_commands(t_command *command);
+int execute_commands(t_command *command, t_envp **my_env);
+
+
 #endif
 
 
