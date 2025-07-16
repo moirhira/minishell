@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/19 21:49:11 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 14:38:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int handel_output_redirection(t_token **token, t_command *head)
     *token = (*token)->next;
     head->outfile_count++;
     add_redirect(head, 3, (*token)->value);
-   *token = (*token)->next;
-   return (1);
+    *token = (*token)->next;
+    return (1);
 }
 int handel_append_redirection(t_token **token, t_command *head)
 {
@@ -50,20 +50,35 @@ int handel_append_redirection(t_token **token, t_command *head)
     *token = (*token)->next;
     head->append_count++;
     add_redirect(head, 4, (*token)->value);
-   *token = (*token)->next;
-   return (1);
+    *token = (*token)->next;
+    return (1);
 }
 
 int handel_heredoc(t_token **token, t_command *head)
 {
+    int need_quote = 0;
     if (!check_next_token(*token, head))
         return (0);
     *token = (*token)->next;
     head->heredoc_count++;
-    if ((*token)->was_quoted)
-        add_redirect(head, 6, (*token)->value);
+    //----------------------------------------------
+    char *full_str = ft_strdup((*token)->value);
+    if (!full_str)
+        return (0);
+    while ((*token)->attached)
+    {
+        if ((*token)->was_quoted)
+            need_quote = 1;
+        char *old = full_str;
+        *token = (*token)->next;
+        full_str = ft_strjoin(full_str, (*token)->value);
+        free(old);
+    }
+    //----------------------------------------------
+    if (need_quote || (*token)->was_quoted)
+        add_redirect(head, 6, full_str);
     else
-        add_redirect(head, 5, (*token)->value);
+        add_redirect(head, 5, full_str);
     *token = (*token)->next;
     return (1);
 }

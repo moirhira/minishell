@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 22:24:16 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/16 10:15:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int was_previous_space(char *s, int i);
 t_token *get_last_token(t_token *lst);
 
 // parse.c
-void parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, t_envp **my_env);
+int parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, t_envp **my_env);
 
 //parser_utils.c
 int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   excutor.c                                          :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 11:26:33 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/16 10:01:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int execute_external()
 }
 int execute_commands(t_command *command, t_envp **env)
 {
-    parse_heredocs(command);
+    // parse_heredocs(command);
     int res = execute_builtin(command,env);
     if (res >= 0)
     {
