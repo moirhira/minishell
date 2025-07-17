@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/16 10:35:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/17 09:35:40 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libraries/libft/libft.h"
+
+// signal setups macros
+typedef enum e_shell_state
+{
+    SHELL_INTERACTIVE = 1,
+    SHELL_EXECUTING = 2,
+    SHELL_HEREDOC = 3
+}   t_shell_state;
 
 #define SIZE_ENV 1024
 
@@ -105,6 +113,9 @@ void	free_token(t_token **stacka);
 void	free_env(t_envp **env);
 void	free_command(t_command **command);
 int exit_status(int new_status);
+
+//setup_signals.c
+void    setup_signals(int state);
 
 // executer.c
 int execute_commands(t_command *command, t_envp **my_env);

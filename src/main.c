@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/16 10:29:07 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/17 09:36:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 #include "../include/minishell.h"
 #include "../libraries/libft/libft.h"
 
-void sigint_handler(int signum)
-{
-    (void)signum;
-    rl_replace_line("", 0);
-    printf("\n");
-    rl_on_new_line();
-    rl_redisplay();  
-}
 char *read_input(void)
 {
     char *line;
@@ -91,8 +83,7 @@ int main(int ac, char **av, char **env)
         printf("Error at retrieving envs\n");
         return (EXIT_FAILURE);
     }
-    signal(SIGQUIT, SIG_IGN); // /
-    signal(SIGINT, sigint_handler);
+    setup_signals(SHELL_INTERACTIVE);
     while (1)
     {
         cmd_line = read_input();
