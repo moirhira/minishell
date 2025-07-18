@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 09:44:28 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 21:51:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,12 @@ void  add_redirect(t_command *cmd, int type, const char *filename);
 void	free_token(t_token **stacka);
 void	free_env(t_envp **env);
 void	free_command(t_command **command);
+
+// utils_2.c
+int only_whitespace(char *str);
 int exit_status(int new_status);
+
+
 
 //setup_signals.c
 void    setup_signals(int state);

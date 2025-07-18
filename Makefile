@@ -3,7 +3,7 @@ CC = cc
 CFLAGS = -Wall
 SRC = 	src/main.c src/parser/tokenizer.c src/parser/tokenizer_utils.c src/parser/parser.c\
 		src/parser/parser_utils.c src/parser/parser_utils_1.c src/utils/utils.c src/utils/setup_signals.c\
-		 src/executor/executor.c src/executor/parse_heredocs.c
+		src/utils/utils_2.c src/executor/executor.c src/executor/parse_heredocs.c
 OBJ = ${SRC:.c=.o}
 LIBFT_DIR = libraries/libft
 LIBFT_LIB = $(LIBFT_DIR)/libft.a

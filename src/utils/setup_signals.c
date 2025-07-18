@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/17 09:35:08 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 20:54:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void sig_handler_execution(int sig)
 
 void    setup_signals(int state)
 {
+    write(STDOUT_FILENO, "\r", 1);
     if (state == SHELL_EXECUTING)
     {
         signal(SIGINT, sig_handler_execution);

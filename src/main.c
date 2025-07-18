@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 17:26:01 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 21:59:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,7 @@ t_envp  *retrieve_envp(char **env)
     return (head);
 }
 
-int only_whitespace(char *str)
-{
-    int i;
 
-    i = 0;
-    while (str[i] != '\0')
-    {
-        if(!ft_isspace(str[i]))
-            return (0);
-        i++;
-    }
-    return (1);
-}
 int main(int ac, char **av, char **env)
 {
     g_signal_received = 0;
@@ -94,7 +82,7 @@ int main(int ac, char **av, char **env)
     if (!my_env)
     {
         printf("Error at retrieving envs\n");
-        return (EXIT_FAILURE);
+        return (exit_status(1));
     }
     setup_signals(SHELL_INTERACTIVE);
     while (1)
