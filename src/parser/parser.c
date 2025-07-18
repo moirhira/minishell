@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/16 21:52:26 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 15:43:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,11 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
         free_token(token_lst);
         free_env(my_env);
         free_command(command_lst);
+        exit_status(2);
         return (2);
     }
     
-    // print_commands(command_lst);
+    print_commands(command_lst);
     return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 10:09:25 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:15:32 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	free_redirects(t_redirect *redirect)
 	while (redirect)
 	{
 		next = redirect->next;
+		unlink(redirect->filename);
 		free(redirect->filename);
 		free(redirect->content);
 		free(redirect);

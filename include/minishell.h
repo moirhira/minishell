@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/17 22:59:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:44:28 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ void    setup_signals(int state);
 
 // executer.c
 int execute_commands(t_command *command, t_envp **my_env);
+// parse_herdocs.c
+void parse_heredocs(t_command *command, t_envp *my_env);
 
 
 #endif
