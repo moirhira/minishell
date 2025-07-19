@@ -6,7 +6,7 @@
 /*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/16 00:19:47 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:39:23 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ void update_env_var(t_envp **env, char *key, char *value)
 
 int builtin_export(t_command *cmd, t_envp **env)
 {
+     if (!cmd->args[1])
+    {
+        print_sorted_export(*env);
+        return exit_status(0);
+    }
+    
     if (!env || !*env)
         return exit_status(1);
 

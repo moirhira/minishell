@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/16 10:34:13 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:38:09 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,6 @@ int main(int ac, char **av, char **env)
         free(cmd_line);
         free_command(&list_cmd);
         free_token(&token_list);
-        if (my_env)
-            free_env(&my_env);
-        my_env = retrieve_envp(env);
         if (!my_env)
         {
             printf("Error at retrieving envs\n");

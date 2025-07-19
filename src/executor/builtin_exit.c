@@ -6,7 +6,7 @@
 /*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 23:00:53 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/16 00:16:23 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/19 13:37:54 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,31 +55,38 @@ long my_strtol(const char *str, char **endptr, int base)
 
 int builtin_exit(char **args, t_envp **env)
 {
-    int exit_code = 0;
+    long code = 0;
     char *endptr;
-    long code;
 
+    write(STDOUT_FILENO, "exit\n", 5);
     if (args[1])
     {
         code = my_strtol(args[1], &endptr, 10);
-        if (*endptr != '\0' || code < INT_MIN || code > INT_MAX)
+        //// If args[1] is not fully numeric OR overflows
+        if (*endptr != '\0' || code < LONG_MIN || code > LONG_MAX)
         {
             write(STDERR_FILENO, "exit: ", 6);
             write(STDERR_FILENO, args[1], ft_strlen(args[1]));
-            write(STDERR_FILENO, ": numeric argument required\n", 27);
-            exit_status(2);  /// Error case
+            write(STDERR_FILENO, ": numeric argument required\n", 28);
             free_env(env);
-            exit(2);
+            exit_status(255);
+            exit(255);
         }
-        exit_code = (int)code;
+        //// If too many arguments (but first one is valid)
+        if (args[2])
+        {
+            write(STDERR_FILENO, "exit: too many arguments\n", 25);
+            exit_status(1);
+            return 1; //// Do NOT exit
+        }
+        //// Valid numeric argument, cast to unsigned char
+        exit_status((unsigned char)code);
+        free_env(env);
+        exit((unsigned char)code);
     }
-
-    exit_status(exit_code);
+    //// No argument: use last exit status
     free_env(env);
-    write(STDOUT_FILENO, "exit\n", 5);
-    exit(exit_code);
-
-    return exit_code;
+    exit(exit_status(0));
 }
 
 
