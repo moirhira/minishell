@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_swap.c                                          :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/07 00:56:07 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/07 00:56:13 by ekhallaf         ###   ########.fr       */
+/*   Created: 2025/07/19 15:51:44 by moirhira          #+#    #+#             */
+/*   Updated: 2025/07/19 15:51:58 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../../include/minishell.h"
 
-void ft_swap(char **a, char **b)
+int only_whitespace(char *str)
 {
-    char *tmp = *a;
-    *a = *b;
-    *b = tmp;
+    int i;
+
+    i = 0;
+    while (str[i] != '\0')
+    {
+        if(!ft_isspace(str[i]))
+            return (0);
+        i++;
+    }
+    return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 21:11:14 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:43:00 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static void reset_redirections(void)
 
 void execute_single_command(t_command *cmd, t_envp **env)
 {
+    int status = 0;
     setup_redirections(cmd);
     if(is_builtin(cmd->args[0]))
         execute_builtin(cmd, env);
@@ -108,7 +109,7 @@ void execute_single_command(t_command *cmd, t_envp **env)
             exit(EXIT_FAILURE);
         }
         else if (pid > 0)
-            waitpid(pid, &g_last_exit_status, 0);
+            waitpid(pid, &status, 0);
         else
             perror("fork");
     }

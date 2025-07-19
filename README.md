@@ -15,6 +15,13 @@ exit: exit: numeric argument required% (the exist status is right in this case)
 
 
 
+========================================================================================
+1 - multiple -n in the heredocs (just with the space betwen them):
+    echo -n -n ... "string" 
 
-
-i change in the main function that when the commande will be executed 
+2 - in the exit with two params should return 2 not 255:
+    minishell$ exit exit
+    exit
+    exit: exit: numeric argument required
+    moirhira@c1r6p1:~/Desktop/zahia$ echo $?
+    255

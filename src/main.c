@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/19 13:38:09 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:50:57 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "../include/minishell.h"
 #include "../libraries/libft/libft.h"
 
-int g_last_exit_status = 0;
 void sigint_handler(int signum)
 {
     (void)signum;
@@ -78,6 +77,7 @@ t_envp  *retrieve_envp(char **env)
 
 int main(int ac, char **av, char **env)
 {
+    g_signal_received = 0;
     char *cmd_line;
     t_token *token_list;
     t_command *list_cmd;    
@@ -107,17 +107,16 @@ int main(int ac, char **av, char **env)
         cmd_line = read_input();
         if (!cmd_line)
             break;
-        // i add the check here for the aprsing to check the syntaxe error before starting execution
+        if (*cmd_line == '\0' || only_whitespace(cmd_line))
+        {
+            free(cmd_line);
+            continue;
+        }
         if (parse_command(&token_list, &list_cmd, cmd_line, &my_env) == 0)
             execute_commands(list_cmd,&my_env);    
         free(cmd_line);
         free_command(&list_cmd);
         free_token(&token_list);
-        if (!my_env)
-        {
-            printf("Error at retrieving envs\n");
-            return (EXIT_FAILURE);
-        }
     }
     free_command(&list_cmd);
     free_token(&token_list);

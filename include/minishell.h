@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/16 10:15:26 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:52:23 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,16 @@
 #include <linux/limits.h>
 #include <fcntl.h> 
 
-extern int g_last_exit_status;
+extern volatile sig_atomic_t g_signal_received;
 #define SIZE_ENV 1024
+
+// signal setups macros
+typedef enum e_shell_state
+{
+    SHELL_INTERACTIVE = 1,
+    SHELL_EXECUTING = 2,
+    SHELL_HEREDOC = 3
+}   t_shell_state;
 
 typedef enum e_token_type {
     TOKEN_WORD,       // word
@@ -128,6 +136,17 @@ void    setup_redirections(t_command *cmd);
 ssize_t ft_getline(char **lineptr, size_t *n, FILE *stream);
 void    ft_swap(int *a, int *b);
 void    free_env_array(char **envp);
+
+// parse_herdocs.c
+void parse_heredocs(t_command *command, t_envp *my_env);
+
+
+// setup_signals.c
+
+void    setup_signals(int state);
+
+// utils_2.c
+int only_whitespace(char *str);
 
 // for export 
 int     print_sorted_export(t_envp *env);

@@ -1,31 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/19 15:36:23 by moirhira         ###   ########.fr       */
+/*   Created: 2025/07/18 17:22:27 by moirhira          #+#    #+#             */
+/*   Updated: 2025/07/18 17:22:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-volatile sig_atomic_t g_signal_received = 0;
+#include "libft.h"
 
-int execute_external()
+int ft_isspace(char c)
 {
-    return (0);
-}
-int execute_commands(t_command *command, t_envp **env)
-{
-    parse_heredocs(command, (*env));
-    int res = execute_builtin(command,env);
-    if (res >= 0)
-    {
-        //free
-        return (res);
-    }
-    execute_external();
-    return (0);
+    return (c == ' ' || c == '\t' || c == '\n'
+         || c == '\v' || c == '\f' || c == '\r');
 }
