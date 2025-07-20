@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/20 02:15:19 by ekhallaf         ###   ########.fr       */
+/*   Created: 2025/07/05 08:44:26 by ekhallaf          #+#    #+#             */
+/*   Updated: 2025/07/16 00:04:09 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-volatile sig_atomic_t g_signal_received = 0;
 
-int execute_external()
+#include "../../include/minishell.h"
+
+int builtin_env(t_envp *envp)
 {
-    return (0);
-}
-int execute_commands(t_command *command, t_envp **env)
-{
-    parse_heredocs(command, (*env));
-    int res = execute_builtin(command,env);
-    if (res >= 0)
+    if (!envp)
+        return exit_status(1);
+    t_envp *env = envp;
+    
+    while (env)
     {
-        //free
-        return (res);
+        if (env->value)
+            printf("%s=%s\n", env->key, env->value);
+        env = env->next;
     }
-    if (command && command->next == NULL)
-    {
-        execute_single_command(command, env);
-        return 1;
-    }
-    //execute_external();
-    return (0);
+    return exit_status(0);
 }
+
+
+

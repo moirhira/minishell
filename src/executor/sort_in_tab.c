@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   sort_in_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/20 02:15:19 by ekhallaf         ###   ########.fr       */
+/*   Created: 2025/07/07 01:22:38 by ekhallaf          #+#    #+#             */
+/*   Updated: 2025/07/08 23:13:30 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-volatile sig_atomic_t g_signal_received = 0;
 
-int execute_external()
+void sort_in_tab(char **array, int size)
 {
-    return (0);
-}
-int execute_commands(t_command *command, t_envp **env)
-{
-    parse_heredocs(command, (*env));
-    int res = execute_builtin(command,env);
-    if (res >= 0)
+    int i = 0;
+    while (i < size - 1)
     {
-        //free
-        return (res);
+        int j = i + 1;
+        while (j < size)
+        {
+            if (ft_strcmp(array[i], array[j]) > 0)
+                ft_swap(&array[i], &array[j]);
+            j++;
+        }
+        i++;
     }
-    if (command && command->next == NULL)
-    {
-        execute_single_command(command, env);
-        return 1;
-    }
-    //execute_external();
-    return (0);
 }
+
+

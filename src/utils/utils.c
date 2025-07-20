@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 21:50:51 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 11:15:04 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	free_redirects(t_redirect *redirect)
 	while (redirect)
 	{
 		next = redirect->next;
-		unlink(redirect->filename);
 		free(redirect->filename);
 		free(redirect->content);
 		free(redirect);
@@ -111,4 +110,13 @@ void	free_env(t_envp **env)
 		current = next;
 	}
 	*env = NULL;
+}
+
+int exit_status(int new_status)
+{
+    static int status = 0;
+
+    if (new_status != -1)
+        status = new_status;
+    return (status);
 }

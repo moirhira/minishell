@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/16 22:44:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/15 20:30:57 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 {
 	(*i)++;
-	
 	if (s[*i] == '?')
 	{
 		(*i)++;
