@@ -6,13 +6,13 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/19 15:43:00 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:58:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char    *is_builtin(const char *cmd)
+int    is_builtin(const char *cmd)
 {
     const char *builtins[] = {"echo", "export", 
         "pwd", "cd", 
@@ -49,23 +49,19 @@ static char **convert_env_to_array(t_envp *env)
     int count = 0;
     t_envp *tmp = env;
     
-    // Count variables with while
     while (tmp)
     {
         count++;
         tmp = tmp->next;
     }
-    // Allocate array (+1 for NULL terminator)
     char **envp = malloc(sizeof(char *) * (count + 1));
     if (!envp)
         return NULL;
     
-    // Fill array with while
     tmp = env;
     int i = 0;
     while (tmp)
     {
-        // Allocate space for "KEY=VALUE\0"
         envp[i] = malloc(ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2);
         if (!envp[i])
         {
@@ -73,10 +69,9 @@ static char **convert_env_to_array(t_envp *env)
             return NULL;
         }
         
-        // Build string manually
-        strcpy(envp[i], tmp->key);      // Copy key
-        strcat(envp[i], "=");           // Add equals
-        strcat(envp[i], tmp->value);    // Add value
+        strcpy(envp[i], tmp->key);
+        strcat(envp[i], "=");
+        strcat(envp[i], tmp->value);
         
         tmp = tmp->next;
         i++;
@@ -85,33 +80,43 @@ static char **convert_env_to_array(t_envp *env)
     return envp;
 }
 
-static void reset_redirections(void)
-{
-    dup2(STDIN_FILENO, STDIN_FILENO);
-    dup2(STDOUT_FILENO, STDOUT_FILENO);
-}
 
-
-void execute_single_command(t_command *cmd, t_envp **env)
+int	execute_external(t_command *cmd, t_envp *env)
 {
-    int status = 0;
-    setup_redirections(cmd);
-    if(is_builtin(cmd->args[0]))
-        execute_builtin(cmd, env);
+	pid_t	pid;
+	char	*path;
+	char	**envp;
+	int		status;
+    // printf("command : %s\n", cmd->args[0]);
+	path = find_command_in_path(cmd->args[0], env);
+	if (!path)
+    {
+		ft_putstr_fd("minishell: ", 2);
+        ft_putstr_fd(cmd->args[0], 2);
+        ft_putstr_fd(": command not found\n", 2);
+        return (127);
+    }
+	envp = convert_env_to_array(env);
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork failed");
+		free(path);
+		return (0);
+	}
+	if (pid == 0)
+	{
+        setup_redirections(cmd);
+		execve(path, cmd->args, envp);
+		perror("minishell: ");
+		exit(126);
+	}
     else
     {
-        pid_t pid = fork();
-        if (pid == 0)
-        {
-            char *path = find_command_in_path(cmd->args[0], env);
-            execve(path, cmd->args, convert_env_to_array(*env));
-            perror("minishell");
-            exit(EXIT_FAILURE);
-        }
-        else if (pid > 0)
-            waitpid(pid, &status, 0);
-        else
-            perror("fork");
+        free(path);
+        waitpid(pid, &status, 0);
+        return (1);
     }
-    reset_redirections();
+    return (0);
 }
+

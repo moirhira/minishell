@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 05:21:05 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:22:14 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,17 +134,17 @@ t_command *parse_pipeline(char *input)
     return head;
 }
 
-int main(int argc, char **argv)
-{
-    if (argc != 2)
-    {
-        printf("Usage: %s \"command1 | command2 | ...\"\n", argv[0]);
-        return 1;
-    }
-    t_command *cmd_list = parse_pipeline(argv[1]);
-    execute_pipeline(cmd_list);
-    return 0;
-}
+// int main(int argc, char **argv)
+// {
+//     if (argc != 2)
+//     {
+//         printf("Usage: %s \"command1 | command2 | ...\"\n", argv[0]);
+//         return 1;
+//     }
+//     t_command *cmd_list = parse_pipeline(argv[1]);
+//     execute_pipeline(cmd_list);
+//     return 0;
+// }
 
 
 // Helper to create a new t_command node

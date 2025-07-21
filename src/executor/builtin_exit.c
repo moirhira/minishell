@@ -6,7 +6,7 @@
 /*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 23:00:53 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/19 13:37:54 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/20 02:43:53 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ int builtin_exit(char **args, t_envp **env)
             write(STDERR_FILENO, args[1], ft_strlen(args[1]));
             write(STDERR_FILENO, ": numeric argument required\n", 28);
             free_env(env);
-            exit_status(255);
-            exit(255);
+            exit_status(2);
+            exit(2);
         }
         //// If too many arguments (but first one is valid)
         if (args[2])

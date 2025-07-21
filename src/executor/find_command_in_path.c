@@ -6,7 +6,7 @@
 /*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 20:18:13 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/20 02:16:45 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,42 @@ char *ft_strdup(const char *s)
 
 ///////////////////////////  FIND_command_in_path   ///////////////////////////////////////////////////
 
-char	*find_command_in_path(const char *cmd, t_envp *env)
+char *find_command_in_path(const char *cmd, t_envp *env)
 {
-	char	full[PATH_MAX], *dir, *path, *copy;
-	if (!cmd)
-		return (NULL);
-	if (strchr(cmd, '/'))
-		return (is_executable(cmd) ? ft_strdup(cmd) : NULL);
-	path = get_env_value(env, "PATH");
-	if (!path)
-		return (NULL);
-	copy = ft_strdup(path);
-	if (!copy)
-		return (NULL);
-	dir = strtok(copy, ":");
-	while (dir)
-	{
-		if (*dir && strlen(dir) + strlen(cmd) + 2 < PATH_MAX)
-		{
-			full[0] = '\0';
-			strcat(full, dir);
-			strcat(full, "/");
-			strcat(full, cmd);
-			if (is_executable(full))
-				return (free(copy), ft_strdup(full));
-		}
-		dir = strtok(NULL, ":");
-	}
-	return (free(copy), NULL);
+    char *path_env = get_env_value(env, "PATH");
+    char *copy, *dir, full[PATH_MAX];
+
+    if (!cmd || !*cmd)
+        return (NULL);
+
+    // Case: absolute or relative path like ./a.out or /bin/ls
+    if (strchr(cmd, '/'))
+        return (is_executable(cmd) ? ft_strdup(cmd) : NULL);
+
+    // Case: command like "ls"
+    if (!path_env)
+        return (NULL); // no PATH
+
+    copy = ft_strdup(path_env);
+    if (!copy)
+        return (NULL);
+
+    dir = strtok(copy, ":");
+    while (dir)
+    {
+        snprintf(full, sizeof(full), "%s/%s", dir, cmd);
+        if (is_executable(full))
+        {
+            char *res = ft_strdup(full);
+            free(copy);
+            return (res);
+        }
+        dir = strtok(NULL, ":");
+    }
+    free(copy);
+    return (NULL);
 }
+
 
 
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/19 15:52:23 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/21 21:41:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,12 +128,7 @@ int     exit_status(int new_status);
 int     execute_commands(t_command *command, t_envp **env);
 int     execute_builtin(t_command *cmd, t_envp **env);
 int    builtin_cd(t_command *cmd, t_envp **env);
-void    setup_redirections(t_command *cmd);
-static int  is_executable(const char *path);
 char    *find_command_in_path(const char *cmd, t_envp *env);
-void    handle_heredoc(const char *delimiter);
-void    setup_redirections(t_command *cmd);
-ssize_t ft_getline(char **lineptr, size_t *n, FILE *stream);
 void    ft_swap(int *a, int *b);
 void    free_env_array(char **envp);
 
@@ -188,7 +183,6 @@ int is_alnum(char c);
 char	*find_command_in_path(const char *cmd, t_envp *env);
 char    *ft_strdup(const char *s);
 char    *get_env_value(t_envp *env, const char *key);
-static int  is_executable(const char *path);
 void    sort_in_tab(char **array, int size);
 int     count_env(t_envp *env);
 int	    print_sorted_export(t_envp *env);
@@ -199,18 +193,15 @@ void	free_array(char **arr, int size);
 
 // execute single command 
 
-void        execute_single_command(t_command *cmd, t_envp **env);
-static void reset_redirections(void);
-static char **convert_env_to_array(t_envp *env);
-char        *is_builtin(const char *cmd);
+int        execute_external(t_command *cmd, t_envp *env);
+int        is_builtin(const char *cmd);
 
 // setup_redirctions 
-
-ssize_t     ft_getline(char **lineptr, size_t *n, FILE *stream);
-void        handle_heredoc(const char *delimiter);
-void        setup_redirections(t_command *cmd);
+int     setup_redirections(t_command *cmd);
 
 
+
+void execute_pipeline(t_command *cmd_list);
 
 #endif
 
