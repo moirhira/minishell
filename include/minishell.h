@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 21:51:56 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/22 09:39:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_envp
 }   t_envp;
 // tokenizer.c
 char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
-t_token *split_token(char *s, t_envp **my_env, t_token **token);
+int split_token(char *s, t_envp **my_env, t_token **token);
 
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);

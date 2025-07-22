@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 21:53:20 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/22 09:43:06 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void print_commands(t_command **commads);
 //---------------------------------------
 int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, t_envp **my_env)
 {
-    split_token(cmd_line, my_env, token_lst);
+    if (!split_token(cmd_line, my_env, token_lst))
+        return (exit_status(2), 2);
     
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
@@ -74,18 +75,17 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
         free_token(token_lst);
         free_env(my_env);
         free_command(command_lst);
-        exit_status(2);
-        return (2);
+        return (exit_status(2), 2);
     }
     
     print_commands(command_lst);
-    return (0);
+    return (exit_status(-1), 2);
 }
 
 
 
 
-//echo hello << a dfs > d
+
 
 
 

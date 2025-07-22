@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/16 22:44:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/22 09:49:32 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	return (i);
 }
 
-t_token *split_token(char *s, t_envp **my_env, t_token **token)
+int split_token(char *s, t_envp **my_env, t_token **token)
 {
 	int i = 0;
 	while (s[i])
@@ -151,7 +151,7 @@ t_token *split_token(char *s, t_envp **my_env, t_token **token)
 			{
 				free_env(my_env);
 				free_token(token);
-				exit(EXIT_FAILURE);
+				return (0);
 			}
 		}
 		else if (s[i] == '|' || s[i] == '>' || s[i] == '<')
@@ -159,5 +159,5 @@ t_token *split_token(char *s, t_envp **my_env, t_token **token)
 		else
 			i = handel_simple_str(s, i, my_env, token);
 	}
-	return (t_token *)(1);
+	return (1);
 }
