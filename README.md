@@ -60,4 +60,7 @@ execvp failed: No such file or directory
 
 6 - you should add the setup redirections also in the builtins 
 in the externals is working good do that just in the biultins but you should save
-now the stdin to restore it you have now the setup_redirsction use it 
+now the stdin to restore it you have now the setup_redirsction use it
+
+============================================================================1 - echo "hello" | grep "e" | wc -l
+    after execute thus line all the commands not bieng its desplay just command : not found 

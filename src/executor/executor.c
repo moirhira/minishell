@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/21 21:58:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:44:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ int execute_commands(t_command *command, t_envp **env)
     int exit_st = 0;
     parse_heredocs(command, (*env));
    
+    if (g_signal_received)
+    {
+        write(STDOUT_FILENO, "\n", 1);
+        return (exit_status(-1));
+    }
     if (command && command->next == NULL)
     {
         if (!command->args || !command->args[0])

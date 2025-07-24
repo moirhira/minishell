@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/20 04:25:01 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:45:45 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,7 @@
 #include "../include/minishell.h"
 #include "../libraries/libft/libft.h"
 
-void sigint_handler(int signum)
-{
-    (void)signum;
-    rl_replace_line("", 0);
-    printf("\n");
-    rl_on_new_line();
-    rl_redisplay();  
-}
+
 char *read_input(void)
 {
     char *line;
@@ -49,27 +42,35 @@ t_envp  *retrieve_envp(char **env)
     t_envp *head;
     t_envp *last;
     t_envp *new_node;
-    char **split;
+    char *equal_sign;
 
     head = NULL;
     last = NULL;
     while (env[i] != NULL)
     {
-        split = ft_split(env[i], '=');
-        if (!split || !split[1])
-            return (printf ("error at spliting\n"),NULL);
+        equal_sign = ft_strchr(env[i], '=');
+        if (!equal_sign)
+        {
+            i++;
+            continue;
+        }
         new_node = (t_envp *)malloc(sizeof(t_envp));
         if (!new_node)
             return (printf("Error from malloc\n"), NULL);
-        new_node->key = ft_strdup(split[0]);
-        new_node->value = ft_strdup(split[1]);
+        size_t key_len = equal_sign - env[i];
+        
+        new_node->key = (char *)malloc(key_len + 1);
+        if (!new_node->key)
+            return (printf("Error from malloc\n"), NULL);
+        ft_strlcpy(new_node->key, env[i], key_len + 1);
+        
+        new_node->value = ft_strdup(equal_sign + 1);
         new_node->next = NULL;
         if (!head)
             head = new_node;
         else
             last->next = new_node;
         last = new_node;
-        free_split(split);
         i++;
     }
     return (head);
@@ -86,22 +87,14 @@ int main(int ac, char **av, char **env)
     token_list = NULL;
     list_cmd = NULL;
 
-   
-
-    char cwd[PATH_MAX];
-
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-        printf("Minishell started in: %s\n", cwd);
-    else
-        perror("getcwd");
     my_env = retrieve_envp(env);
+    
     if (!my_env)
     {
         printf("Error at retrieving envs\n");
         return (EXIT_FAILURE);
     }
-    signal(SIGQUIT, SIG_IGN); // /
-    signal(SIGINT, sigint_handler);
+    setup_signals(SHELL_INTERACTIVE);
     while (1)
     {
         cmd_line = read_input();
