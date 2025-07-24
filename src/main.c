@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/24 16:45:45 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:08:16 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 #include "../include/minishell.h"
 #include "../libraries/libft/libft.h"
 
-
-char *read_input(void)
+char	*read_input(void)
 {
     char *line;
     line = readline("minishell$ ");
@@ -76,6 +75,7 @@ t_envp  *retrieve_envp(char **env)
     return (head);
 }
 
+
 int main(int ac, char **av, char **env)
 {
     g_signal_received = 0;
@@ -86,13 +86,11 @@ int main(int ac, char **av, char **env)
     
     token_list = NULL;
     list_cmd = NULL;
-
     my_env = retrieve_envp(env);
-    
     if (!my_env)
     {
         printf("Error at retrieving envs\n");
-        return (EXIT_FAILURE);
+        return (exit_status(1));
     }
     setup_signals(SHELL_INTERACTIVE);
     while (1)
@@ -106,13 +104,14 @@ int main(int ac, char **av, char **env)
             continue;
         }
         if (parse_command(&token_list, &list_cmd, cmd_line, &my_env) == 0)
-            execute_commands(list_cmd,&my_env);    
-        free(cmd_line);
-        free_command(&list_cmd);
+            execute_commands(list_cmd,&my_env);
         free_token(&token_list);
+        free_command(&list_cmd);
+        free(cmd_line);
     }
     free_command(&list_cmd);
     free_token(&token_list);
     free_env(&my_env);
-    return(EXIT_SUCCESS);
+    return(exit_status (-1));
 }
+

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/21 21:41:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/24 20:22:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_envp
 }   t_envp;
 
 // tokenizer.c
-t_token *split_token(char *s, t_envp **my_env, t_token **token);
+int split_token(char *s, t_envp **my_env, t_token **token);
 
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);
@@ -137,7 +137,6 @@ void parse_heredocs(t_command *command, t_envp *my_env);
 
 
 // setup_signals.c
-
 void    setup_signals(int state);
 
 // utils_2.c

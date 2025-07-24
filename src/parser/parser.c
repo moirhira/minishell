@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/24 13:28:02 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/24 20:43:17 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 // print commands------------------------
 void print_commands(t_command **commads);
 //---------------------------------------
-int  parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, t_envp **my_env)
+int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, t_envp **my_env)
 {
-    split_token(cmd_line, my_env, token_lst);
+    if (!split_token(cmd_line, my_env, token_lst))
+        return (exit_status(2), 2);
     
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
@@ -74,17 +75,17 @@ int  parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line,
         free_token(token_lst);
         free_env(my_env);
         free_command(command_lst);
-        return (2);
+        return (exit_status(2), 2);
     }
     
-    // print_commands(command_lst);
-    return (0);
+    print_commands(command_lst);
+    return (exit_status(-1), 0);
 }
 
 
 
 
-//echo hello << a dfs > d
+
 
 
 

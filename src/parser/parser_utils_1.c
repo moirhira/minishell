@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 10:08:54 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 21:53:06 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,6 @@ void  add_redirect(t_command *cmd, int type, const char *filename)
         ptr->next = new;
     }   
 }
-
-
-
-    
 
 
 void add_argument(t_command *cmd, char *arg)

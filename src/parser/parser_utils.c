@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 14:38:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/18 09:11:14 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int handel_heredoc(t_token **token, t_command *head)
     else
         add_redirect(head, 5, full_str);
     *token = (*token)->next;
+    free(full_str);
     return (1);
 }
 
