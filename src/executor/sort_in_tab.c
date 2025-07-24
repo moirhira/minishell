@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   sort_in_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 01:22:38 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/08 23:13:30 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/24 20:55:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
 
 void sort_in_tab(char **array, int size)
 {

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/24 20:22:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/24 21:06:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 #include "../libraries/libft/libft.h"
 #include <linux/limits.h>
 #include <fcntl.h> 
+#include <sys/wait.h>
+
 
 extern volatile sig_atomic_t g_signal_received;
 #define SIZE_ENV 1024
@@ -89,6 +91,7 @@ typedef struct s_envp
 
 // tokenizer.c
 int split_token(char *s, t_envp **my_env, t_token **token);
+char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
 
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);
@@ -129,7 +132,7 @@ int     execute_commands(t_command *command, t_envp **env);
 int     execute_builtin(t_command *cmd, t_envp **env);
 int    builtin_cd(t_command *cmd, t_envp **env);
 char    *find_command_in_path(const char *cmd, t_envp *env);
-void    ft_swap(int *a, int *b);
+void    ft_swap(char **a, char **b);
 void    free_env_array(char **envp);
 
 // parse_herdocs.c
@@ -168,7 +171,8 @@ int is_alpha(char c);
 int is_digit(char c);
 int is_alnum(char c);
 
-
+//pwd
+int    builtin_pwd(void);
 // env
 int   builtin_env(t_envp *envp);
 

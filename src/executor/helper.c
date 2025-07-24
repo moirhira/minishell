@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 22:48:26 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 20:05:50 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/24 20:57:41 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int is_alnum(char c)
     return (is_alpha(c) || is_digit(c));
 }
 
-void    ft_swap(int *a, int *b)
+void    ft_swap(char **a, char **b)
 {
-    int temp;
+    char *temp;
 
     temp = *a;
     *a = *b;

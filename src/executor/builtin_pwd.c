@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 08:44:41 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 21:04:20 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/24 21:00:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int    builtin_pwd(void)
         return exit_status(1);
     }
     printf("%s\n", cwd);
-    return exit_status(0);
+    return (exit_status(-1));
 }
 
