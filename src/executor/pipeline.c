@@ -6,27 +6,38 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/21 20:22:14 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:02:35 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 // exec
-void exec_command(char **args)
+void exec_command(t_command *cmd, t_envp *env)
 {
-    if (!args || !args[0])
+    char *path;
+    char **envp;
+    path = find_command_in_path(cmd->args[0], env);
+	if (!path)
     {
-        printf("Empty command\n");
-        exit(1);
+		ft_putstr_fd("minishell: ", 2);
+        ft_putstr_fd(cmd->args[0], 2);
+        ft_putstr_fd(": command not found\n", 2);
+        return ;
     }
-    execvp(args[0], args);
-    perror("execvp failed");
+    
+	envp = convert_env_to_array(env);
+    if (!envp)
+    {
+        free(path);
+    }
+    execve(path, cmd->args, envp);
+    perror("execv failed");
     exit(1);
 }
 
 // pipeline 
-void execute_pipeline(t_command *cmd_list)
+void execute_pipeline(t_command *cmd_list, t_envp *env)
 {
     int prev_pipe = -1;
     int pipefd[2];
@@ -65,7 +76,7 @@ void execute_pipeline(t_command *cmd_list)
                 close(pipefd[1]);
             }
 
-            exec_command(cmd->args); // Replace process image
+            exec_command(cmd, env); // Replace process image
         }
         // Parent
         if (prev_pipe != -1)
@@ -84,55 +95,55 @@ void execute_pipeline(t_command *cmd_list)
 
 
 
-char **split_args(char *cmd)
-{
-    char **args = malloc(sizeof(char *) * 10);
-    int i = 0;
-    char *token = strtok(cmd, " ");
-    while (token && i < 9)
-    {
-        args[i++] = strdup(token);
-        token = strtok(NULL, " ");
-    }
-    args[i] = NULL;
-    return args;
-}
+// char **split_args(char *cmd)
+// {
+//     char **args = malloc(sizeof(char *) * 10);
+//     int i = 0;
+//     char *token = strtok(cmd, " ");
+//     while (token && i < 9)
+//     {
+//         args[i++] = strdup(token);
+//         token = strtok(NULL, " ");
+//     }
+//     args[i] = NULL;
+//     return args;
+// }
 
-t_command *parse_pipeline(char *input)
-{
-    t_command *head = NULL;
-    t_command *current = NULL;
+// t_command *parse_pipeline(char *input)
+// {
+//     t_command *head = NULL;
+//     t_command *current = NULL;
 
-    char *copy = strdup(input); // copy input to safely modify it
-    char *token = strtok(copy, "|");
+//     char *copy = strdup(input); // copy input to safely modify it
+//     char *token = strtok(copy, "|");
 
-    while (token)
-    {
-        // trim leading/trailing spaces
-        while (*token == ' ') token++;
-        char *end = token + strlen(token) - 1;
-        while (end > token && *end == ' ') *end-- = '\0';
+//     while (token)
+//     {
+//         // trim leading/trailing spaces
+//         while (*token == ' ') token++;
+//         char *end = token + strlen(token) - 1;
+//         while (end > token && *end == ' ') *end-- = '\0';
 
-        t_command *cmd = malloc(sizeof(t_command));
-        cmd->args = split_args(token);
-        cmd->pipe = 1;  // default to pipe = 1
-        cmd->next = NULL;
+//         t_command *cmd = malloc(sizeof(t_command));
+//         cmd->args = split_args(token);
+//         cmd->pipe = 1;  // default to pipe = 1
+//         cmd->next = NULL;
 
-        if (!head)
-            head = cmd;
-        else
-            current->next = cmd;
-        current = cmd;
+//         if (!head)
+//             head = cmd;
+//         else
+//             current->next = cmd;
+//         current = cmd;
 
-        token = strtok(NULL, "|");
-    }
+//         token = strtok(NULL, "|");
+//     }
 
-    if (current)
-        current->pipe = 0; // last command doesn't pipe
+//     if (current)
+//         current->pipe = 0; // last command doesn't pipe
 
-    free(copy);
-    return head;
-}
+//     free(copy);
+//     return head;
+// }
 
 // int main(int argc, char **argv)
 // {

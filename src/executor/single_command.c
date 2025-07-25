@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/24 13:42:26 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:01:40 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,41 +44,7 @@ void free_env_array(char **envp)
 }
 
 
-static char **convert_env_to_array(t_envp *env)
-{
-    int count = 0;
-    t_envp *tmp = env;
-    
-    while (tmp)
-    {
-        count++;
-        tmp = tmp->next;
-    }
-    char **envp = malloc(sizeof(char *) * (count + 1));
-    if (!envp)
-        return NULL;
-    
-    tmp = env;
-    int i = 0;
-    while (tmp)
-    {
-        envp[i] = malloc(ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2);
-        if (!envp[i])
-        {
-            free_env_array(envp);
-            return NULL;
-        }
-        
-        strcpy(envp[i], tmp->key);
-        strcat(envp[i], "=");
-        strcat(envp[i], tmp->value);
-        
-        tmp = tmp->next;
-        i++;
-    }
-    envp[count] = NULL;   
-    return envp;
-}
+
 
 
 int	execute_external(t_command *cmd, t_envp *env)
@@ -87,7 +53,7 @@ int	execute_external(t_command *cmd, t_envp *env)
 	char	*path;
 	char	**envp;
 	int		status;
-    // printf("command : %s\n", cmd->args[0]);
+    
 	path = find_command_in_path(cmd->args[0], env);
 	if (!path)
     {
@@ -96,27 +62,43 @@ int	execute_external(t_command *cmd, t_envp *env)
         ft_putstr_fd(": command not found\n", 2);
         return (127);
     }
+    
 	envp = convert_env_to_array(env);
+    if (!envp)
+    {
+        return (free(path), 1);
+    }
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork failed");
 		free(path);
-		return (0);
+        free_array(envp, ft_strlen_2d(envp));
+		return (1);
 	}
 	if (pid == 0)
 	{
         setup_redirections(cmd);
 		execve(path, cmd->args, envp);
-		perror("minishell: ");
+        ft_putstr_fd("minishell: ", 2);
+		perror(cmd->args[0]);
+        
+        free(path);
+        free_array(envp, ft_strlen_2d(envp));
 		exit(126);
 	}
     else
     {
         free(path);
+        free_array(envp, ft_strlen_2d(envp));
         waitpid(pid, &status, 0);
-        return (1);
+        
+        if (WIFEXITED(status))
+            return (WEXITSTATUS(status));
+        else if (WIFSIGNALED(status))
+            return (128 + WTERMSIG(status));
+            
+        return (0);
     }
-    return (0);
 }
 

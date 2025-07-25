@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/24 21:06:25 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/25 16:00:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ void    setup_signals(int state);
 
 // utils_2.c
 int only_whitespace(char *str);
+char **convert_env_to_array(t_envp *env);
 
 // for export 
 int     print_sorted_export(t_envp *env);
@@ -204,7 +205,7 @@ int     setup_redirections(t_command *cmd);
 
 
 
-void execute_pipeline(t_command *cmd_list);
+void execute_pipeline(t_command *cmd_list, t_envp *env);
 
 #endif
 

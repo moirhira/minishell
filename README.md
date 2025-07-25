@@ -31,22 +31,9 @@ exit: exit: numeric argument required% (the exist status is right in this case)
 1 - in the executor try to complete the execute_external function with the exit return value you
 will find comment where you need to cahnge (specially in the parent process)
     // try to make it int return exit status
-    exit_st = execute_external(command, env); 
+    exit_st = execute_external(command, env); ✅
 
 2 - also the execute_pipeline try to make it int that return the right exit status in the diffrent cases
-
-3 - i change and impliment new setup redirection function so its work perfectly now its yours i  add 
-just some changes 
-
-
-4 - also the excute commands function i add the pipeline structure in thi area
-else if (command && command->pipe)
-{
-    execute_pipeline(command);
-    return (exit_st);
-}
-
-its yours i didnt change anything
 
 5 - in a not found command you should display like this :
 bash:

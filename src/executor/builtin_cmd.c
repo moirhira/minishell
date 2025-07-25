@@ -11,7 +11,6 @@ int execute_builtin(t_command *cmd, t_envp **env)
      {
           s_stdin = dup(STDIN_FILENO);
           s_stdout = dup(STDOUT_FILENO);
-          s_stdin = -1;
           if (s_stdin == -1 || s_stdout == -1)
           {
                perror("dup failed");
