@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/25 16:02:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/25 22:12:20 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,7 @@ void exec_command(t_command *cmd, t_envp *env)
     char **envp;
     path = find_command_in_path(cmd->args[0], env);
 	if (!path)
-    {
-		ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(cmd->args[0], 2);
-        ft_putstr_fd(": command not found\n", 2);
         return ;
-    }
     
 	envp = convert_env_to_array(env);
     if (!envp)
@@ -59,6 +54,7 @@ void execute_pipeline(t_command *cmd_list, t_envp *env)
         {
             perror("fork");
             exit(1);
+            // return 
         }
 
         if (pid == 0) // Child process
@@ -89,7 +85,6 @@ void execute_pipeline(t_command *cmd_list, t_envp *env)
         }
         cmd = cmd->next;
     }
-
     while (wait(NULL) > 0);
 }
 

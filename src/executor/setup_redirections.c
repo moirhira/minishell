@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/21 22:30:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/25 21:48:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int setup_redirections(t_command *cmd)
         }
         redir = redir->next;
     }
-    
     return (1);
 }
 

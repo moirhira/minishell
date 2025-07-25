@@ -28,12 +28,12 @@ exit: exit: numeric argument required% (the exist status is right in this case)
  -->
 
 =========================================================================================
-1 - in the executor try to complete the execute_external function with the exit return value you
+<!-- 1 - in the executor try to complete the execute_external function with the exit return value you
 will find comment where you need to cahnge (specially in the parent process)
     // try to make it int return exit status
     exit_st = execute_external(command, env); ✅
 
-2 - also the execute_pipeline try to make it int that return the right exit status in the diffrent cases
+
 
 5 - in a not found command you should display like this :
 bash:
@@ -50,4 +50,26 @@ in the externals is working good do that just in the biultins but you should sav
 now the stdin to restore it you have now the setup_redirsction use it
 
 ============================================================================1 - echo "hello" | grep "e" | wc -l
-    after execute thus line all the commands not bieng its desplay just command : not found 
+    after execute thus line all the commands not bieng its desplay just command : not found  -->
+===================================================================================
+1 - also the execute_pipeline try to make it int that return the right exit status in the diffrent cases
+points:
+    the pipeline function should always return the last exit code of the lst child process 
+
+    add setup redirection inside it 
+
+    the exce_command must be int and return 
+
+    Checks for builtins before forking
+
+    try not exit in the errors :
+     pid_t pid = fork();
+        if (pid == -1)
+        {
+            perror("fork");
+            exit(1);
+            // return 
+        }
+    
+    check if there is another builtin inside that child one 
+     
