@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/26 05:37:04 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:15:35 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef enum e_shell_state
 {
     SHELL_INTERACTIVE = 1,
     SHELL_EXECUTING = 2,
-    SHELL_HEREDOC = 3
+    SHELL_HEREDOC = 3,
+    CHILD_PROCESS = 4
 }   t_shell_state;
 
 typedef enum e_token_type {

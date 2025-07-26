@@ -3,64 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/26 05:35:39 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/26 22:46:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int exec_command(t_command *cmd, t_envp *env)
+int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2])
 {
-    char *path;
-    char **envp;
+    if (prev_pipe != -1)
+        close(prev_pipe);
 
-    path = find_command_in_path(cmd->args[0], env);
-    if (!path)
+    if (cmd->pipe)
     {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(cmd->args[0], 2);
-        ft_putstr_fd(": command not found\n", 2);
-        return exit_status(127);
+        close(pipefd[1]);
+        return pipefd[0];
     }
-    envp = convert_env_to_array(env);
-    if (!envp)
-    {
-        free(path);
-        return exit_status(1);
-    }
-    execve(path, cmd->args, envp);
-    perror("execve failed");
-    free(path);
-    return exit_status(126);
+    return -1;
 }
 
-static int wait_children(void)
+int create_pipe_if_needed(t_command *cmd, int pipefd[2])
+{
+    if (cmd->pipe)
+    {
+        if (pipe(pipefd) == -1)
+        {
+            perror("pipe");
+            exit_status(1);
+            return -1;
+        }
+    }
+    return 0;
+}
+
+static int wait_children(pid_t last_pid)
 {
     int status;
     int last_exit_status = 0;
     pid_t wpid;
 
-    while ((wpid = wait(&status)) > 0)
+    while ((wpid = waitpid(-1, &status, 0)) > 0)
     {
-        if (WIFEXITED(status))
-            last_exit_status = WEXITSTATUS(status);
-        else if (WIFSIGNALED(status))
-            last_exit_status = 128 + WTERMSIG(status);
+        if (wpid == last_pid)
+        {
+            if (WIFEXITED(status))
+                last_exit_status = WEXITSTATUS(status);
+            else if (WIFSIGNALED(status))
+            {
+                last_exit_status = 128 + WTERMSIG(status);
+                if (WTERMSIG(status) == SIGINT)
+                    write(STDERR_FILENO, "\n", 1);
+                if (WTERMSIG(status) == SIGQUIT)
+                    write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
+            }
+        }
     }
-    exit_status(last_exit_status);
-    return last_exit_status;
+    return (last_exit_status);
 }
 
 int handle_builtin_if_no_pipe(t_command *cmd, t_envp **env)
 {
+    int status;
     if (is_builtin(cmd->args[0]) && cmd->pipe == 0)
     {
-        int status = exec_builtin_in_parent(cmd, env);
+        // if (setup_redirections(cmd) == -1)
+        //     return 1;
+        status = execute_builtin(cmd, env);
         exit_status(status);
-        return status;
+        return (status);
     }
     return -1; 
 }
@@ -70,8 +83,15 @@ int execute_pipeline(t_command *cmd_list, t_envp *env)
     int prev_pipe = -1;
     int pipefd[2];
     pid_t pid;
+    pid_t last_pid;
     t_command *cmd = cmd_list;
-
+    int result;
+    
+    last_pid = -1;
+    result = handle_builtin_if_no_pipe(cmd, &env);
+    if (result >= 0)
+        return (result);
+    setup_signals(SHELL_EXECUTING);
     while (cmd)
     {
         if (create_pipe_if_needed(cmd, pipefd) == -1)
@@ -85,11 +105,17 @@ int execute_pipeline(t_command *cmd_list, t_envp *env)
             return 1;
         }
         if (pid == 0)
+        {
+            setup_signals(CHILD_PROCESS);
             child_process(cmd, prev_pipe, pipefd, env);
-
+        }
+        if (!cmd->next)
+            last_pid = pid;
         prev_pipe = parent_pipe_cleanup(prev_pipe, cmd, pipefd);
         cmd = cmd->next;
     }
-    return wait_children();
+    result = wait_children(last_pid);
+    setup_signals(SHELL_INTERACTIVE);
+    return (result);
 }
 

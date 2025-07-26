@@ -89,3 +89,9 @@ points:
 ** when an error happend , there is no exit from the prgrm ,and the child return it's exit status as well 
 
 **  i check if there is another builtin inside the child itself 
+
+
+=====================================================================
+- function to handel biultins before fork just writed not used 
+- is biultins is not working and segfault
+- not properly return the exact right exist status from the child process

@@ -6,12 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/25 21:05:48 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:28:33 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-volatile sig_atomic_t g_signal_received = 0;
 
 int execute_commands(t_command *command, t_envp **env)
 {
@@ -36,7 +35,7 @@ int execute_commands(t_command *command, t_envp **env)
     }
     else if (command && command->pipe)
     {
-        execute_pipeline(command, *env);
+        exit_st = execute_pipeline(command, *env);
         return (exit_status(exit_st));
     }
     return (0);

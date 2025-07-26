@@ -3,31 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   executor_pipe_helpers.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/26 05:32:52 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/26 22:27:15 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int create_pipe_if_needed(t_command *cmd, int pipefd[2])
+
+int exec_command(t_command *cmd, t_envp *env)
 {
-    if (cmd->pipe)
+    char *path;
+    char **envp;
+
+    path = find_command_in_path(cmd->args[0], env);
+    if (!path)
     {
-        if (pipe(pipefd) == -1)
-        {
-            perror("pipe");
-            exit_status(1);
-            return -1;
-        }
+        ft_putstr_fd("minishell: ", 2);
+        ft_putstr_fd(cmd->args[0], 2);
+        ft_putstr_fd(": command not found\n", 2);
+        return exit_status(127);
     }
-    return 0;
+    envp = convert_env_to_array(env);
+    if (!envp)
+    {
+        free(path);
+        return exit_status(1);
+    }
+    execve(path, cmd->args, envp);
+    perror("execve failed");
+    free(path);
+    free_array(envp, ft_strlen_2d(envp));
+    return exit_status(126);
 }
 
 void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)
 {
+    int exit_st = 0;
+    
     if (prev_pipe != -1)
     {
         dup2(prev_pipe, STDIN_FILENO);
@@ -40,20 +55,9 @@ void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)
         close(pipefd[1]);
     }
     setup_redirections(cmd);
-    exec_command(cmd, env);
-    exit(1);
+    exit_st = exec_command(cmd, env);
+    exit(exit_st);
 }
 
-int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2])
-{
-    if (prev_pipe != -1)
-        close(prev_pipe);
 
-    if (cmd->pipe)
-    {
-        close(pipefd[1]);
-        return pipefd[0];
-    }
-    return -1;
-}
 

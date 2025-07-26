@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/26 05:34:34 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/26 22:31:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 int    is_builtin(const char *cmd)
 {
-    const char *builtins[] = {"echo", "export", 
-        "pwd", "cd", 
-        "unset", "env",
-        "exit"};
+    int i;
     
-    int i = 0;
+    const char *builtins[] = {
+        "echo", "export", "pwd", "cd", 
+        "unset", "env", "exit", NULL };
+    
+    i = 0;
     while(builtins[i])
     {
         if(strcmp(cmd,builtins[i]) == 0)
-            return 1;
+            return (1);
+        i++;    
     }
-    return 0;
+    return (0);
 }
 
 void free_env_array(char **envp)
@@ -43,14 +45,7 @@ void free_env_array(char **envp)
     free(envp);
 }
 
-int exec_builtin_in_parent(t_command *cmd, t_envp **env)
-{
-    int status;
-    if (setup_redirections(cmd) == -1)
-        return 1;
-    status = execute_builtin(cmd, env);
-    return status;
-}
+
 
 int	execute_external(t_command *cmd, t_envp *env)
 {
@@ -83,6 +78,7 @@ int	execute_external(t_command *cmd, t_envp *env)
 	}
 	if (pid == 0)
 	{
+        setup_signals(CHILD_PROCESS);
         setup_redirections(cmd);
 		execve(path, cmd->args, envp);
         ft_putstr_fd("minishell: ", 2);
@@ -98,11 +94,20 @@ int	execute_external(t_command *cmd, t_envp *env)
         free_array(envp, ft_strlen_2d(envp));
         waitpid(pid, &status, 0);
         
+
+        if (WIFSIGNALED(status))
+        {
+            if (WTERMSIG(status) == SIGINT)
+                return (130);
+            else if (WTERMSIG(status) == SIGQUIT)
+            {
+                write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
+                return (131);
+            }
+        }
         if (WIFEXITED(status))
-            return (WEXITSTATUS(status));
-        else if (WIFSIGNALED(status))
-            return (128 + WTERMSIG(status));
-            
+            exit_status(WEXITSTATUS(status));
+        
         return (0);
     }
 }
