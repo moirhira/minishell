@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_command.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/25 21:03:11 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/26 05:34:34 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,14 @@ void free_env_array(char **envp)
     free(envp);
 }
 
-
-
-
+int exec_builtin_in_parent(t_command *cmd, t_envp **env)
+{
+    int status;
+    if (setup_redirections(cmd) == -1)
+        return 1;
+    status = execute_builtin(cmd, env);
+    return status;
+}
 
 int	execute_external(t_command *cmd, t_envp *env)
 {

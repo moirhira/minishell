@@ -54,11 +54,12 @@ now the stdin to restore it you have now the setup_redirsction use it
 ===================================================================================
 1 - also the execute_pipeline try to make it int that return the right exit status in the diffrent cases
 points:
-    the pipeline function should always return the last exit code of the lst child process 
+
+    the pipeline function should always return the last exit code of the last child process 
 
     add setup redirection inside it 
 
-    the exce_command must be int and return 
+    the exec_command must be int and return 
 
     Checks for builtins before forking
 
@@ -72,4 +73,19 @@ points:
         }
     
     check if there is another builtin inside that child one 
-     
+
+=========================================================
+
+26 jul update :
+
+** setup_redirections inside every child 
+
+** execute_pipeline returns the exit status of the last child that terminates, which normally corresponds to the last command in the pipeline
+
+** exec_command is an int function that return int 
+
+** i check for (is_builtin) first before forking 
+
+** when an error happend , there is no exit from the prgrm ,and the child return it's exit status as well 
+
+**  i check if there is another builtin inside the child itself 

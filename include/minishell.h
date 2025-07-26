@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/25 20:57:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/26 05:37:04 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,9 @@ int     exit_status(int new_status);
 
 
 
+
+
+
 // execution.c
 int     exit_status(int new_status);
 int     execute_commands(t_command *command, t_envp **env);
@@ -196,38 +199,23 @@ void	free_array(char **arr, int size);
 
 
 // execute single command 
-
 int        execute_external(t_command *cmd, t_envp *env);
 int        is_builtin(const char *cmd);
 
 // setup_redirctions 
 int     setup_redirections(t_command *cmd);
+int execute_pipeline(t_command *cmd_list, t_envp *env);
 
 
+// pipeline
+int exec_command(t_command *cmd, t_envp *env);
+int execute_pipeline(t_command *cmd_list, t_envp *env);
+int exec_builtin_in_parent(t_command *cmd, t_envp **env);
+int create_pipe_if_needed(t_command *cmd, int pipefd[2]);
+void child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env);
+int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2]);
+int handle_builtin_if_no_pipe(t_command *cmd, t_envp **env);
 
-void execute_pipeline(t_command *cmd_list, t_envp *env);
 
 #endif
 
-
-
-
-
- 
-/*
-
-path_env = /home/ekhallaf/.local/nvim/bin:/home/ekhallaf/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-path_copy = /home/ekhallaf/.local/nvim/bin:/home/ekhallaf/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-dir = /home/ekhallaf/.local/nvim/bin
-full_path = 
-
-dir_len = 20 + 1;
-cmd_len = 2
-full path = "/home/ekhallaf/.local/nvim/bin/ls"
-result = "/home/ekhallaf/.local/nvim/bin/ls" ; 
-
-
-
-*/
-
-// ls -l 
