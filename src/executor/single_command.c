@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/26 22:31:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/27 22:16:49 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int    is_builtin(const char *cmd)
     i = 0;
     while(builtins[i])
     {
-        if(strcmp(cmd,builtins[i]) == 0)
+        if(ft_strcmp(cmd,builtins[i]) == 0)
             return (1);
         i++;    
     }
@@ -62,7 +62,6 @@ int	execute_external(t_command *cmd, t_envp *env)
         ft_putstr_fd(": command not found\n", 2);
         return (127);
     }
-    
 	envp = convert_env_to_array(env);
     if (!envp)
     {
@@ -79,7 +78,7 @@ int	execute_external(t_command *cmd, t_envp *env)
 	if (pid == 0)
 	{
         setup_signals(CHILD_PROCESS);
-        setup_redirections(cmd);
+        setup_redirections(cmd, 1);
 		execve(path, cmd->args, envp);
         ft_putstr_fd("minishell: ", 2);
 		perror(cmd->args[0]);
@@ -94,7 +93,6 @@ int	execute_external(t_command *cmd, t_envp *env)
         free_array(envp, ft_strlen_2d(envp));
         waitpid(pid, &status, 0);
         
-
         if (WIFSIGNALED(status))
         {
             if (WTERMSIG(status) == SIGINT)
@@ -106,7 +104,7 @@ int	execute_external(t_command *cmd, t_envp *env)
             }
         }
         if (WIFEXITED(status))
-            exit_status(WEXITSTATUS(status));
+           return(exit_status(WEXITSTATUS(status)));
         
         return (0);
     }

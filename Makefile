@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall
+CFLAGS = -Wall -g
 SRC = src/main.c src/parser/tokenizer.c src/parser/tokenizer_utils.c src/parser/parser.c\
       src/parser/parser_utils.c src/parser/parser_utils_1.c src/utils/utils.c src/executor/builtin_cd.c src/executor/builtin_cmd.c src/executor/builtin_env.c\
       src/executor/builtin_export.c src/executor/builtin_pwd.c  src/executor/builtin_exit.c src/executor/builtin_echo.c src/executor/builtin_unset.c src/executor/find_command_in_path.c  src/executor/helper.c \

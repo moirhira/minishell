@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/25 21:48:26 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/27 22:42:42 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int f_error(int fd, t_redirect *redir, int target_fd)
     close (fd);
     return (1);
 }
-int setup_redirections(t_command *cmd)
+int setup_redirections(t_command *cmd, int exit_or_return)
 {
     int fd;
     t_redirect *redir;
@@ -44,28 +44,38 @@ int setup_redirections(t_command *cmd)
         {
             fd = open(redir->filename, O_RDONLY);
             if (!f_error(fd, redir, STDIN_FILENO))
-                return (0);
+                return (1);
         }
         else if (redir->type == TOKEN_INPUT)
         {
             fd = open(redir->filename, O_RDONLY);
+            if(fd == -1)
+            {
+                // ft_putstr_fd("minishell: ", 2);
+                perror(redir->filename);
+                if (exit_or_return)
+                    exit(exit_status(1));
+                else
+                    return(1);
+            }
             if (!f_error(fd, redir, STDIN_FILENO))
-                return (0);
+                return (1);
+            
         }
         else if (redir->type == TOKEN_OUTPUT)
         {
-            fd = open(redir->filename,O_WRONLY | O_CREAT|  O_TRUNC, 0644);
+            fd = open(redir->filename, O_WRONLY | O_CREAT |  O_TRUNC, 0644);
             if (!f_error(fd, redir, STDOUT_FILENO))
-                return(0);
+                return(1);
         }
         else if (redir->type == TOKEN_APPEND)
         {
             fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
             if (!f_error(fd, redir, STDOUT_FILENO))
-                return(0);
+                return(1);
         }
         redir = redir->next;
     }
-    return (1);
+    return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/22 09:49:32 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:42:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,6 @@ int split_token(char *s, t_envp **my_env, t_token **token)
 			i = handel_quoted_str(s, i, my_env, token);
 			if (i == -1)
 			{
-				free_env(my_env);
 				free_token(token);
 				return (0);
 			}

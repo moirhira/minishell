@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/27 05:01:24 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:26:10 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ int        execute_external(t_command *cmd, t_envp *env);
 int        is_builtin(const char *cmd);
 
 // setup_redirctions 
-int     setup_redirections(t_command *cmd);
+int setup_redirections(t_command *cmd, int exit_or_return);
 int execute_pipeline(t_command *cmd_list, t_envp *env);
 
 

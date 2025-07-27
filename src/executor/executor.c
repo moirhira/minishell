@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/26 21:28:33 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/27 22:35:28 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,18 @@ int execute_commands(t_command *command, t_envp **env)
     if (command && command->next == NULL)
     {
         if (!command->args || !command->args[0])
+        {
+            if (command->redirects)
+            {
+                if (setup_redirections(command, 0) == 1)
+                    return (exit_status(1));
+            }
             return 0;
+        }
         exit_st = execute_builtin(command,env);
         if (exit_st >= 0)
             return (exit_status(exit_st));
+        
         exit_st = execute_external(command, *env);
         return (exit_status(exit_st));
     }

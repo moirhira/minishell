@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_pipe_helpers.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/27 02:46:19 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/27 21:28:03 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)
         dup2(pipefd[1], STDOUT_FILENO);
         close(pipefd[1]);
     }
-    setup_redirections(cmd);
+    setup_redirections(cmd, 1);
     exit_st = exec_command(cmd, env);
     exit(exit_st);
 }

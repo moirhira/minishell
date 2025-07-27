@@ -113,7 +113,27 @@ ______________________________________________________________
 
 old behav = incorrectly return exit_status(-1) (should be 0 on success, 1 on error).
 
-fixed one = On success returns exit_status(0), which is the standard success code (like Bash), on error it returns exit_status(1), which is a failure code.
+fixed one = On success returns exit_status(0), which is the standard success code (like Bash), on error it returns exit_status(1), which is a failure code
 
-_______________________________________________________________
 
+
+___________________
+
+==================
+1- cat < into deleted file (stuck)
+2 -minishell$ cat << $USER
+> $USER
+> moirhira
+must exit when you enter $USER itself
+
+3 - echo "$"USER also in the heredoc
+
+
+
+4 - minishell$ ls -l | < a
+minishell: syntax error near unexpected token `<'
+should not display syntax error
+
+
+5 - 
+< existfile

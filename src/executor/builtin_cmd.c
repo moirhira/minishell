@@ -3,6 +3,8 @@
 
 int execute_builtin(t_command *cmd, t_envp **env)
 {
+     if (!is_builtin(cmd->args[0]))
+          return(-1);
      int result;
      int s_stdin = -1;
      int s_stdout = -1;
@@ -19,7 +21,8 @@ int execute_builtin(t_command *cmd, t_envp **env)
                return (1);
           }
      }
-     setup_redirections(cmd);
+     if (setup_redirections(cmd, 0) == 1)
+          return(1);
      if (strcmp(cmd->args[0], "cd") == 0)
           result = builtin_cd(cmd, env);
      else if (strcmp(cmd->args[0], "pwd") == 0)
