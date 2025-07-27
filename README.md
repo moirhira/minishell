@@ -95,3 +95,25 @@ points:
 - function to handel biultins before fork just writed not used 
 - is biultins is not working and segfault
 - not properly return the exact right exist status from the child process
+
+===========================================================
+
+27 jul updates : 
+
+** I fixed pwd's and cd's behavior in case of deleting the current dir;
+Old behavior   =>   pwd   = No such file or directory
+                    cd .. = segfault 
+
+Fixed behavoir =>   pwd   = still points on the oath of the directory even if it's delated (that's how bash behaves)
+                    cd .. = parent dir
+
+______________________________________________________________
+
+** I fixed the exit_status of pwd builtin;
+
+old behav = incorrectly return exit_status(-1) (should be 0 on success, 1 on error).
+
+fixed one = On success returns exit_status(0), which is the standard success code (like Bash), on error it returns exit_status(1), which is a failure code.
+
+_______________________________________________________________
+

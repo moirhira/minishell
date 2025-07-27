@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/26 21:15:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/27 05:01:24 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,8 @@ int is_digit(char c);
 int is_alnum(char c);
 
 //pwd
-int    builtin_pwd(void);
+int	builtin_pwd(t_envp *env);
+
 // env
 int   builtin_env(t_envp *envp);
 

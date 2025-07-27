@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   executor_pipe_helpers.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/26 22:27:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/27 02:46:19 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 int exec_command(t_command *cmd, t_envp *env)
 {
@@ -58,6 +57,3 @@ void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)
     exit_st = exec_command(cmd, env);
     exit(exit_st);
 }
-
-
-

@@ -23,7 +23,7 @@ int execute_builtin(t_command *cmd, t_envp **env)
      if (strcmp(cmd->args[0], "cd") == 0)
           result = builtin_cd(cmd, env);
      else if (strcmp(cmd->args[0], "pwd") == 0)
-          result = builtin_pwd();
+          result = builtin_pwd(*env);
      else if (strcmp(cmd->args[0], "echo") == 0)
           result = builtin_echo(cmd->args);
      else if (strcmp(cmd->args[0], "env") == 0)
