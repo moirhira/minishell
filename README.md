@@ -135,5 +135,8 @@ minishell: syntax error near unexpected token `<'
 should not display syntax error
 
 
-5 - 
+5 -minishell$ echo $""
+ 
+minishell$ echo "$"
+need to print the $ 
 < existfile
