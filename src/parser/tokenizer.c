@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/29 21:26:58 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/29 22:52:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,36 @@ static int handel_operator(char *s, int i, t_token **token)
 	return (i);
 }
 
+
+char *trim_string(char *str)
+{
+	int i, j, len;
+	if (!str)
+		return (NULL);
+	
+	len = 0;
+	char *res = malloc(len + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (ft_isspace(str[i]))
+			i++;
+	while (str[i] != '\0')
+	{	
+		while (!ft_isspace(str[i]) && str[i])
+			res[j++] = str[i++];
+		
+		while (ft_isspace(str[i]))
+			i++;
+		
+		if (str[i])
+			res[j++] = ' ';
+	}
+	res[j] = '\0';
+	free(str);
+	return res;
+}
 static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	int attached;
@@ -83,7 +113,10 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 		if (s[i] == '$')
 		{
 			if ((*token)->type != 5)
+			{
 				simple_str = handel_env_var(s, &i, my_env, simple_str);
+				simple_str = trim_string(simple_str);
+			}
 			else
 			{
 				char ch[2] = {s[i++], '\0'};
