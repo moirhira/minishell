@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/29 22:52:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/29 23:07:17 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char *trim_string(char *str)
 	if (!str)
 		return (NULL);
 	
-	len = 0;
+	len = ft_strlen(str);
 	char *res = malloc(len + 1);
 	if (!res)
 		return (NULL);
@@ -102,6 +102,7 @@ char *trim_string(char *str)
 	free(str);
 	return res;
 }
+
 static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	int attached;
