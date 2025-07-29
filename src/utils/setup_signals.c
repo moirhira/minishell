@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 20:54:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:46:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void sig_handler_inter(int sig)
 {
     if (sig == SIGINT)
     {
+        g_signal_received = 1;
         write(STDOUT_FILENO, "\n", 1);
         rl_on_new_line();
         rl_replace_line("", 0);

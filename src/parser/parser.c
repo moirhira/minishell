@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/22 09:43:06 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:28:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
 {
     if (!split_token(cmd_line, my_env, token_lst))
         return (exit_status(2), 2);
+        
     
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
@@ -79,7 +80,7 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
     }
     
     print_commands(command_lst);
-    return (exit_status(-1), 2);
+    return (exit_status(-1), 0);
 }
 
 

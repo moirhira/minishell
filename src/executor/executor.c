@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:51 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/22 09:31:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/29 19:22:10 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 #include "../../include/minishell.h"
 volatile sig_atomic_t g_signal_received = 0;
-
-
-
 
 int execute_builtin()
 {

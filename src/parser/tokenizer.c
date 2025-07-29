@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/22 09:49:32 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:26:58 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,17 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 		   s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
 	{
 		if (s[i] == '$')
-			simple_str = handel_env_var(s, &i, my_env, simple_str);
+		{
+			if ((*token)->type != 5)
+				simple_str = handel_env_var(s, &i, my_env, simple_str);
+			else
+			{
+				char ch[2] = {s[i++], '\0'};
+				char *temp = ft_strjoin(simple_str, ch);
+				free(simple_str);
+				simple_str = temp;
+			}
+		}
 		else
 		{
 			char ch[2] = {s[i++], '\0'};
@@ -109,7 +119,17 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	while (s[i] && s[i] != quote)
 	{
 		if (s[i] == '$' && quote == '"')
-			final_str = handel_env_var(s, &i, my_env, final_str);
+		{
+			if ((*token)->type != 5)
+				final_str = handel_env_var(s, &i, my_env, final_str);
+			else
+			{
+				char ch[2] = {s[i++], '\0'};
+				char *temp = ft_strjoin(final_str, ch);
+				free(final_str);
+				final_str = temp;
+			}
+		}
 		else
 		{
 			char ch[2] = {s[i++], '\0'};
