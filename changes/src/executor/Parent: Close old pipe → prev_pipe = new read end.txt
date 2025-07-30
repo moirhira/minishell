@@ -1,0 +1,8 @@
+Parent: Close old pipe → prev_pipe = new read end.
+
+cmd = wc -l → No more pipes → fork child → child connects prev_pipe to stdin → exec wc.
+
+Parent: Close last pipe → wait for all → return wc exit code.
+
+Do you want me to draw a diagram (pipes + forks visual) so you literally see how FDs move step by step?
+Or should I rewrite this explanation into comments directly in your code (so future you won’t forget)?

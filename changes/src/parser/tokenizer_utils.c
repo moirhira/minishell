@@ -1,0 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
+/*   Updated: 2025/05/10 11:49:40 by moirhira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+t_token *create_token(char *str, int type, int is_attached, int was_quoted)
+{
+    t_token *new;
+    new = (t_token *)malloc(sizeof(t_token));
+    if (!new)
+        return (NULL);
+    new->value = ft_strdup(str);
+    if (!new->value)
+    {
+        free(new);
+        return (NULL);
+    }
+    new->type = type;
+	new->attached = is_attached;
+    new->was_quoted = was_quoted;
+    new->next = NULL;
+    return (new);
+}
+void add_token(t_token **token_lst, t_token *new_token)
+{
+    t_token *ptr;
+    if (!*token_lst)
+    {
+        *token_lst = new_token;
+        return;
+    }
+    ptr = *token_lst;
+    while (ptr->next)
+        ptr = ptr->next;
+    ptr->next = new_token;
+}
+char *get_env_value(t_envp *my_env, const char *var_name)
+{
+    t_envp *ptr;
+	size_t len = ft_strlen(var_name);
+	
+    ptr = my_env;
+	while (ptr)
+	{
+		if (ft_strncmp(ptr->key, var_name, len) == 0 && ptr->key[len] == '\0')
+			return(ptr->value);
+		ptr = ptr->next;
+	}
+	return (NULL);
+}
+
+int was_previous_space(char *s, int i)
+{
+    if (i == 0)
+    {
+        return (0);
+    }
+	if (s[i - 1] == ' ' || s[i - 1] == '\t')
+    {
+		return (0);
+    }
+	return (1);
+}
+
+t_token *get_last_token(t_token *lst)
+{
+    while (lst && lst->next)
+        lst = lst->next;
+    return (lst);
+}

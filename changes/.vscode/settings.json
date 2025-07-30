@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "string.h": "c",
+        "readline.h": "c",
+        "charconv": "c",
+        "chrono": "c",
+        "functional": "c",
+        "cstdlib": "c",
+        "array": "c",
+        "compare": "c",
+        "ratio": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "variant": "c"
+    }
+}

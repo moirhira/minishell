@@ -1,0 +1,63 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup_signals.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
+/*   Updated: 2025/07/26 22:05:22 by moirhira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+volatile sig_atomic_t g_signal_received = 0;
+
+void sig_handler_inter(int sig)
+{
+    if (sig == SIGINT)
+    {
+        g_signal_received = SIGINT;
+        write(STDOUT_FILENO, "\n", 1);
+        if (RL_ISSTATE(RL_STATE_READCMD))
+        {
+            rl_on_new_line();
+            rl_replace_line("", 0);
+            rl_redisplay();
+        }
+    }
+}
+
+void sig_handler_heredoc(int sig)
+{
+    if (sig == SIGINT)
+    {
+        g_signal_received = SIGINT;
+        close(STDIN_FILENO);
+    }
+}
+
+void    setup_signals(int state)
+{
+    // write(STDOUT_FILENO, "\r", 1);
+    if (state == SHELL_INTERACTIVE)
+    {
+        signal(SIGINT, sig_handler_inter);
+        signal(SIGQUIT, SIG_IGN);
+    }
+    else if (state == SHELL_EXECUTING)
+    {
+        signal(SIGINT, SIG_IGN);
+        signal(SIGQUIT, SIG_IGN);
+    }
+    else if (state == SHELL_HEREDOC)
+    {
+        signal(SIGINT, SIG_IGN);
+        signal(SIGQUIT, SIG_IGN);
+    }
+    else if (state == CHILD_PROCESS)
+    {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+    }
+}
