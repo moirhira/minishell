@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/30 11:57:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:13:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 		return (temp);
 	}
 	
-	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?')
+	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?' && s[*i + 1] != '"' && s[*i + 1] != '\'')
 	{
 		char *temp = ft_strjoin(curnt_str, "$");
 		free(curnt_str);
@@ -137,10 +137,14 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 	{
 		if (s[i] == '$')
 		{
-
 			if(!(*token) || (*token)->type != 5)
 			{
 				simple_str = handel_env_var(s, &i, my_env, simple_str);
+				if (*simple_str == '\0')
+				{
+					free(simple_str);
+					return (i);
+				}
 				simple_str = trim_string(simple_str);
 			}
 			else
@@ -182,7 +186,6 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 			if(!(*token) || (*token)->type != 5)
 			{
 				final_str = handel_env_var(s, &i, my_env, final_str);
-				final_str = trim_string(final_str);
 			}
 			else
 			{

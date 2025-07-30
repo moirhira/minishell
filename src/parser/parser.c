@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/29 22:55:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/30 15:42:54 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         }
         if((*token_lst)->type == 1)
         {
-            printf("minishell: syntax error near unexpected token `%s'\n", token->value); 
+            if ((*token_lst)->next && (*token_lst)->next->type == 1)
+                printf("minishell: syntax error near unexpected token `||'\n");
+            else
+                printf("minishell: syntax error near unexpected token `%s'\n", token->value); 
             exit_status(2);
             // free(head);
             return (NULL);
@@ -68,7 +71,18 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
 {
     if (!split_token(cmd_line, my_env, token_lst))
         return (exit_status(2), 2);
-        
+    
+    // t_token *ptr;
+    // ptr = *token_lst;
+    // while (ptr)
+    // {
+    //     printf("value       : %s\n", ptr->value);
+    //     printf("type        : %d\n", ptr->type);
+    //     printf("attached    : %d\n", ptr->attached);
+    //     printf("was quoted  : %d\n", ptr->was_quoted);
+    //     printf("....................................\n");
+    //     ptr = ptr->next;
+    // }
     
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
