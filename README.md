@@ -52,7 +52,7 @@ now the stdin to restore it you have now the setup_redirsction use it
 ============================================================================1 - echo "hello" | grep "e" | wc -l
     after execute thus line all the commands not bieng its desplay just command : not found  -->
 ===================================================================================
-1 - also the execute_pipeline try to make it int that return the right exit status in the diffrent cases
+<!-- 1 - also the execute_pipeline try to make it int that return the right exit status in the diffrent cases
 points:
 
     the pipeline function should always return the last exit code of the last child process 
@@ -72,11 +72,11 @@ points:
             // return 
         }
     
-    check if there is another builtin inside that child one 
+    <!-- check if there is another builtin inside that child one  -->
 
 =========================================================
 
-26 jul update :
+<!-- 26 jul update :
 
 ** setup_redirections inside every child 
 
@@ -88,16 +88,16 @@ points:
 
 ** when an error happend , there is no exit from the prgrm ,and the child return it's exit status as well 
 
-**  i check if there is another builtin inside the child itself 
+**  i check if there is another builtin inside the child itself  -->
 
 
 =====================================================================
-- function to handel biultins before fork just writed not used 
+<!-- - function to handel biultins before fork just writed not used 
 - is biultins is not working and segfault
-- not properly return the exact right exist status from the child process
+- not properly return the exact right exist status from the child process -->
 
 ===========================================================
-
+<!-- 
 27 jul updates : 
 
 ** I fixed pwd's and cd's behavior in case of deleting the current dir;
@@ -114,19 +114,38 @@ ______________________________________________________________
 old behav = incorrectly return exit_status(-1) (should be 0 on success, 1 on error).
 
 fixed one = On success returns exit_status(0), which is the standard success code (like Bash), on error it returns exit_status(1), which is a failure code
-
-
+ -->
+ -->
 
 ___________________
 
 ==================
-1- cat < into deleted file (stuck)
+1- cat < into deleted file (stuck) ✅
 2 -minishell$ cat << $USER
 > $USER
 > moirhira
-must exit when you enter $USER itself
+must exit when you enter $USER itself ✅
 
-3 - echo "$"USER also in the heredoc
+3 - echo "$"USER also in the heredoc ✅
+
+
+5 -minishell$ echo $"" (if the dollar didnt o thier job it must stay ) ✅
+
+6 -minishell$ echo "$"
+need to print the $ ✅
+
+7 -< existfile ✅
+
+8 -export invalid var 121var || @var ... ✅
+
+9 -minishell$ $a
+[1]    43891 segmentation fault (core dumped)  ./minishell ✅
+
+10 - echo hello << a dfs > d ✅
+
+11 - echo $unsetedvar hola
+
+==================================================
 
 
 
@@ -134,9 +153,5 @@ must exit when you enter $USER itself
 minishell: syntax error near unexpected token `<'
 should not display syntax error
 
-
-5 -minishell$ echo $""
- 
-minishell$ echo "$"
-need to print the $ 
-< existfile
+minishell$ echo -n $DONTEXIST hola
+ holaminishell$ 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 21:53:06 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/30 13:44:28 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,12 @@ int check_next_token(t_token *token, t_command *head)
     if (!token->next)
     {
         printf("minishell: syntax error near unexpected token `newline'\n");
+        exit_status(2);
+        return (0);
+    }
+    if (token->type == 1 && token->next->type == 1)
+    {
+        printf("minishell: syntax error near unexpected token `||'\n"); 
         exit_status(2);
         return (0);
     }

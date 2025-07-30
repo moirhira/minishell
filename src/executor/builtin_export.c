@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/19 13:39:23 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:58:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,17 @@ int builtin_export(t_command *cmd, t_envp **env)
             int key_len = equal_sign - arg;
             char *key = strndup(arg, key_len);
             char *value = strdup(equal_sign + 1);
-
+            if (!ft_isalpha(key[0]) && key[0] != '_')
+            {
+                ft_putstr_fd("minishell: export: `", 2);
+                ft_putstr_fd(key, 2);
+                ft_putstr_fd("=", 2);
+                ft_putstr_fd(value, 2);
+                ft_putstr_fd("': not a valid identifier\n", 2);
+                free(key);
+                free(value);
+                return (exit_status(1));
+            }
             if (key && value)
                 update_env_var(env, key, value);
 

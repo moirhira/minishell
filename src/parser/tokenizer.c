@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/27 18:42:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:12:12 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,24 @@
 
 char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 {
-	(*i)++;
+	if (!s[*i + 1] || ft_isspace(s[*i + 1]) || (s[*i - 1] == '"' && s[*i + 1] == '"'))
+	{
+		char *temp = ft_strjoin(curnt_str, "$");
+		free(curnt_str);
+		(*i)++;
+		return (temp);
+	}
 	
+	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?' && s[*i + 1] != '"')
+	{
+		char *temp = ft_strjoin(curnt_str, "$");
+		free(curnt_str);
+		(*i)++;
+		return (temp);
+	}
+	
+	(*i)++;
+
 	if (s[*i] == '?')
 	{
 		(*i)++;
@@ -25,13 +41,13 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 		free(exit_str);
 		return (temp);
 	}
+
 	int var_start = *i;
 	while (s[*i] && (ft_isalnum(s[*i]) || s[*i] == '_'))
 		(*i)++;
 	char *var_name = ft_substr(s, var_start, *i - var_start);
 	char *var_value = get_env_value(*my_env, var_name);
 	if (var_value)
-
 	{
 		char *temp = ft_strjoin(curnt_str, var_value);
 		free(curnt_str);
@@ -72,6 +88,37 @@ static int handel_operator(char *s, int i, t_token **token)
 	return (i);
 }
 
+
+char *trim_string(char *str)
+{
+	int i, j, len;
+	if (!str)
+		return (NULL);
+	
+	len = ft_strlen(str);
+	char *res = malloc(len + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (ft_isspace(str[i]))
+			i++;
+	while (str[i] != '\0')
+	{	
+		while (!ft_isspace(str[i]) && str[i])
+			res[j++] = str[i++];
+		
+		while (ft_isspace(str[i]))
+			i++;
+		
+		if (str[i])
+			res[j++] = ' ';
+	}
+	res[j] = '\0';
+	free(str);
+	return res;
+}
+
 static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	int attached;
@@ -81,7 +128,25 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 		   s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
 	{
 		if (s[i] == '$')
-			simple_str = handel_env_var(s, &i, my_env, simple_str);
+		{
+			if(!(*token) || (*token)->type != 5)
+			{
+				simple_str = handel_env_var(s, &i, my_env, simple_str);
+				if (*simple_str == '\0')
+				{
+					free(simple_str);
+					return (i);
+				}
+				simple_str = trim_string(simple_str);
+			}
+			else
+			{
+				char ch[2] = {s[i++], '\0'};
+				char *temp = ft_strjoin(simple_str, ch);
+				free(simple_str);
+				simple_str = temp;
+			}
+		}
 		else
 		{
 			char ch[2] = {s[i++], '\0'};
@@ -109,7 +174,19 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	while (s[i] && s[i] != quote)
 	{
 		if (s[i] == '$' && quote == '"')
-			final_str = handel_env_var(s, &i, my_env, final_str);
+		{
+			if(!(*token) || (*token)->type != 5)
+			{
+				final_str = handel_env_var(s, &i, my_env, final_str);
+			}
+			else
+			{
+				char ch[2] = {s[i++], '\0'};
+				char *temp = ft_strjoin(final_str, ch);
+				free(final_str);
+				final_str = temp;
+			}
+		}
 		else
 		{
 			char ch[2] = {s[i++], '\0'};
@@ -149,6 +226,7 @@ int split_token(char *s, t_envp **my_env, t_token **token)
 			i = handel_quoted_str(s, i, my_env, token);
 			if (i == -1)
 			{
+				free_env(my_env);
 				free_token(token);
 				return (0);
 			}

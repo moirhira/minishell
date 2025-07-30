@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/19 15:46:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/30 10:07:12 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ft_strlen_2d(char **str);
 char	*ft_itoa(int n);
 void	ft_putstr_fd(char *s, int fd);
 int ft_isspace(char c);
+int	ft_isalpha(int c);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 
 # endif
