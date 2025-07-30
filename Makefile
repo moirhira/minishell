@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall
+CFLAGS = -Wall -g
 SRC = 	src/main.c src/parser/tokenizer.c src/parser/tokenizer_utils.c src/parser/parser.c\
 		src/parser/parser_utils.c src/parser/parser_utils_1.c src/utils/utils.c src/utils/setup_signals.c\
 		src/utils/utils_2.c src/executor/executor.c src/parser/parse_heredocs.c
