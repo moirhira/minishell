@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/01 13:29:53 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 18:26:21 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int builtin_export(t_command *cmd, t_envp **env)
         {
              if (!check_var(arg))
             {
-                ft_putstr_fd("minishell: expooooort: `", 2);
+                ft_putstr_fd("minishell: export: `", 2);
                 ft_putstr_fd(arg, 2);
                 ft_putstr_fd("': not a valid identifier\n", 2);
                 return (exit_status(1));

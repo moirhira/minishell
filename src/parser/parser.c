@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/01 09:13:10 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 16:02:40 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 {
     t_command *head;
     t_token *token;
-    
-    head = NULL;      
+
+    head = NULL;
     token = *token_lst;
-    
+
     while (token)
     {
         if (!head)
@@ -27,26 +27,26 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             add_command(cmd_lst, creat_command());
             head = *cmd_lst;
         }
-        if((*token_lst)->type == 1)
+        if ((*token_lst)->type == 1)
         {
             if ((*token_lst)->next && (*token_lst)->next->type == 1)
                 printf("minishell: syntax error near unexpected token `||'\n");
             else
-                printf("minishell: syntax error near unexpected token `%s'\n", token->value); 
+                printf("minishell: syntax error near unexpected token `%s'\n", token->value);
             exit_status(2);
             // free(head);
             return (NULL);
         }
-        if (token->type == 1 && !handel_pipe(&token, &head, cmd_lst)) // | 
+        if (token->type == 1 && !handel_pipe(&token, &head, cmd_lst)) // |
             return (NULL);
-        else if (token->type == 2) // < 
+        else if (token->type == 2) // <
         {
             if (!handel_input_redirection(&token, head))
                 return (NULL);
         }
         else if (token->type == 3) // >
         {
-           if (!handel_output_redirection(&token, head))
+            if (!handel_output_redirection(&token, head))
                 return (NULL);
         }
         else if (token->type == 4) // >>
@@ -71,8 +71,18 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
 {
     if (!split_token(cmd_line, my_env, token_lst))
         return (exit_status(2), 2);
-    
-        
+
+    // t_token *ptr;
+    // ptr = *token_lst;
+    // while (ptr)
+    // {
+    //     printf("value       : %s\n", ptr->value);
+    //     printf("type        : %d\n", ptr->type);
+    //     printf("attached    : %d\n", ptr->attached);
+    //     printf("was quoted  : %d\n", ptr->was_quoted);
+    //     printf("....................................\n");
+    //     ptr = ptr->next;
+    // }
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
     {
@@ -80,55 +90,14 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
         free_command(command_lst);
         return (exit_status(2), 2);
     }
-    
+
     // print_commands(command_lst);
     return (exit_status(-1), 0);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void print_commands(t_command **commads)
 {
-    
+
     t_command *ptr;
     ptr = (*commads);
     while (ptr)
@@ -157,8 +126,6 @@ void print_commands(t_command **commads)
     }
 }
 
-
-
 /*
 echo $$
 # → syntax error (unless you implement PID)
@@ -167,10 +134,6 @@ echo $!
 # → syntax error (unless you implement job control)
 
 */
-
-
-
-
 
 // t_token *ptr;
 //     ptr = *token_lst;
@@ -183,4 +146,3 @@ echo $!
 //         printf("....................................\n");
 //         ptr = ptr->next;
 //     }
-    

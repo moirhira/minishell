@@ -141,12 +141,7 @@ need to print the $ ✅
 9 -minishell$ $a
 [1]    43891 segmentation fault (core dumped)  ./minishell ✅
 
-
-
-
 ==================================================
-
-
 
  10 - echo hello << a dfs > d ✅
 
@@ -157,38 +152,14 @@ need to print the $ ✅
 
  13 - run command with the  absolut path ex: /bin/ls ✅
 
- 14 - 
-
-
-
-
-
-
-
-
-
-
-
-=====================================================
-
-
-
-4 - minishell$ ls -l | < a
+ 14 -minishell$ ls -l | < a
 minishell: syntax error near unexpected token `<'
-should not display syntax error
+should not display syntax error ✅
 
+15 - cd $PWD arg1 arg2 more than one arg 
 
-
-
-
- minishell$ export A-
-minishell: export: `A-': not a valid identifier
-minishell$ echo $A-
-minishell: echo-: command not found
-minishell$ echo $A -
--
-
-
+16 - 
+=====================================================
 
 
 minishell$ cd $PWD | wc -l 
