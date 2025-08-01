@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/01 09:47:08 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 13:49:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,27 @@ char *find_command_in_path(const char *cmd, t_envp *env, int *status)
             *status = 126;
             return (NULL);
         }
+        return (ft_strdup(cmd));
     }
 
     if (!path_env)
         return (NULL);
 
-    copy = ft_strdup(path_env);
-    if (!copy)
+    char **paths = ft_split_advanced(path_env, ":");
+    if (!paths)
         return (NULL);
 
-    dir = strtok(copy, ":");
-    while (dir)
+    int i = 0;
+    while (paths[i])
     {
-        snprintf(full, sizeof(full), "%s/%s", dir, cmd);
+        snprintf(full, sizeof(full), "%s/%s", paths[i], cmd);
         if (is_executable(full))
         {
             char *res = ft_strdup(full);
-            free(copy);
+            free_array(paths, ft_strlen_2d(paths));
             return (res);
         }
-        dir = strtok(NULL, ":");
+        i++;
     }
     free(copy);
     return (NULL);

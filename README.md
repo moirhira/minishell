@@ -141,15 +141,35 @@ need to print the $ ✅
 9 -minishell$ $a
 [1]    43891 segmentation fault (core dumped)  ./minishell ✅
 
-10 - echo hello << a dfs > d ✅
 
-11 - echo $unsetedvar hola ✅
-
-12 - minishell$ echo -n $DONTEXIST hola ✅
- holaminishell$ 
 
 
 ==================================================
+
+
+
+ 10 - echo hello << a dfs > d ✅
+
+ 11 - echo $unsetedvar hola ✅
+
+ 12 - minishell$ echo -n $DONTEXIST hola ✅
+ holaminishell$ 
+
+ 13 - run command with the  absolut path ex: /bin/ls ✅
+
+ 14 - 
+
+
+
+
+
+
+
+
+
+
+
+=====================================================
 
 
 
