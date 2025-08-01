@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/27 21:26:10 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 09:41:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int     exit_status(int new_status);
 int     execute_commands(t_command *command, t_envp **env);
 int     execute_builtin(t_command *cmd, t_envp **env);
 int    builtin_cd(t_command *cmd, t_envp **env);
-char    *find_command_in_path(const char *cmd, t_envp *env);
+char *find_command_in_path(const char *cmd, t_envp *env, int *status);
 void    ft_swap(char **a, char **b);
 void    free_env_array(char **envp);
 
@@ -189,7 +189,6 @@ int is_digit(char c);
 int is_alnum(char c);
 
 // helper 2
-char	*find_command_in_path(const char *cmd, t_envp *env);
 char    *ft_strdup(const char *s);
 char    *get_env_value(t_envp *env, const char *key);
 void    sort_in_tab(char **array, int size);

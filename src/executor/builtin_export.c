@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/30 10:58:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:47:58 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,22 @@ void update_env_var(t_envp **env, char *key, char *value)
     }
 }
 
+int check_var(char *str)
+{
+    int i;
+    
+    i = 1;
+    while (str[i])
+    {
+        if(!ft_isalpha(str[0]) && str[0] != '_')
+            return(0);
+        if (!ft_isalnum(str[i]) && str[i] != '_')
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
 int builtin_export(t_command *cmd, t_envp **env)
 {
      if (!cmd->args[1])
@@ -75,13 +91,13 @@ int builtin_export(t_command *cmd, t_envp **env)
             int key_len = equal_sign - arg;
             char *key = strndup(arg, key_len);
             char *value = strdup(equal_sign + 1);
-            if (!ft_isalpha(key[0]) && key[0] != '_')
+            if (!check_var(key))
             {
                 ft_putstr_fd("minishell: export: `", 2);
                 ft_putstr_fd(key, 2);
                 ft_putstr_fd("=", 2);
                 ft_putstr_fd(value, 2);
-                ft_putstr_fd("': not a valid identifier\n", 2);
+                ft_putstr_fd("': not a valid ideeeeeeeeeentifier\n", 2);
                 free(key);
                 free(value);
                 return (exit_status(1));
@@ -94,13 +110,16 @@ int builtin_export(t_command *cmd, t_envp **env)
         }
         else
         {
+             if (!check_var(arg))
+            {
+                ft_putstr_fd("minishell: expooooort: `", 2);
+                ft_putstr_fd(arg, 2);
+                ft_putstr_fd("': not a valid identifier\n", 2);
+                return (exit_status(1));
+            }
             update_env_var(env, arg, NULL);
         }
         i++;
     }
     return exit_status(0);
 }
-
-
-
-

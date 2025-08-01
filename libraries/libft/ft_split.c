@@ -6,14 +6,12 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/22 15:10:52 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/31 20:41:58 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-// counting the number of words
 static int	ft_ctrword(char const *s, char c)
 {
 	size_t	wordctr;
@@ -32,7 +30,6 @@ static int	ft_ctrword(char const *s, char c)
 	return (wordctr);
 }
 
-// Allocate Memory for the Array of Substrings
 static char	*ft_memalloc(char const *s, size_t len)
 {
 	size_t		i;

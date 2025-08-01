@@ -143,7 +143,11 @@ need to print the $ ✅
 
 10 - echo hello << a dfs > d ✅
 
-11 - echo $unsetedvar hola
+11 - echo $unsetedvar hola ✅
+
+12 - minishell$ echo -n $DONTEXIST hola ✅
+ holaminishell$ 
+
 
 ==================================================
 
@@ -153,5 +157,23 @@ need to print the $ ✅
 minishell: syntax error near unexpected token `<'
 should not display syntax error
 
-minishell$ echo -n $DONTEXIST hola
- holaminishell$ 
+
+
+
+
+ minishell$ export A-
+minishell: export: `A-': not a valid identifier
+minishell$ echo $A-
+minishell: echo-: command not found
+minishell$ echo $A -
+-
+
+
+
+
+minishell$ cd $PWD | wc -l 
+minishell: cd: command not found
+0
+minishell$ cd $PWD | echo hello
+minishell: cd: command not found
+hello

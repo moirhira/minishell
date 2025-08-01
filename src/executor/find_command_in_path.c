@@ -6,48 +6,28 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/27 17:58:29 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 09:47:08 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-////////////     HELPER    /////////////////
 
+static int is_file_exists(const char *path)
+{
+    struct stat st;
+    return (stat(path, &st) == 0);
+}
 static int is_executable(const char *path)
 {
+    struct stat st;
+    if (stat(path, &st) != 0)
+        return (0);
     return (access(path, X_OK) == 0);
 }
 
-////////////////// GE THE VALUE OF A VARABLE //////////
 
-// char *get_env_value(t_envp *env, const char *key)
-// {
-//     while (env)
-//     {
-//         if (strcmp(env->key, key) == 0)
-//             return env->value;
-//         env = env->next;
-//     }
-//     return NULL;
-// }
-
-// ft_strdup() - Custom string duplication (like strdup)
-
-char *ft_strdup(const char *s)
-{
-    size_t len = strlen(s) + 1;
-    char *dup = malloc(len);
-    
-    if (dup)
-        memcpy(dup, s, len);
-    return dup;
-}
-
-
-///////////////////////////  FIND_command_in_path   ///////////////////////////////////////////////////
-
-char *find_command_in_path(const char *cmd, t_envp *env)
+char *find_command_in_path(const char *cmd, t_envp *env, int *status)
 {
     char *path_env = get_env_value(env, "PATH");
     char *copy, *dir, full[PATH_MAX];
@@ -55,13 +35,24 @@ char *find_command_in_path(const char *cmd, t_envp *env)
     if (!cmd || !*cmd)
         return (NULL);
 
-    // Case: absolute or relative path like ./a.out or /bin/ls
     if (strchr(cmd, '/'))
-        return (is_executable(cmd) ? ft_strdup(cmd) : NULL);
+    {
+        if (!is_file_exists(cmd))
+        {
+            perror("minishell");
+            *status = 127;
+            return (NULL);
+        }
+        if(!is_executable(cmd))
+        {
+            perror("minishell");
+            *status = 126;
+            return (NULL);
+        }
+    }
 
-    // Case: command like "ls"
     if (!path_env)
-        return (NULL); // no PATH
+        return (NULL);
 
     copy = ft_strdup(path_env);
     if (!copy)
