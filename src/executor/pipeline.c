@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/26 22:46:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:07:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ int handle_builtin_if_no_pipe(t_command *cmd, t_envp **env)
     int status;
     if (is_builtin(cmd->args[0]) && cmd->pipe == 0)
     {
-        // if (setup_redirections(cmd) == -1)
-        //     return 1;
         status = execute_builtin(cmd, env);
         exit_status(status);
         return (status);

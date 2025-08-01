@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/01 09:41:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:10:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ int     exit_status(int new_status);
 
 
 
-
+// env_oprations.c
+int  update_env_var(t_envp **env, char *key, char *value);
 
 
 // execution.c

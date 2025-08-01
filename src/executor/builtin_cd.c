@@ -6,60 +6,74 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:21 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/31 14:57:46 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:32:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// int builtin_cd(t_command *cmd, t_envp **env)
-// {
-//     (void)env;
-//     char *path = cmd->args[1];
-//     char cwd[PATH_MAX];
-//     char *old_pwd = getcwd(cwd, sizeof(cwd));
-
-//     if (chdir(path) != 0)
-//     {
-//         perror("minishell: cd");
-//         return exit_status(1);  /// Set failure status
-//     }
-
-//     setenv("OLDPWD", old_pwd, 1);
-//     getcwd(cwd, sizeof(cwd));
-//     setenv("PWD", cwd, 1);
-
-//     return exit_status(0);  /// Set success status
-// }
 
 int builtin_cd(t_command *cmd, t_envp **env)
 {
     char cwd[PATH_MAX];
-    if (ft_strlen_2d(cmd->args) != 2)
+    char *path;
+    
+    if (ft_strlen_2d(cmd->args) > 2)
     {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(cmd->args[0], 2);
-        ft_putstr_fd(": too many arguments\n", 2);
+        ft_putstr_fd("minishell: cd: too many arguments\n", 2);
         return (1);
     }
-    char *path = cmd->args[1];    
+    
     if (getcwd(cwd, sizeof(cwd)) != NULL)
-        setenv("OLDPWD", cwd, 1);
+    {
+        if (update_env_var(env, "OLDPWD", cwd) != 0)
+        {
+            ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
+            return (1);
+        }
+    }
+        
+    if (cmd->args[1] == NULL)
+    {
+        path = get_env_value(*env, "HOME");
+        if (!path)
+        {
+            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+            return (1);
+        }
+    }
+    else if (ft_strcmp(cmd->args[1], "-") == 0)
+    {
+        path = get_env_value(*env, "OLDPWD");
+         if (!path)
+        {
+            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+            return (1);
+        }
+        printf("%s\n", path);
+    }
     else
-        setenv("OLDPWD", "/home", 1);
+        path = cmd->args[1];
+        
+        
     if (chdir(path) != 0)
     {
-        perror("cd");
-        return exit_status(1);
+        ft_putstr_fd("minishell: cd: ", 2);
+        if (cmd->args[1])
+            perror(cmd->args[1]);
+        else
+            perror("HOME");
+        return (1);
     }
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-        setenv("PWD", cwd, 1);
-    else
-        setenv("PWD", "/home", 1);
-    return exit_status(0);
-}
 
-//getcwd may fail in case; 
-/// the current dir doesn't exists 
-/// path too long that the path max 
-/// permission issues wich means don’t have permission to read the current directory (rare)
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+    {
+        if (update_env_var(env, "PWD", cwd) != 0)
+        {
+            ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
+            return (1);
+        }
+    }
+
+    return (0);
+}
