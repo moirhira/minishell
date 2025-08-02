@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/31 22:17:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:32:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,9 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	}
 	if (!s[i])
 	{
-		printf("minishell: Unclosed quote: %c\n", quote);
+		ft_putstr_fd("minishell: Unclosed quote:", 2);
+		ft_putstr_fd(&quote, 2);
+		ft_putstr_fd("\n", 2);
 		free(final_str);
 		return (-1);
 	}

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/01 21:10:04 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:10:16 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_command
     int append_count; 
     
     int pipe;       // 1 if followed by |
-    
+
     struct s_redirect *redirects;
     struct s_command *next;
 }   t_command;
@@ -150,7 +150,7 @@ void    setup_signals(int state);
 // utils_2.c
 int only_whitespace(char *str);
 char **convert_env_to_array(t_envp *env);
-
+int	ft_lstsize(t_envp *lst);
 // for export 
 int     print_sorted_export(t_envp *env);
 int     is_valid_identifier(const char *str);
@@ -212,11 +212,9 @@ int execute_pipeline(t_command *cmd_list, t_envp *env);
 // pipeline
 int exec_command(t_command *cmd, t_envp *env);
 int execute_pipeline(t_command *cmd_list, t_envp *env);
-int exec_builtin_in_parent(t_command *cmd, t_envp **env);
 int create_pipe_if_needed(t_command *cmd, int pipefd[2]);
 void child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env);
 int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2]);
-int handle_builtin_if_no_pipe(t_command *cmd, t_envp **env);
 
 
 #endif

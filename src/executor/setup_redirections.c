@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/28 20:55:32 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:57:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int f_error(int fd, t_redirect *redir, int target_fd)
         perror(redir->filename);
         return 0;
     }
+
     if (dup2(fd, target_fd) == -1)
     {
         ft_putstr_fd("minishell: dup2 failed\n", 2);

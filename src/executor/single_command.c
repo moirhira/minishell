@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/01 15:03:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 10:53:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ int	execute_external(t_command *cmd, t_envp *env)
 	}
     else
     {
+        waitpid(pid, &status, 0);
         free(path);
         free_array(envp, ft_strlen_2d(envp));
-        waitpid(pid, &status, 0);
         
         if (WIFSIGNALED(status))
         {

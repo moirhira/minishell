@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/01 19:07:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 11:04:24 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,6 @@ static int wait_children(pid_t last_pid)
     return (last_exit_status);
 }
 
-int handle_builtin_if_no_pipe(t_command *cmd, t_envp **env)
-{
-    int status;
-    if (is_builtin(cmd->args[0]) && cmd->pipe == 0)
-    {
-        status = execute_builtin(cmd, env);
-        exit_status(status);
-        return (status);
-    }
-    return -1; 
-}
 
 int execute_pipeline(t_command *cmd_list, t_envp *env)
 {
@@ -86,9 +75,7 @@ int execute_pipeline(t_command *cmd_list, t_envp *env)
     int result;
     
     last_pid = -1;
-    result = handle_builtin_if_no_pipe(cmd, &env);
-    if (result >= 0)
-        return (result);
+
     setup_signals(SHELL_EXECUTING);
     while (cmd)
     {

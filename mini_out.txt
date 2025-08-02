@@ -1,0 +1,4 @@
+minishell> echo
+
+minishell> hello
+minishell> 

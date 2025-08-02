@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/01 16:08:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 11:13:33 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int handel_input_redirection(t_token **token, t_command *head)
     head->infile_count++;
     add_redirect(head, 2, full_str);
     *token = (*token)->next;
+    free(full_str);
     return (1);
 }
 
@@ -65,6 +66,7 @@ int handel_output_redirection(t_token **token, t_command *head)
     head->outfile_count++;
     add_redirect(head, 3, full_str);
     *token = (*token)->next;
+    free(full_str);
     return (1);
 }
 int handel_append_redirection(t_token **token, t_command *head)
@@ -87,6 +89,7 @@ int handel_append_redirection(t_token **token, t_command *head)
     head->append_count++;
     add_redirect(head, 4, full_str);
     *token = (*token)->next;
+    free(full_str);
     return (1);
 }
 

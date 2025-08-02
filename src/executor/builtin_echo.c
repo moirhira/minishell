@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:34 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/20 02:28:44 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/08/02 22:43:43 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ int builtin_echo(char **cmd)
 
     while (cmd[i])
     {
-        printf("%s", cmd[i]);
+        ft_putstr_fd(cmd[i], STDOUT_FILENO);
         if (cmd[i + 1])
-            printf(" ");
+            ft_putstr_fd(" ", STDOUT_FILENO);
         i++;
     }
 
     if (newline)
-        printf("\n");
+        ft_putstr_fd("\n", 1);
 
     return exit_status(0);
 }

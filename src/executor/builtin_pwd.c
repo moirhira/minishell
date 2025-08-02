@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 08:44:41 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/27 06:48:41 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/08/02 11:45:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 int	builtin_pwd(t_envp *env)
 {
-	char *pwd;
+	char cwd[PATH_MAX];
 
-	pwd = getenv("PWD");
-	if (!pwd)
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		printf("pwd: PWD not set\n");
-        return (exit_status(1));
+		printf("%s\n", cwd);
+        return (0);
 	}
-	printf("%s\n",pwd);
-    return (exit_status(0));
+	else
+	{
+		perror("pwd");
+		return (1);
+	}
 }
 
 //what i've changed

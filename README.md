@@ -156,15 +156,36 @@ need to print the $ ✅
 minishell: syntax error near unexpected token `<'
 should not display syntax error ✅
 
-15 - cd $PWD arg1 arg2 more than one arg 
+15 - cd $PWD arg1 arg2 more than one arg ✅
 
 16 - 
 =====================================================
 
-
-minishell$ cd $PWD | wc -l 
+minishell$ cd $PWD | wc -l ✅
 minishell: cd: command not found
 0
-minishell$ cd $PWD | echo hello
+minishell$ cd $PWD | echo hello ✅
 minishell: cd: command not found
-hello
+hello       ✅
+
+
+minishell$ << a < b ✅
+> sdvsv
+> a
+minishell: b: No such file or directory
+minishell$ sdvsv
+minishell: sdvsv: command not found
+minishell$ % 
+
+
+
+
+
+=======================================================
+
+minishell$ > a | > a
+[1]    352064 segmentation fault (core dumped)  ./minishell
+
+
+minishell$ ld
+ld: no input files

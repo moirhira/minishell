@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:21 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/01 21:46:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 09:47:31 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,7 @@ int builtin_cd(t_command *cmd, t_envp **env)
         return (1);
     }
     
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-    {
-        if (update_env_var(env, "OLDPWD", cwd) != 0)
-        {
-            ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
-            return (1);
-        }
-    }
-        
+    
     if (cmd->args[1] == NULL)
     {
         path = get_env_value(*env, "HOME");
@@ -42,20 +34,20 @@ int builtin_cd(t_command *cmd, t_envp **env)
             return (1);
         }
     }
-    else if (ft_strcmp(cmd->args[1], "-") == 0)
-    {
-        path = get_env_value(*env, "OLDPWD");
-         if (!path)
-        {
-            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-            return (1);
-        }
-        printf("%s\n", path);
-    }
     else
         path = cmd->args[1];
         
-        
+    
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+    {
+        if (update_env_var(env, "OLDPWD", cwd) != 0)
+        {
+            ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
+            return (1);
+        }
+    }
+
+    
     if (chdir(path) != 0)
     {
         ft_putstr_fd("minishell: cd: ", 2);
@@ -70,7 +62,7 @@ int builtin_cd(t_command *cmd, t_envp **env)
     {
         if (update_env_var(env, "PWD", cwd) != 0)
         {
-            ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
+            ft_putstr_fd("minishell: cd: failed to update PWD\n", 2);
             return (1);
         }
     }

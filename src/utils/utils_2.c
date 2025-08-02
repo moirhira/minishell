@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:51:44 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/27 12:18:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:09:50 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,18 @@ char **convert_env_to_array(t_envp *env)
     }
     envp[count] = NULL;   
     return envp;
+}
+int	ft_lstsize(t_envp *lst)
+{
+	int	i;
+
+	if (!lst)
+		return (0);
+	i = 0;
+	while (lst != NULL)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
 }

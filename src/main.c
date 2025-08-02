@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/28 16:19:42 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 20:25:53 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 char	*read_input(void)
 {
     char *line;
-    line = readline("minishell$ ");
+    line = readline("minishell> ");
     if (!line)
         return (NULL);
     if (*line)
@@ -103,6 +103,7 @@ int main(int ac, char **av, char **env)
             free(cmd_line);
             continue;
         }
+        
         if (parse_command(&token_list, &list_cmd, cmd_line, &my_env) == 0)
             execute_commands(list_cmd,&my_env);
         free_token(&token_list);

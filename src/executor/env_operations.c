@@ -6,12 +6,23 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:28:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/01 21:23:26 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:36:29 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+
+t_envp	*ft_lstlast(t_envp *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+	{
+		lst = lst->next;
+	}
+	return (lst);
+}
 int  update_env_var(t_envp **env, char *key, char *value)
 {
     if (!env || !key)
@@ -58,6 +69,7 @@ int  update_env_var(t_envp **env, char *key, char *value)
         
     new_node->next = NULL;
 
+    last = ft_lstlast(*env);
     if (last)
         last->next = new_node;
     else

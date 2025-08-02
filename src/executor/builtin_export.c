@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/01 21:29:22 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:45:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int check_var(char *str)
     return (1);
 }
 
+
 int builtin_export(t_command *cmd, t_envp **env)
 {
+    
      if (!cmd->args[1])
     {
         print_sorted_export(*env);
@@ -38,9 +40,7 @@ int builtin_export(t_command *cmd, t_envp **env)
     
     if (!env || !*env)
         return exit_status(1);
-
     int i = 1;
-
     while (cmd->args[i])
     {
         char *arg = cmd->args[i];

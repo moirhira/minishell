@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:54:05 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 22:22:48 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:00:05 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,7 @@ int builtin_unset(char **args, t_envp **env)
 
     while (args[i])
     {
-        if (is_valid_identifier(args[i]))
-            unset_variable(env, args[i]);
-        else
-        {
-            printf("unset: \'%s\': is not a valid identifier\n", args[i]);
-            return exit_status(1);
-        }
+        unset_variable(env, args[i]);
         i++;
     }
     return exit_status(0);
