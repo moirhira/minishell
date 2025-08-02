@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/24 16:41:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/26 21:48:40 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
             g_signal_received = 1;
             if (WTERMSIG(status) == SIGINT)
                 exit_status(130);
-            else if (WTERMSIG(status) == SIGQUIT)
-                exit_status(131);
             return (0);
         }
         return (1);
@@ -162,5 +160,4 @@ void parse_heredocs(t_command *command, t_envp *my_env)
         }
         cmd = cmd->next;
     }
-   
 }

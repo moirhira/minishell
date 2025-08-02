@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/30 09:58:33 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/31 20:44:01 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ char	*ft_itoa(int n);
 void	ft_putstr_fd(char *s, int fd);
 int ft_isspace(char c);
 int	ft_isalpha(int c);
+char **ft_split_advanced(char const *s, const char *charset);
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 
 # endif

@@ -6,23 +6,15 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/30 22:13:36 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:17:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-
-// int var_start = *i;
-// 		while (s[*i])
-// 			(*i)++;
-// 		char *var_name = ft_substr(s, var_start, *i - var_start);
-// 		char *temp = ft_strjoin(curnt_str, var_name);
-// 		free(curnt_str);
-// 		curnt_str = temp;
 char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 {
-	if (!s[*i + 1] || ft_isspace(s[*i + 1]))
+	if (!s[*i + 1] || ft_isspace(s[*i + 1]) || (s[*i - 1] == '"' && s[*i + 1] == '"'))
 	{
 		char *temp = ft_strjoin(curnt_str, "$");
 		free(curnt_str);
@@ -30,7 +22,7 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 		return (temp);
 	}
 	
-	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?' && s[*i + 1] != '"' && s[*i + 1] != '\'')
+	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?' && s[*i + 1] != '"')
 	{
 		char *temp = ft_strjoin(curnt_str, "$");
 		free(curnt_str);
@@ -64,6 +56,45 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 	free(var_name);
 	return (curnt_str);
 }
+
+
+char *get_var_value_and_advance(char *s, int *i, t_envp **my_env)
+{
+	// if (!s[*i + 1] || ft_isspace(s[*i + 1]) || s[*i + 1] == '"' || s[*i + 1] == '\'')
+	if (!s[*i + 1] || ft_isspace(s[*i + 1]) || (s[*i - 1] == '"' && s[*i + 1] == '"'))
+	{
+		(*i)++;
+		return (ft_strdup("$"));
+	}
+	
+	// Case: '$' followed by an invalid character (e.g., '$%'). Treat as a literal '$'.
+	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?' && s[*i + 1] != '"')
+	{
+		(*i)++;
+		return (ft_strdup("$"));
+	}
+	
+	(*i)++;
+
+	if (s[*i] == '?')
+	{
+		(*i)++;
+		return (ft_itoa(exit_status(-1)));
+	}
+
+	int var_start = *i;
+	while (s[*i] && (ft_isalnum(s[*i]) || s[*i] == '_'))
+		(*i)++;
+	char *var_name = ft_substr(s, var_start, *i - var_start);
+	char *var_value = get_env_value(*my_env, var_name);
+	free(var_name);
+	if (var_value)
+	{
+		return (ft_strdup(var_value));
+	}
+	return (NULL);
+}
+
 
 static int handel_operator(char *s, int i, t_token **token)
 {
@@ -131,21 +162,50 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	int attached;
 	attached = was_previous_space(s, i);
-	char *simple_str = ft_calloc(ft_strlen(s) * 2 + 1, 1);
+	char *simple_str = ft_calloc(ft_strlen(s) * 2, 1);
 	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\'' &&
 		   s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
 	{
 		if (s[i] == '$')
 		{
+
 			if(!(*token) || (*token)->type != 5)
 			{
-				simple_str = handel_env_var(s, &i, my_env, simple_str);
-				if (*simple_str == '\0')
+				
+				char *var_value = get_var_value_and_advance(s, &i, my_env);
+				if (!var_value || *var_value == '\0')
 				{
-					free(simple_str);
-					return (i);
+					if (var_value)
+					 	free(var_value);
+					continue;
 				}
-				simple_str = trim_string(simple_str);
+				char **split_words = ft_split_advanced(var_value, " \t\n");
+				free(var_value);
+				if (!split_words || !split_words[0])
+				{
+					if (split_words)
+						free_array(split_words, ft_strlen_2d(split_words));
+					continue;
+				}
+				
+				int word_count = ft_strlen_2d(split_words);
+				char *temp = ft_strjoin(simple_str, split_words[0]);
+				free(simple_str);
+				simple_str = temp;
+				
+				if (word_count > 1)
+				{
+					add_token(token, create_token(simple_str, 0, 0, 0));
+					free(simple_str);
+					int k = 1;
+					while (k < word_count - 1)
+					{
+						add_token(token, create_token(split_words[k], 0, 0, 0));
+						k++;
+					}
+					simple_str = ft_strdup(split_words[word_count - 1]);
+				}
+				free_array(split_words, ft_strlen_2d(split_words));
 			}
 			else
 			{
@@ -163,10 +223,13 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 			simple_str = temp;
 		}
 	}
-	t_token *new = create_token(simple_str, 0, 0, 0);
-	if (*token && attached)
-		get_last_token(*token)->attached = 1;
-	add_token(token, new);
+	if (simple_str && *simple_str)
+	{
+		t_token *new = create_token(simple_str, 0, 0, 0);
+		if (*token && attached)
+			get_last_token(*token)->attached = 1;
+		add_token(token, new);
+	}
 	free(simple_str);
 	return (i);
 }

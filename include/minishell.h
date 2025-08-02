@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekhallaf <ekhallaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/22 09:39:55 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:51:58 by ekhallaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,38 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <string.h>
 #include "../libraries/libft/libft.h"
+#include <linux/limits.h>
+#include <fcntl.h> 
+#include <sys/wait.h>
+
 
 extern volatile sig_atomic_t g_signal_received;
+#define SIZE_ENV 1024
 
 // signal setups macros
 typedef enum e_shell_state
 {
     SHELL_INTERACTIVE = 1,
     SHELL_EXECUTING = 2,
-    SHELL_HEREDOC = 3
+    SHELL_HEREDOC = 3,
+    CHILD_PROCESS = 4
 }   t_shell_state;
 
-#define SIZE_ENV 1024
-
 typedef enum e_token_type {
-    TOKEN_WORD,        // word
+    TOKEN_WORD,       // word
     TOKEN_PIPE,        // |
     TOKEN_INPUT,       // <
-    TOKEN_OUTPUT,      // >
+    TOKEN_OUTPUT,     // >
     TOKEN_APPEND,      // >>
     TOKEN_HEREDOC,     // <<
-    TOKEN_HEREDOC_QUOTED,
+    TOKEN_HEREDOC_QUOTED, 
     TOKEN_EOL        // end of
 } t_token_type;
 
@@ -51,7 +56,7 @@ typedef struct s_token {
     int attached;
     int was_quoted;
     struct s_token *next;
-} t_token;
+}   t_token;
 
 typedef struct s_redirect
 {
@@ -76,7 +81,7 @@ typedef struct s_command
     
     struct s_redirect *redirects;
     struct s_command *next;
-} t_command;
+}   t_command;
 
 typedef struct s_envp
 {
@@ -84,9 +89,10 @@ typedef struct s_envp
     char *value;
     struct s_envp *next;
 }   t_envp;
+
 // tokenizer.c
-char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
 int split_token(char *s, t_envp **my_env, t_token **token);
+char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
 
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);
@@ -117,23 +123,101 @@ void  add_redirect(t_command *cmd, int type, const char *filename);
 void	free_token(t_token **stacka);
 void	free_env(t_envp **env);
 void	free_command(t_command **command);
-
-// utils_2.c
-int only_whitespace(char *str);
-int exit_status(int new_status);
+int     exit_status(int new_status);
 
 
 
-//setup_signals.c
-void    setup_signals(int state);
 
-// executer.c
-int execute_commands(t_command *command, t_envp **my_env);
+
+
+// execution.c
+int     exit_status(int new_status);
+int     execute_commands(t_command *command, t_envp **env);
+int     execute_builtin(t_command *cmd, t_envp **env);
+int    builtin_cd(t_command *cmd, t_envp **env);
+char *find_command_in_path(const char *cmd, t_envp *env, int *status);
+void    ft_swap(char **a, char **b);
+void    free_env_array(char **envp);
+int set_env(t_envp **env, const char *key, const char *value);
+
 // parse_herdocs.c
 void parse_heredocs(t_command *command, t_envp *my_env);
 
 
+// setup_signals.c
+void    setup_signals(int state);
+
+// utils_2.c
+int only_whitespace(char *str);
+char **convert_env_to_array(t_envp *env);
+
+// for export 
+int     print_sorted_export(t_envp *env);
+int     is_valid_identifier(const char *str);
+int     builtin_export(t_command *cmd, t_envp **env);
+int     count_env(t_envp *env);
+void    sort_in_tab(char **array, int size);
+int     print_sorted_export(t_envp *env);
+
+// unset
+int    builtin_unset(char **args, t_envp **env);
+
+// exit
+int	    builtin_exit(char **args, t_envp **env);
+void    free_env(t_envp **env);
+long    my_strtol(const char *str, char **endptr, int base);
+
+// echo
+int     is_new_line(char *cmd);
+int    builtin_echo(char **cmd);
+
+// helper
+int is_valid_identifier(const char *str);
+int is_alpha(char c);
+int is_digit(char c);
+int is_alnum(char c);
+
+//pwd
+int	builtin_pwd(t_envp *env);
+
+// env
+int   builtin_env(t_envp *envp);
+
+
+//helper 1
+int is_alpha(char c);
+int is_digit(char c);
+int is_alnum(char c);
+
+// helper 2
+char    *ft_strdup(const char *s);
+char    *get_env_value(t_envp *env, const char *key);
+void    sort_in_tab(char **array, int size);
+int     count_env(t_envp *env);
+int	    print_sorted_export(t_envp *env);
+char	*create_export_entry(char *key, char *value);
+void	print_and_free_array(char **arr);
+void	free_array(char **arr, int size);
+
+
+// execute single command 
+int        execute_external(t_command *cmd, t_envp *env);
+int        is_builtin(const char *cmd);
+
+// setup_redirctions 
+int setup_redirections(t_command *cmd, int exit_or_return);
+int execute_pipeline(t_command *cmd_list, t_envp *env);
+
+
+// pipeline
+int exec_command(t_command *cmd, t_envp *env);
+int execute_pipeline(t_command *cmd_list, t_envp *env);
+int exec_builtin_in_parent(t_command *cmd, t_envp **env);
+int create_pipe_if_needed(t_command *cmd, int pipefd[2]);
+void child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env);
+int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2]);
+int handle_builtin_if_no_pipe(t_command *cmd, t_envp **env);
+int	run_pipeline_loop(t_command *cmd, t_envp *env);
+
 #endif
 
-
-//minishell$ echo hello << a dfs  > d
