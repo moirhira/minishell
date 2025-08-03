@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:21 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 09:47:31 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:04:48 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int builtin_cd(t_command *cmd, t_envp **env)
     
     if (ft_strlen_2d(cmd->args) > 2)
     {
-        ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+        display_error("cd", "too many arguments");
         return (1);
     }
     
@@ -30,7 +30,7 @@ int builtin_cd(t_command *cmd, t_envp **env)
         path = get_env_value(*env, "HOME");
         if (!path)
         {
-            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+            display_error("cd", "HOME not set");
             return (1);
         }
     }
@@ -42,19 +42,17 @@ int builtin_cd(t_command *cmd, t_envp **env)
     {
         if (update_env_var(env, "OLDPWD", cwd) != 0)
         {
-            ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
+            display_error("cd", "failed to update OLDPWD");
             return (1);
         }
     }
 
-    
     if (chdir(path) != 0)
     {
-        ft_putstr_fd("minishell: cd: ", 2);
         if (cmd->args[1])
-            perror(cmd->args[1]);
+            display_error("cd", strerror(errno));
         else
-            perror("HOME");
+            display_error("HOME", strerror(errno));
         return (1);
     }
 
@@ -62,7 +60,7 @@ int builtin_cd(t_command *cmd, t_envp **env)
     {
         if (update_env_var(env, "PWD", cwd) != 0)
         {
-            ft_putstr_fd("minishell: cd: failed to update PWD\n", 2);
+            display_error("cd", "failed to update PWD");
             return (1);
         }
     }

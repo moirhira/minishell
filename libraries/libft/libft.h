@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/31 20:44:01 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 14:32:15 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include <stdlib.h>
 
 
-size_t	ft_strcat(char *dst, const char src);
+char	*ft_strcat(char *dest, const char *src);
+char	*ft_strcpy(char *dest, const char *src);
 int	ft_strlen(const char *str);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *str, int ch);

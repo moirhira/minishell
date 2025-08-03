@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 16:36:29 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:34:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int exec_command(t_command *cmd, t_envp *env)
             return (status);
         else
         {
-           	ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(cmd->args[0], 2);
-            ft_putstr_fd(": command not found\n", 2);
+            display_error(cmd->args[0], ": command not found");
             return (127);
         }
     }
@@ -38,8 +36,7 @@ int exec_command(t_command *cmd, t_envp *env)
         return (free(path), 1);
     }
     execve(path, cmd->args, envp);
-    ft_putstr_fd("minishell: ", 2);
-	perror(cmd->args[0]);
+    display_error(cmd->args[0], strerror(errno));
     free(path);
     free_array(envp, ft_strlen_2d(envp));
     return(126);

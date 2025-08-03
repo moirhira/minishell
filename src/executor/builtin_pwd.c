@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 08:44:41 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 11:45:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:28:13 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	builtin_pwd(t_envp *env)
 	}
 	else
 	{
-		perror("pwd");
+		display_error("pwd", strerror(errno));
 		return (1);
 	}
 }

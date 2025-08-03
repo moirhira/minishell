@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 21:57:37 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 15:49:49 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ static int f_error(int fd, t_redirect *redir, int target_fd)
 {
     if (fd == -1)
     {
-        ft_putstr_fd("minishell: ", 2);
-        perror(redir->filename);
+        display_error(redir->filename, strerror(errno));
         return 0;
     }
 

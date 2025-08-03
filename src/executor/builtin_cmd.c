@@ -2,39 +2,7 @@
 
 
 
-int has_input_redir(t_command *cmd)
-{
-    t_redirect *redir;
 
-    if (!cmd || !cmd->redirects)
-        return (0);
-
-    redir = cmd->redirects;
-    while (redir)
-    {
-        if (redir->type == TOKEN_INPUT || redir->type == TOKEN_HEREDOC)
-            return (1); // Found one, no need to look further
-        redir = redir->next;
-    }
-    return (0); // No input redirections found
-}
-
-int has_output_redir(t_command *cmd)
-{
-    t_redirect *redir;
-
-    if (!cmd || !cmd->redirects)
-        return (0);
-
-    redir = cmd->redirects;
-    while (redir)
-    {
-        if (redir->type == TOKEN_OUTPUT || redir->type == TOKEN_APPEND)
-            return (1); // Found one, no need to look further
-        redir = redir->next;
-    }
-    return (0); // No output redirections found
-}
 
 int execute_builtin(t_command *cmd, t_envp **env)
 {
@@ -42,13 +10,30 @@ int execute_builtin(t_command *cmd, t_envp **env)
           return(-1);
      int result;
      int s_stdin = -1;
-     int s_stdout = -1;
+    int s_stdout = -1;
 
-     if (has_input_redir(cmd))
-          s_stdin = dup(STDIN_FILENO);
+    if (has_input_redir(cmd))
+    {
+        s_stdin = dup(STDIN_FILENO);
+        if (s_stdin == -1)
+        {
+            display_error("dup Failed!", strerror(errno));
+            close(s_stdin);
+            return (1);
+        }
+    }
+    
 
-     if (has_output_redir(cmd))
-          s_stdout = dup(STDOUT_FILENO);
+    if (has_output_redir(cmd))
+    {
+        s_stdout = dup(STDOUT_FILENO);
+        if (s_stdout == -1)
+        {
+            display_error("dup Failed!", strerror(errno));
+            close(s_stdout);
+            return (1);
+        }
+    }
      
      if (setup_redirections(cmd, 0) == 1)
           return(1);
@@ -72,12 +57,15 @@ int execute_builtin(t_command *cmd, t_envp **env)
 
      if (s_stdin != -1)
      {
-          dup2(s_stdin, STDIN_FILENO);
+          if (dup2(s_stdin, STDIN_FILENO) == -1)
+               display_error("dup2 Failed!", strerror(errno));
           close(s_stdin);
      }
+     
      if (s_stdout != -1)
      {
-          dup2(s_stdout, STDOUT_FILENO);
+          if (dup2(s_stdout, STDOUT_FILENO) == -1)
+               display_error("dup2 Failed!", strerror(errno));
           close(s_stdout);
      }
     return (result);

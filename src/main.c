@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/02 20:25:53 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 12:25:33 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 char	*read_input(void)
 {
     char *line;
-    line = readline("minishell> ");
+    line = readline("minishell$ ");
     if (!line)
         return (NULL);
     if (*line)

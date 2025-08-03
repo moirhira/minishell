@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:51:44 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/02 14:09:50 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:44:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,38 @@ int	ft_lstsize(t_envp *lst)
 		i++;
 	}
 	return (i);
+}
+
+int has_input_redir(t_command *cmd)
+{
+    t_redirect *redir;
+
+    if (!cmd || !cmd->redirects)
+        return (0);
+
+    redir = cmd->redirects;
+    while (redir)
+    {
+        if (redir->type == TOKEN_INPUT || redir->type == TOKEN_HEREDOC)
+            return (1);
+        redir = redir->next;
+    }
+    return (0);
+}
+
+int has_output_redir(t_command *cmd)
+{
+    t_redirect *redir;
+
+    if (!cmd || !cmd->redirects)
+        return (0);
+
+    redir = cmd->redirects;
+    while (redir)
+    {
+        if (redir->type == TOKEN_OUTPUT || redir->type == TOKEN_APPEND)
+            return (1);
+        redir = redir->next;
+    }
+    return (0);
 }

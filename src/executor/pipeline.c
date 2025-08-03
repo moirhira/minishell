@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 11:04:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 17:11:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int create_pipe_if_needed(t_command *cmd, int pipefd[2])
     {
         if (pipe(pipefd) == -1)
         {
-            perror("pipe");
+            display_error("pipe", strerror(errno));
             exit_status(1);
             return -1;
         }
@@ -85,7 +85,7 @@ int execute_pipeline(t_command *cmd_list, t_envp *env)
         pid = fork();
         if (pid == -1)
         {
-            perror("fork");
+            display_error("fork", strerror(errno));
             exit_status(1);
             return 1;
         }

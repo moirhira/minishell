@@ -178,14 +178,19 @@ minishell: sdvsv: command not found
 minishell$ % 
 
 
+minishell$ > a | > a ✅
+[1]    352064 segmentation fault (core dumped)  ./minishell
 
 
 
 =======================================================
 
-minishell$ > a | > a
-[1]    352064 segmentation fault (core dumped)  ./minishell
 
 
-minishell$ ld
-ld: no input files
+
+==631541== Command: ./minishell
+==631541== 
+minishell$ 
+minishell$ pwd | $efdgbdb
+minishell: syntax error near unexpected token `newline'
+minishell$ $sffsfd

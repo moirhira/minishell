@@ -6,12 +6,27 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/01 16:14:14 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 17:07:12 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+
+char	*ft_strjoin_path(const char *dir, const char *cmd)
+{
+	char	*full;
+	size_t	len_dir = ft_strlen(dir);
+	size_t	len_cmd = ft_strlen(cmd);
+
+	full = malloc(len_dir + 1 + len_cmd + 1);
+	if (!full)
+		return (NULL);
+	ft_strcpy(full, dir);
+	full[len_dir] = '/';
+	ft_strcpy(full + len_dir + 1, cmd);
+	return (full);
+}
 
 static int is_file_exists(const char *path)
 {
@@ -27,10 +42,10 @@ static int is_executable(const char *path)
 }
 
 
-char *find_command_in_path(const char *cmd, t_envp *env, int *status)
+char *find_command_in_path(char *cmd, t_envp *env, int *status)
 {
     char *path_env = get_env_value(env, "PATH");
-    char full[PATH_MAX];
+    char *full;
 
     if (!cmd || !*cmd)
         return (NULL);
@@ -39,15 +54,13 @@ char *find_command_in_path(const char *cmd, t_envp *env, int *status)
     {
         if (!is_file_exists(cmd))
         {
-            ft_putstr_fd("minishell: ", 2);
-            perror(cmd);
+            display_error(cmd, strerror(errno));
             *status = 127;
             return (NULL);
         }
         if(!is_executable(cmd))
         {
-            ft_putstr_fd("minishell: ", 2);
-            perror(cmd);
+            display_error(cmd, strerror(errno));
             *status = 126;
             return (NULL);
         }
@@ -64,13 +77,20 @@ char *find_command_in_path(const char *cmd, t_envp *env, int *status)
     int i = 0;
     while (paths[i])
     {
-        snprintf(full, sizeof(full), "%s/%s", paths[i], cmd);
+        full = ft_strjoin_path(paths[i], cmd);
+        if (!full)
+        {
+            free_array(paths, ft_strlen_2d(paths));
+            return (NULL);
+        }
         if (is_executable(full))
         {
             char *res = ft_strdup(full);
+            free(full);
             free_array(paths, ft_strlen_2d(paths));
             return (res);
         }
+        free(full);
         i++;
     }
     free_array(paths, ft_strlen_2d(paths));

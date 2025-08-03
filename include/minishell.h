@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/02 14:10:16 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:44:57 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include "../libraries/libft/libft.h"
 #include <linux/limits.h>
 #include <fcntl.h> 
+#include <errno.h>
 #include <sys/wait.h>
 
 
@@ -126,6 +127,9 @@ void	free_command(t_command **command);
 int     exit_status(int new_status);
 
 
+// dispal_error.c
+void	display_error(char *command_or_file, char *error_message);
+
 
 // env_oprations.c
 int  update_env_var(t_envp **env, char *key, char *value);
@@ -136,7 +140,7 @@ int     exit_status(int new_status);
 int     execute_commands(t_command *command, t_envp **env);
 int     execute_builtin(t_command *cmd, t_envp **env);
 int    builtin_cd(t_command *cmd, t_envp **env);
-char *find_command_in_path(const char *cmd, t_envp *env, int *status);
+char *find_command_in_path(char *cmd, t_envp *env, int *status);
 void    ft_swap(char **a, char **b);
 void    free_env_array(char **envp);
 
@@ -151,6 +155,9 @@ void    setup_signals(int state);
 int only_whitespace(char *str);
 char **convert_env_to_array(t_envp *env);
 int	ft_lstsize(t_envp *lst);
+int has_input_redir(t_command *cmd);
+int has_output_redir(t_command *cmd);
+
 // for export 
 int     print_sorted_export(t_envp *env);
 int     is_valid_identifier(const char *str);
@@ -207,6 +214,8 @@ int        is_builtin(const char *cmd);
 // setup_redirctions 
 int setup_redirections(t_command *cmd, int exit_or_return);
 int execute_pipeline(t_command *cmd_list, t_envp *env);
+
+
 
 
 // pipeline

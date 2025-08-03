@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 15:45:11 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 16:13:20 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int builtin_export(t_command *cmd, t_envp **env)
             {
                 if (update_env_var(env, key, value) != 0)
                 {
-                    ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
+                    display_error("export", "failed to update the env");
                     return (1);
                 }
             }
@@ -84,7 +84,7 @@ int builtin_export(t_command *cmd, t_envp **env)
             }
             if (update_env_var(env, arg, NULL) != 0)
             {
-                ft_putstr_fd("minishell: cd: failed to update OLDPWD\n", 2);
+                display_error("export", "failed to update the env");
                 return (1);
             }
         }

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 10:53:55 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/03 17:13:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	execute_external(t_command *cmd, t_envp *env)
 	pid = fork();
 	if (pid < 0)
 	{
-		perror("fork failed");
+        display_error("fork failed", strerror(errno));
 		free(path);
         free_array(envp, ft_strlen_2d(envp));
 		return (1);
@@ -85,9 +85,7 @@ int	execute_external(t_command *cmd, t_envp *env)
         setup_signals(CHILD_PROCESS);
         setup_redirections(cmd, 1);
 		execve(path, cmd->args, envp);
-        ft_putstr_fd("minishell: ", 2);
-		perror(cmd->args[0]);
-        
+        display_error(cmd->args[0], strerror(errno));
         free(path);
         free_array(envp, ft_strlen_2d(envp));
 		exit(126);
