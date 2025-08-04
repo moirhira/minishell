@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/30 13:46:36 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:27:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_command *creat_command(void)
 {
     t_command *new_cmd;
-    new_cmd = (t_command *)malloc(sizeof(t_command));
+    new_cmd = (t_command *)ft_malloc(sizeof(t_command));
     if (!new_cmd)
         return (NULL);
     new_cmd->args = NULL;
@@ -50,7 +50,7 @@ void  add_redirect(t_command *cmd, int type, const char *filename)
     t_redirect *new, *ptr;
     
     ptr = NULL;
-    new = (t_redirect *)malloc(sizeof(t_redirect));
+    new = (t_redirect *)ft_malloc(sizeof(t_redirect));
     if (!new)
         return;
     new->filename = ft_strdup(filename);
@@ -78,7 +78,7 @@ void add_argument(t_command *cmd, char *arg)
         return;
     if (!cmd->args)
     {
-        cmd->args = (char **)malloc(sizeof(char *) * 2);
+        cmd->args = (char **)ft_malloc(sizeof(char *) * 2);
         if (!cmd->args)
             return;
         cmd->args[0] = ft_strdup(arg);
@@ -87,7 +87,7 @@ void add_argument(t_command *cmd, char *arg)
     }
     while (cmd->args[len])
         len++;
-    new_args = (char **)malloc(sizeof(char *) * (len + 2));
+    new_args = (char **)ft_malloc(sizeof(char *) * (len + 2));
     if (!new_args)
         return;
     int i = 0;
@@ -98,7 +98,7 @@ void add_argument(t_command *cmd, char *arg)
     }
     new_args[i++] = ft_strdup(arg);
     new_args[i] = NULL;
-    free(cmd->args);
+    // free(cmd->args);
     cmd->args = new_args;
 }
 
@@ -106,21 +106,26 @@ int check_next_token(t_token *token, t_command *head)
 {
     if (!token->next)
     {
-        printf("minishell: syntax error near unexpected token `newline'\n");
+        ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
         exit_status(2);
         return (0);
     }
     if (token->type == 1 && token->next->type == 1)
     {
-        printf("minishell: syntax error near unexpected token `||'\n"); 
+        ft_putstr_fd("minishell: syntax error near unexpected token `||'\n", 2); 
         exit_status(2);
         return (0);
     }
-    if (token->next->type != 0)
+    if (token->type != 1)
     {
-        printf("minishell: syntax error near unexpected token `%s'\n", token->next->value); 
-        exit_status(2);
-        return (0);
+        if (token->next->type != 0)
+        {
+            ft_putstr_fd("minishell: syntax error near unexpected token", 2 ); 
+            ft_putstr_fd(token->next->value, 2);
+            ft_putstr_fd("\n", 2);
+            exit_status(2);
+            return (0);
+        }
     }
     return (1);
 }

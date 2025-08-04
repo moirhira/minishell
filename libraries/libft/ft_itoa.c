@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 20:52:43 by moirhira          #+#    #+#             */
-/*   Updated: 2025/05/01 20:52:55 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:01:32 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*ft_itoa(int n)
 	len = ft_countdgt(n);
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	res = (char *)malloc(sizeof(char) * (len + 1));
+	res = ft_malloc(sizeof(char) * (len + 1));
 	if (!res)
 		return (NULL);
 	res[len] = '\0';

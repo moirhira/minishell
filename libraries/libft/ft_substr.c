@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 13:56:17 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/25 13:56:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:03:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len > slen - start)
 		len = slen - start;
-	ptr = (char *)malloc((len + 1) * sizeof(char));
+	ptr = (char *)ft_malloc((len + 1) * sizeof(char));
 	if (ptr == NULL)
 		return (NULL);
 	i = 0;

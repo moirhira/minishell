@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/29 21:41:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:48:49 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,12 @@ t_envp  *retrieve_envp(char **env)
             i++;
             continue;
         }
-        new_node = (t_envp *)malloc(sizeof(t_envp));
+        new_node = (t_envp *)ft_malloc(sizeof(t_envp));
         if (!new_node)
             return (printf("Error from malloc\n"), NULL);
         size_t key_len = equal_sign - env[i];
         
-        new_node->key = (char *)malloc(key_len + 1);
+        new_node->key = (char *)ft_malloc(key_len + 1);
         if (!new_node->key)
             return (printf("Error from malloc\n"), NULL);
         ft_strlcpy(new_node->key, env[i], key_len + 1);
@@ -103,15 +103,20 @@ int main(int ac, char **av, char **env)
             free(cmd_line);
             continue;
         }
+        
         if (parse_command(&token_list, &list_cmd, cmd_line, &my_env) == 0)
             execute_commands(list_cmd,&my_env);
-        free_token(&token_list);
-        free_command(&list_cmd);
-        free(cmd_line);
+        // free_all_momory();
+        // free_token(&token_list);
+        // free_command(&list_cmd);
+        // free(cmd_line);
+        token_list = NULL;
+        list_cmd = NULL;
     }
-    free_command(&list_cmd);
-    free_token(&token_list);
-    free_env(&my_env);
+    free_all_momory();
+    // free_command(&list_cmd);
+    // free_token(&token_list);
+    // free_env(&my_env);
     return(exit_status (-1));
 }
 

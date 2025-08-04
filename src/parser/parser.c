@@ -6,20 +6,83 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/30 15:42:54 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 22:31:13 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+int validate_syntaxe(t_token **token_lst)
+{
+    t_token *token = *token_lst;
+    
+    if (!token)
+        return (1);
+    
+    if (token->type == 1)
+    {
+        if (token->next && token->next->type == 1)
+            printf("minishell: syntax error near unexpected token `||'\n");
+        else
+            printf("minishell: syntax error near unexpected token `%s'\n", token->value);
+        return (0);
+    }
+    while (token)
+    {
+        if (token->type != 0)
+        {
+            if (!token->next)
+            {
+                ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+                exit_status(2);
+                return (0);
+            }
+            if (token->type == 1 && token->next->type == 1)
+            {
+                ft_putstr_fd("minishell: syntax error near unexpected token `||'\n", 2); 
+                exit_status(2);
+                return (0);
+            }
+            if (token->type != 1)
+            {
+                if (token->next->type != 0)
+                {
+                    ft_putstr_fd("minishell: syntax error near unexpected token ", 2 ); 
+                    ft_putstr_fd(token->next->value, 2);
+                    ft_putstr_fd("\n", 2);
+                    exit_status(2);
+                    return (0);
+                }
+            }
+        }
+        
+        token = token->next;
+    }
+    return (1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 {
     t_command *head;
     t_token *token;
-    
-    head = NULL;      
+
+    head = NULL;
     token = *token_lst;
-    
+
     while (token)
     {
         if (!head)
@@ -27,26 +90,16 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             add_command(cmd_lst, creat_command());
             head = *cmd_lst;
         }
-        if((*token_lst)->type == 1)
-        {
-            if ((*token_lst)->next && (*token_lst)->next->type == 1)
-                printf("minishell: syntax error near unexpected token `||'\n");
-            else
-                printf("minishell: syntax error near unexpected token `%s'\n", token->value); 
-            exit_status(2);
-            // free(head);
+        if (token->type == 1 && !handel_pipe(&token, &head, cmd_lst)) // |
             return (NULL);
-        }
-        if (token->type == 1 && !handel_pipe(&token, &head, cmd_lst)) // | 
-            return (NULL);
-        else if (token->type == 2) // < 
+        else if (token->type == 2) // <
         {
             if (!handel_input_redirection(&token, head))
                 return (NULL);
         }
         else if (token->type == 3) // >
         {
-           if (!handel_output_redirection(&token, head))
+            if (!handel_output_redirection(&token, head))
                 return (NULL);
         }
         else if (token->type == 4) // >>
@@ -59,6 +112,10 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             if (!handel_heredoc(&token, head))
                 return (NULL);
         }
+        else if (token->ignored == 1)
+        {
+            token = token->next;
+        }
         else
             handel_argument(&token, head);
     }
@@ -67,33 +124,28 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 // print commands------------------------
 void print_commands(t_command **commads);
 //---------------------------------------
+
+
+
 int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, t_envp **my_env)
 {
     if (!split_token(cmd_line, my_env, token_lst))
         return (exit_status(2), 2);
-    
-    // t_token *ptr;
-    // ptr = *token_lst;
-    // while (ptr)
-    // {
-    //     printf("value       : %s\n", ptr->value);
-    //     printf("type        : %d\n", ptr->type);
-    //     printf("attached    : %d\n", ptr->attached);
-    //     printf("was quoted  : %d\n", ptr->was_quoted);
-    //     printf("....................................\n");
-    //     ptr = ptr->next;
-    // }
-    
+
+    if (!validate_syntaxe(token_lst))
+    {
+        exit_status (2);
+        return (2);
+    }
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
     {
-        free_token(token_lst);
-        free_env(my_env);
-        free_command(command_lst);
+        // free_token(token_lst);
+        // free_command(command_lst);
         return (exit_status(2), 2);
     }
-    
-    print_commands(command_lst);
+
+    // print_commands(command_lst);
     return (exit_status(-1), 0);
 }
 
@@ -138,9 +190,13 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
 
 
 
+
+
+
+
 void print_commands(t_command **commads)
 {
-    
+
     t_command *ptr;
     ptr = (*commads);
     while (ptr)
@@ -169,8 +225,6 @@ void print_commands(t_command **commads)
     }
 }
 
-
-
 /*
 echo $$
 # → syntax error (unless you implement PID)
@@ -179,10 +233,6 @@ echo $!
 # → syntax error (unless you implement job control)
 
 */
-
-
-
-
 
 // t_token *ptr;
 //     ptr = *token_lst;
@@ -195,4 +245,30 @@ echo $!
 //         printf("....................................\n");
 //         ptr = ptr->next;
 //     }
-    
+
+
+// if (token->type == 1 || token->type == 2 || token->type == 3
+//     || token->type == 4 || token->type == 5 || token->type == 6)
+// {
+//     next_token = token->next;
+//     if (!next_token)
+//     {
+//         ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+//         return (0);
+//     }
+//     if (token->type == 1 && next_token->type == 1)
+//     {
+//         ft_putstr_fd("minishell: syntax error near unexpected token `||'\n", 2); 
+//         return (0);
+//     }
+//     if (token->type != 1)
+//     {
+//         if (next_token->type != 0)
+//         {
+//             ft_putstr_fd("minishell: syntax error near unexpected token", 2 ); 
+//             ft_putstr_fd(token->next->value, 2);
+//             ft_putstr_fd("\n", 2);
+//             return (0);
+//         }
+//     }
+// }

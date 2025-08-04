@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 22:22:07 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/15 15:51:01 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 16:03:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	s1len = ft_strlen(s1);
 	s2len = ft_strlen(s2);
-	ptr = (char *)malloc(sizeof(char) * (s1len + s2len + 1));
+	ptr = (char *)ft_malloc(sizeof(char) * (s1len + s2len + 1));
 	if (!ptr)
 		return (NULL);
 	ft_strcoopy(ptr, s1, 0);

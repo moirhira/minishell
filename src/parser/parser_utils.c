@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/18 09:11:14 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 19:28:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst)
 {
-    if (!check_next_token(*token, *head))
-        return (0);
     add_command(cmd_lst, creat_command());
     (*head)->pipe = 1;
     *head = (*head)->next;
@@ -24,41 +22,73 @@ int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst)
 }
 int handel_input_redirection(t_token **token, t_command *head)
 {
-    if (!check_next_token(*token, head))
+    char *full_str;
+    
+    *token = (*token)->next;
+    full_str = ft_strdup((*token)->value);
+    if (!full_str)
         return (0);
-    *token = (*token)->next;
+    while ((*token)->attached)
+    {
+        char *old = full_str;
+        *token = (*token)->next;
+        full_str = ft_strjoin(full_str, (*token)->value);
+        // free(old);
+    }
     head->infile_count++;
-    add_redirect(head, 2, (*token)->value);
+    add_redirect(head, 2, full_str);
     *token = (*token)->next;
+    // free(full_str);
     return (1);
 }
 
 int handel_output_redirection(t_token **token, t_command *head)
 {
-    if (!check_next_token(*token, head))
+    char *full_str;
+    
+    *token = (*token)->next;
+    full_str = ft_strdup((*token)->value);
+    if (!full_str)
         return (0);
-    *token = (*token)->next;
+    while ((*token)->attached)
+    {
+        char *old = full_str;
+        *token = (*token)->next;
+        full_str = ft_strjoin(full_str, (*token)->value);
+        // free(old);
+    }
     head->outfile_count++;
-    add_redirect(head, 3, (*token)->value);
+    add_redirect(head, 3, full_str);
     *token = (*token)->next;
+    // free(full_str);
     return (1);
 }
 int handel_append_redirection(t_token **token, t_command *head)
 {
-    if (!check_next_token(*token, head))
+    char *full_str;
+    
+    *token = (*token)->next;
+    full_str = ft_strdup((*token)->value);
+    if (!full_str)
         return (0);
-    *token = (*token)->next;
+    while ((*token)->attached)
+    {
+        char *old = full_str;
+        *token = (*token)->next;
+        full_str = ft_strjoin(full_str, (*token)->value);
+        // free(old);
+    }
     head->append_count++;
-    add_redirect(head, 4, (*token)->value);
+    add_redirect(head, 4, full_str);
     *token = (*token)->next;
+    // free(full_str);
     return (1);
 }
 
 int handel_heredoc(t_token **token, t_command *head)
 {
     int need_quote = 0;
-    if (!check_next_token(*token, head))
-        return (0);
+
     *token = (*token)->next;
     head->heredoc_count++;
     //----------------------------------------------
@@ -72,7 +102,7 @@ int handel_heredoc(t_token **token, t_command *head)
         char *old = full_str;
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
-        free(old);
+        // free(old);
     }
     //----------------------------------------------
     if (need_quote || (*token)->was_quoted)
@@ -80,7 +110,7 @@ int handel_heredoc(t_token **token, t_command *head)
     else
         add_redirect(head, 5, full_str);
     *token = (*token)->next;
-    free(full_str);
+    // free(full_str);
     return (1);
 }
 
@@ -94,9 +124,10 @@ void handel_argument(t_token **token, t_command *head)
         char *old = full_str;
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
-        free(old);
+        
+        // free(old);
     }
     add_argument(head, full_str);
-    free(full_str);
+    // free(full_str);
     *token = (*token)->next;
 }

@@ -1,33 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/20 15:04:27 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/03 14:31:29 by moirhira         ###   ########.fr       */
+/*   Created: 2025/08/04 20:43:24 by moirhira          #+#    #+#             */
+/*   Updated: 2025/08/04 20:46:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strcat(char *dest, const char *src)
+char *ft_strndup(const char *str, size_t n)
 {
-	size_t	i;
-	size_t	dest_len;
-
-	if (!dest || !src)
+    size_t	i;
+	size_t	len;
+	char	*ptr;
+    
+    if (!str)
 		return (NULL);
-
-	dest_len = ft_strlen(dest);
-	i = 0;
-	while (src[i])
-	{
-		dest[dest_len + i] = src[i];
-		i++;
-	}
-	dest[dest_len + i] = '\0';
-
-	return (dest);
+    
+    len = 0;
+    while (str[len] && len < n)
+        len++;
+    
+    ptr = (char *)ft_malloc((len + 1) * sizeof(char));
+    if (!ptr)
+        return (NULL);
+    i = 0;
+    while (i < len)
+    {
+        ptr[i] = str[i];
+        i++;
+    }
+    ptr[len] = '\0';
+    return (ptr);
 }

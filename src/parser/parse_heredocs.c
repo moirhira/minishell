@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/07/24 16:41:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/04 22:18:24 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
         j++;
     }
     temp_name[i] = '\0';
-    free(char_pid);
+    // free(char_pid);
 }
 
 void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
@@ -44,9 +44,9 @@ void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
         processed_line = ft_calloc(1, sizeof(char));
         if (!processed_line)
         {
-            free(line);
+            // free(line);
             close(fd);
-            exit(EXIT_FAILURE);
+            return;
         }
         i = 0;
         while (line[i])
@@ -58,20 +58,20 @@ void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
                 char ch[2] = {line[i], '\0'};
                 char *old = processed_line;
                 processed_line = ft_strjoin(processed_line, ch);
-                free(old);
+                // free(old);
                 i++;
             }
         }
         write(fd, processed_line, ft_strlen(processed_line));
         write(fd, "\n", 1);
-        free(processed_line);
-        free(line);
+        // free(processed_line);
+        // free(line);
     }
     else
     {
         write(fd, line, ft_strlen(line));
         write(fd, "\n", 1);
-        free(line);
+        // free(line);
     }
 }
 
@@ -95,12 +95,13 @@ void proccess_child(char *delimiter, int expnad, t_envp *env, char *filename)
         }
         if (ft_strcmp(line, delimiter) == 0)
         {
-            free(line);
+            // free(line);
             break;
         }
         read_from_heredoc(fd, line, env, expnad);
     }
     close(fd);
+    free_all_momory();
     exit(EXIT_SUCCESS);
 }
 
@@ -125,8 +126,6 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
             g_signal_received = 1;
             if (WTERMSIG(status) == SIGINT)
                 exit_status(130);
-            else if (WTERMSIG(status) == SIGQUIT)
-                exit_status(131);
             return (0);
         }
         return (1);
@@ -162,5 +161,4 @@ void parse_heredocs(t_command *command, t_envp *my_env)
         }
         cmd = cmd->next;
     }
-   
 }

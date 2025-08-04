@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/20 15:04:27 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/03 14:31:29 by moirhira         ###   ########.fr       */
+/*   Created: 2025/08/03 14:30:18 by moirhira          #+#    #+#             */
+/*   Updated: 2025/08/03 14:30:33 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strcat(char *dest, const char *src)
+char	*ft_strcpy(char *dest, const char *src)
 {
 	size_t	i;
-	size_t	dest_len;
 
 	if (!dest || !src)
 		return (NULL);
 
-	dest_len = ft_strlen(dest);
 	i = 0;
 	while (src[i])
 	{
-		dest[dest_len + i] = src[i];
+		dest[i] = src[i];
 		i++;
 	}
-	dest[dest_len + i] = '\0';
+	dest[i] = '\0';
 
 	return (dest);
 }
