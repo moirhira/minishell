@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 14:22:50 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:41:16 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static int is_directory(const char *path)
 char *find_command_in_path(char *cmd, t_envp *env, int *status)
 {
     char *path_env = get_env_value(env, "PATH");
+    if (!path_env)
+        return ft_strdup(cmd);
     char *full;
 
     if (!cmd || !*cmd)

@@ -232,3 +232,63 @@ minishell$
 ==1149195==    by 0x403DDA: execute_builtin (builtin_cmd.c:17)
 ==1149195==    by 0x405BF9: execute_commands (executor.c:111)
 ==1149195==    by 0x40166C: main (main.c:111)
+
+
+
+minishell$ cat << test"$USER"
+> asd
+> $USER
+> test$USER
+> testmoirhira
+asd
+$USER
+test$USER
+minishell$ 
+
+
+
+
+
+
+minishell$ cat << test"$USER"
+> asd
+> $USER
+> test$USER
+> testmoirhira
+asd
+$USER
+test$USER
+minishell$ 
+minishell$ 
+minishell$ 
+minishell$ 
+minishell$ 
+minishell$ cat << "$USER"
+> "$USER"
+> $USER
+> moirhira
+"$USER"
+$USER
+minishell$ cat << $USER
+> qwe
+> $USER
+> moirhira
+qwe
+moirhira
+minishell$ 
+❯ cat << "$USER"
+heredoc> asd
+heredoc> $USER
+asd
+❯ bash
+moirhira@c1r4p1:~/Desktop/minishell$ cat << test"$USER"
+> asd
+> test$USER
+asd
+moirhira@c1r4p1:~/Desktop/minishell$ ./minishell 
+
+
+
+
+
+

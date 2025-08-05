@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:12:09 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 19:56:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:21:33 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	print_sorted_export(t_envp *env)
 	}
 	arr[i] = NULL;
 	sort_in_tab(arr, count);
-	print_and_free_array(arr);
+	print_array(arr);
 	return (0);
 }
 

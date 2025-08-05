@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 21:47:57 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 22:45:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 char *get_var_value_and_advance(char *s, int *i, t_envp **my_env)
 {
 	// if (!s[*i + 1] || ft_isspace(s[*i + 1]) || s[*i + 1] == '"' || s[*i + 1] == '\'')
-	if (!s[*i + 1] || ft_isspace(s[*i + 1]) || (s[*i - 1] == '"' && s[*i + 1] == '"'))
+	if (!s[*i + 1] || ft_isspace(s[*i + 1]) || (s[*i + 1] == '"'))
 	{
 		(*i)++;
 		return (ft_strdup("$"));
@@ -96,6 +96,33 @@ char *get_var_value_and_advance(char *s, int *i, t_envp **my_env)
 }
 
 
+// int handel_heredoc_delimiter(char *s, int i, t_token **token)
+// {
+//     int     start = i;
+//     char    *delimiter_val;
+    
+//     while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '|' && s[i] != '<' && s[i] != '>')
+//     {
+//         if (s[i] == '\'' || s[i] == '"')
+//         {
+//             char quote_char = s[i];
+//             i++;
+//             while (s[i] && s[i] != quote_char)
+//                 i++;
+//             if (s[i])
+//                 i++;
+//         }
+//         else
+//         {
+//             i++;
+//         }
+//     }
+
+//     delimiter_val = ft_strndup(&s[start], i - start);
+
+// 	add_token(token, create_token(delimiter_val, 0, 0, 0));
+//     return (i);
+// }
 static int handel_operator(char *s, int i, t_token **token)
 {
 	char *symb;
@@ -107,8 +134,10 @@ static int handel_operator(char *s, int i, t_token **token)
 		if (ft_strcmp(symb, ">>") == 0)
 			add_token(token, create_token(symb, 4, 0, 0));
 		else if (ft_strcmp(symb, "<<") == 0)
+		{
 			add_token(token, create_token(symb, 5, 0, 0));
-		// free(symb);
+			// i = handel_heredoc_delimiter(s, &i, token);// this 
+		}
 		i += 2;
 	}
 	else
@@ -121,7 +150,6 @@ static int handel_operator(char *s, int i, t_token **token)
 			add_token(token, create_token(symb, 2, 0, 0));
 		else if (ft_strcmp(symb, ">") == 0)
 			add_token(token, create_token(symb, 3, 0, 0));
-		// free(symb);
 		i++;
 	}
 	return (i);
@@ -138,9 +166,8 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 		if (s[i] == '$')
 		{
 
-			if(!(*token) || (*token)->type != 5)
+			if(!(*token) || get_last_token((*token))->type != 5)
 			{
-				
 				char *var_value = get_var_value_and_advance(s, &i, my_env);
 				if (!var_value || *var_value == '\0')
 				{
@@ -223,7 +250,8 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	{
 		if (s[i] == '$' && quote == '"')
 		{
-			if(!(*token) || (*token)->type != 5)
+			
+			if(!(*token) || get_last_token((*token))->type != 5)
 			{
 				final_str = handel_env_var(s, &i, my_env, final_str);
 			}
