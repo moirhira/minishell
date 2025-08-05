@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 20:47:20 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:17:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int     ft_isspace(char c);
 int	    ft_isalpha(int c);
 char    **ft_split_advanced(char const *s, const char *charset);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+char    *ft_strndup(const char *str, size_t n);
 t_memory_alloc **get_mem_head(void);
 void    *ft_malloc(size_t size);
-void    free_all_momory(void);
-char    *ft_strndup(const char *str, size_t n);
+void    free_all_memory(void);
 
 # endif

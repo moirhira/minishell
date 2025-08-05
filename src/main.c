@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 18:55:32 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int main(int ac, char **av, char **env)
         cmd_line = read_input();
         if (!cmd_line)
         {
-            free_all_momory();
+            free_all_memory();
             exit(exit_status(-1));
         }
         if (*cmd_line == '\0' || only_whitespace(cmd_line))
@@ -102,7 +102,7 @@ int main(int ac, char **av, char **env)
         token_list = NULL;
         list_cmd = NULL;
     }
-    free_all_momory();
+    free_all_memory();
     return(exit_status (-1));
 }
 

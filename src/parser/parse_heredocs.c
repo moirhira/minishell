@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 16:21:08 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void proccess_child(char *delimiter, int expnad, t_envp *env, char *filename)
         read_from_heredoc(fd, line, env, expnad);
     }
     close(fd);
-    free_all_momory();
+    free_all_memory();
     exit(EXIT_SUCCESS);
 }
 

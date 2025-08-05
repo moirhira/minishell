@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:12:09 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 19:26:12 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 19:56:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*create_export_entry(char *key, char *value)
 	return (entry);
 }
 
-void	print_and_free_array(char **arr)
+void	print_array(char **arr)
 {
 	int	i;
 
@@ -82,21 +82,6 @@ void	print_and_free_array(char **arr)
 		write(1, "declare -x ", 11);
 		write(1, arr[i], ft_strlen(arr[i]));
 		write(1, "\n", 1);
-		// free(arr[i]);
 		i++;
 	}
-	// free(arr);
-}
-
-void	free_array(char **arr, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		// free(arr[i]);
-		i++;
-	}
-	// free(arr);
 }

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 12:40:10 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 19:58:23 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ static int wait_children(pid_t last_pid)
             else if (WIFSIGNALED(status))
             {
                 last_exit_status = 128 + WTERMSIG(status);
-                if (WTERMSIG(status) == SIGSEGV)
-                    write(STDERR_FILENO, "THE CHILD SIGFUALT\n", 20);
                 if (WTERMSIG(status) == SIGINT)
                     write(STDERR_FILENO, "\n", 1);
                 if (WTERMSIG(status) == SIGQUIT)

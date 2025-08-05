@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:44:15 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 20:23:25 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void *ft_malloc(size_t size)
     return (allocated_mem);
 }
 
-void free_all_momory(void)
+void free_all_memory(void)
 {
     t_memory_alloc **head;
     t_memory_alloc *cur_node;

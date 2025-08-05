@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 20:41:26 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 19:20:57 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:14:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,6 @@ static char *copy_word(const char **s, const char *charset)
     return (ptr);
 }
 
-static char **free_split(char **res)
-{
-    size_t i = 0;
-    while(res[i])
-    {
-        free(res[i]);
-        i++;
-    }
-    free(res);
-    return (NULL);
-}
-
 char **ft_split_advanced(char const *s, const char *charset)
 {
     char    **res;
@@ -100,8 +88,8 @@ char **ft_split_advanced(char const *s, const char *charset)
         if (*s)
         {
             res[i] = copy_word(&s, charset);
-            // if (!res[i])
-            //     return (free_split(res));
+            if (!res[i])
+                return (NULL);
             i++;
         }
     }

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 16:26:08 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	execute_external(t_command *cmd, t_envp *env)
         display_error(cmd->args[0], strerror(errno));
         // free(path);
         // free_array(envp, ft_strlen_2d(envp));
-        free_all_momory();
+        free_all_memory();
 		exit(126);
 	}
     else

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 20:26:11 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)
         exit_st = execute_builtin(cmd, &env);
     else if (cmd->args && cmd->args[0])
         exit_st = exec_command(cmd, env);
-    free_all_momory();
+    free_all_memory();
     exit(exit_st);
 }

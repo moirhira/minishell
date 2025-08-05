@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:16:33 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/26 16:16:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:09:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
+	if (!s1 || !s2)
+		return (-1);
 	while ((*s1 != '\0' || *s2 != '\0') && n > 0)
 	{
 		if (*s1 != *s2)

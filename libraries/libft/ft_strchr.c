@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 14:44:21 by moirhira          #+#    #+#             */
-/*   Updated: 2025/04/23 21:06:03 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:03:26 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 char	*ft_strchr(const char *str, int ch)
 {
+	if (!str)
+		return (NULL);
 	while (*str)
 	{
 		if (*str == (char)ch)

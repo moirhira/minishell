@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 19:21:11 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:14:24 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,13 @@ static char	*copy_word(const char **s, char c)
 	return (ft_memalloc(start, len));
 }
 
-static char	**free_split(char **res, size_t indx)
-{
-	while (indx > 0)
-	{
-		free(res[--indx]);
-	}
-	free(res);
-	return (NULL);
-}
-
 char	**ft_split(char const *s, char c)
 {
 	char	**res;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	res = (char **)ft_malloc(sizeof(char *) * (ft_ctrword(s, c) + 1));
 	if (!res)
@@ -88,8 +80,8 @@ char	**ft_split(char const *s, char c)
 		if (*s)
 		{
 			res[i] = copy_word(&s, c);
-			// if (!res[i])
-			// 	return (free_split(res, i));
+			if (!res[i])
+				return (NULL);
 			i++;
 		}
 	}

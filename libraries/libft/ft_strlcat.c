@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 21:20:15 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/15 21:20:29 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:07:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	size_t	i;
 	size_t	dst_len;
 	size_t	src_len;
+	
+	if (!dst || !src)
+		return (0);
 
 	dst_len = ft_strlen(dst);
 	src_len = ft_strlen(src);

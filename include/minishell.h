@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 17:53:12 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 19:07:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 extern volatile sig_atomic_t g_signal_received;
 #define SIZE_ENV 1024
 
-// signal setups macros
 typedef enum e_shell_state
 {
     SHELL_INTERACTIVE = 1,
@@ -70,17 +69,12 @@ typedef struct s_redirect
 
 typedef struct s_command
 {
-    char **args;    // command argument
+    char **args; 
     int heredoc_count;
-
     int infile_count;
-    
     int outfile_count;
-    
     int append_count; 
-    
-    int pipe;       // 1 if followed by |
-
+    int pipe;
     struct s_redirect *redirects;
     struct s_command *next;
 }   t_command;
@@ -172,18 +166,12 @@ int    builtin_unset(char **args, t_envp **env);
 
 // exit
 int	    builtin_exit(char **args, t_envp **env);
-void    free_env(t_envp **env);
-long    my_strtol(const char *str, char **endptr);
 
 // echo
-int     is_new_line(char *cmd);
 int    builtin_echo(char **cmd);
 
 // helper
 int is_valid_identifier(const char *str);
-int is_alpha(char c);
-int is_digit(char c);
-int is_alnum(char c);
 
 //pwd
 int	builtin_pwd(t_envp *env);
@@ -192,20 +180,12 @@ int	builtin_pwd(t_envp *env);
 int   builtin_env(t_envp *envp);
 
 
-//helper 1
-int is_alpha(char c);
-int is_digit(char c);
-int is_alnum(char c);
-
 // helper 2
-char    *ft_strdup(const char *s);
-char    *get_env_value(t_envp *env, const char *key);
 void    sort_in_tab(char **array, int size);
 int     count_env(t_envp *env);
 int	    print_sorted_export(t_envp *env);
 char	*create_export_entry(char *key, char *value);
-void	print_and_free_array(char **arr);
-void	free_array(char **arr, int size);
+void	print_array(char **arr);
 
 
 // execute single command 
