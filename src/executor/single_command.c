@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 22:04:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:26:08 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	execute_external(t_command *cmd, t_envp *env)
         // free(path);
         return (1);
     }
+    signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -96,19 +97,27 @@ int	execute_external(t_command *cmd, t_envp *env)
     else
     {
         waitpid(pid, &status, 0);
+        setup_signals(SHELL_INTERACTIVE);
         // free(path);
         // free_array(envp, ft_strlen_2d(envp));
         
         if (WIFSIGNALED(status))
         {
             if (WTERMSIG(status) == SIGINT)
+            {
+                write(1,"\n", 1);
                 return (130);
+            }
             else if (WTERMSIG(status) == SIGQUIT)
             {
                 write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
                 return (131);
             }
-        }
+        }else if (status == CHILD_PROCESS)
+    {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+    }
         if (WIFEXITED(status))
            return(exit_status(WEXITSTATUS(status)));
         

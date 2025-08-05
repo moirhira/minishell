@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/03 17:14:40 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:22:29 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int execute_commands(t_command *command, t_envp **env)
             exit_st = exec_redirs_no_command(command);
             return (exit_status(exit_st));
         }
+        
         return 0;
     }
     else if (is_builtin(command->args[0]))
@@ -111,7 +112,9 @@ int execute_commands(t_command *command, t_envp **env)
         return (exit_status(exit_st));
     }
     else
+    {
         exit_st = execute_external(command, *env);
+    }
         
     return (exit_status(exit_st));
 }

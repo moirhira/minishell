@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 22:31:13 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:00:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,12 @@ int validate_syntaxe(t_token **token_lst)
                 }
             }
         }
-        
+        if (token->type == TOKEN_OUTPUT && token->ignored)
+        {
+            display_error(token->value, "ambiguous redirect");
+            exit_status(2);
+            return (0);
+        }
         token = token->next;
     }
     return (1);
@@ -114,12 +119,13 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         }
         else if (token->ignored == 1)
         {
+            exit_status(0);
             token = token->next;
         }
         else
             handel_argument(&token, head);
     }
-    return (t_command *)(1);
+    return (t_command *)(1);// SHOULD BE REPLACED
 }
 // print commands------------------------
 void print_commands(t_command **commads);
@@ -132,6 +138,18 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
     if (!split_token(cmd_line, my_env, token_lst))
         return (exit_status(2), 2);
 
+    // t_token *ptr;
+    // ptr = *token_lst;
+    // while (ptr)
+    // {
+    //     printf("value       : %s\n", ptr->value);
+    //     printf("type        : %d\n", ptr->type);
+    //     printf("attached    : %d\n", ptr->attached);
+    //     printf("was quoted  : %d\n", ptr->was_quoted);
+    //     printf("ignored     : %d\n", ptr->ignored);
+    //     printf("....................................\n");
+    //     ptr = ptr->next;
+    // }
     if (!validate_syntaxe(token_lst))
     {
         exit_status (2);

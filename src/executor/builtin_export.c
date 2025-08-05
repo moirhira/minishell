@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 20:59:51 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:01:53 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int builtin_export(t_command *cmd, t_envp **env)
         {
             key = ft_strdup(arg);
         }
-
+        
         if (!check_var(key))
         {
             ft_putstr_fd("minishell: export: `", 2);
@@ -75,14 +75,13 @@ int builtin_export(t_command *cmd, t_envp **env)
         }
         else
         {
-            if (update_env_var(env, arg, NULL) != 0)
+            if (update_env_var(env, key, value) != 0)
             {
                 display_error("export", "failed to update the env");
                 return (1);
             }
         }
- 
         i++;
     }
-    return exit_status(final_status);
+    return (final_status);
 }

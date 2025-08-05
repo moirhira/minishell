@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 19:23:42 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 14:22:50 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,13 @@ static int is_file_exists(const char *path)
 }
 static int is_executable(const char *path)
 {
-    struct stat st;
-    if (stat(path, &st) != 0)
-        return (0);
     return (access(path, X_OK) == 0);
+}
+
+static int is_directory(const char *path)
+{
+    struct stat st;
+    return (S_ISDIR(st.st_mode));
 }
 
 
@@ -56,6 +59,12 @@ char *find_command_in_path(char *cmd, t_envp *env, int *status)
         {
             display_error(cmd, strerror(errno));
             *status = 127;
+            return (NULL);
+        }
+        if (is_directory(cmd))
+        {
+            display_error(cmd, "Is a directory");
+            *status = 126;
             return (NULL);
         }
         if(!is_executable(cmd))

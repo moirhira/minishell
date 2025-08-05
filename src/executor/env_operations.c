@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:28:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 19:22:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:28:41 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int  update_env_var(t_envp **env, char *key, char *value)
         new_node->value = ft_strdup(value);
         if (!new_node->value)
         {
-            // free(new_node->key);
-            // free(new_node);
             return (-1);
         }
     }

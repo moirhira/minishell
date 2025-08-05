@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:21 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/03 16:04:48 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 09:24:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int builtin_cd(t_command *cmd, t_envp **env)
     if (chdir(path) != 0)
     {
         if (cmd->args[1])
-            display_error("cd", strerror(errno));
+            display_error(cmd->args[1], strerror(errno));
         else
             display_error("HOME", strerror(errno));
         return (1);

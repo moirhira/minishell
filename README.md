@@ -188,3 +188,47 @@ minishell$ $sffsfd
 
 =======================================================
 
+minishell$ echo "                      $  "✅
+must print it as it with spaces befor and after
+
+
+
+minishell$ echo $""✅
+$
+it must be tried to expande here 
+
+
+minishell$ echo $"/"✅
+$/
+the dolar not sholde be prited
+
+============================================================
+
+2 > errfile (redirecting the file descripto 0 1 2 ) to a file directly 
+
+
+===================================================================
+minishell$  echo <"./test_files/infile" <missing <"./test_files/infile" 
+minishell$ ./test_files/infile: No such file or directory
+minishell$ echo $?
+1
+minishell$ 
+==1149195== 
+==1149195== FILE DESCRIPTORS: 6 open (3 std) at exit.
+==1149195== Open file descriptor 5: /dev/pts/3
+==1149195==    at 0x49D9FEB: dup (syscall-template.S:120)
+==1149195==    by 0x403DDA: execute_builtin (builtin_cmd.c:17)
+==1149195==    by 0x405BF9: execute_commands (executor.c:111)
+==1149195==    by 0x40166C: main (main.c:111)
+==1149195== 
+==1149195== Open file descriptor 4: /dev/pts/3
+==1149195==    at 0x49D9FEB: dup (syscall-template.S:120)
+==1149195==    by 0x403DDA: execute_builtin (builtin_cmd.c:17)
+==1149195==    by 0x405BF9: execute_commands (executor.c:111)
+==1149195==    by 0x40166C: main (main.c:111)
+==1149195== 
+==1149195== Open file descriptor 3: /dev/pts/3
+==1149195==    at 0x49D9FEB: dup (syscall-template.S:120)
+==1149195==    by 0x403DDA: execute_builtin (builtin_cmd.c:17)
+==1149195==    by 0x405BF9: execute_commands (executor.c:111)
+==1149195==    by 0x40166C: main (main.c:111)

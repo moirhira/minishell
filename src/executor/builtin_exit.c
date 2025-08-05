@@ -6,13 +6,13 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 23:00:53 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 19:22:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:45:51 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-long my_strtol(const char *str, char **endptr, int base)
+long my_strtol(const char *str, char **endptr)
 {
     long result = 0;
     int sign = 1;
@@ -29,29 +29,15 @@ long my_strtol(const char *str, char **endptr, int base)
     while (*str >= '0' && *str <= '9') // Read digits
     {
         int digit = *str - '0';
-        if (digit >= base)
+        if (digit >= 10)
             break;
-        result = result * base + digit;
+        result = result * 10 + digit;
         str++;
     }
     if (endptr != NULL) 
         *endptr = (char *)str; // Set endptr to where i stopped
     return result * sign;
 }
-
-// void free_env(t_envp **env)
-// {
-//     t_envp *tmp;
-
-//     while (*env)
-//     {
-//         tmp = (*env)->next;
-//         free((*env)->key);
-//         free((*env)->value);
-//         free(*env);
-//         *env = tmp;
-//     }
-// }
 
 int builtin_exit(char **args, t_envp **env)
 {
@@ -61,15 +47,13 @@ int builtin_exit(char **args, t_envp **env)
     write(STDOUT_FILENO, "exit\n", 5);
     if (args[1])
     {
-        code = my_strtol(args[1], &endptr, 10);
+        code = my_strtol(args[1], &endptr);
         //// If args[1] is not fully numeric OR overflows
         if (*endptr != '\0' || code < LONG_MIN || code > LONG_MAX)
         {
             write(STDERR_FILENO, "exit: ", 6);
             write(STDERR_FILENO, args[1], ft_strlen(args[1]));
             write(STDERR_FILENO, ": numeric argument required\n", 28);
-            // free_env(env);
-            exit_status(2);
             exit(2);
         }
         //// If too many arguments (but first one is valid)
@@ -86,7 +70,7 @@ int builtin_exit(char **args, t_envp **env)
     }
     //// No argument: use last exit status
     // free_env(env);
-    exit(exit_status(0));
+    exit(exit_status(-1));
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/03 15:48:00 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 19:30:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 18:55:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,4 @@ void	display_error(char *command_or_file, char *error_message)
     ft_strcat(full_error, "\n");
     
     write(2, full_error, ft_strlen(full_error));
-    // free(full_error);
 }

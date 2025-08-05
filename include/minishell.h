@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/03 22:36:04 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:53:12 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int    builtin_unset(char **args, t_envp **env);
 // exit
 int	    builtin_exit(char **args, t_envp **env);
 void    free_env(t_envp **env);
-long    my_strtol(const char *str, char **endptr, int base);
+long    my_strtol(const char *str, char **endptr);
 
 // echo
 int     is_new_line(char *cmd);
