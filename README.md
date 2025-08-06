@@ -235,60 +235,20 @@ minishell$
 
 
 
-minishell$ cat << test"$USER"
-> asd
-> $USER
-> test$USER
-> testmoirhira
-asd
-$USER
-test$USER
-minishell$ 
 
 
 
 
 
 
-minishell$ cat << test"$USER"
-> asd
-> $USER
-> test$USER
-> testmoirhira
-asd
-$USER
-test$USER
-minishell$ 
-minishell$ 
-minishell$ 
-minishell$ 
-minishell$ 
-minishell$ cat << "$USER"
-> "$USER"
-> $USER
-> moirhira
-"$USER"
-$USER
-minishell$ cat << $USER
-> qwe
-> $USER
-> moirhira
-qwe
-moirhira
-minishell$ 
-❯ cat << "$USER"
-heredoc> asd
-heredoc> $USER
-asd
-❯ bash
-moirhira@c1r4p1:~/Desktop/minishell$ cat << test"$USER"
-> asd
-> test$USER
-asd
-moirhira@c1r4p1:~/Desktop/minishell$ ./minishell 
 
-
-
-
-
-
+minishell$ ls -l | scc
+minishell$ scc: : command not found
+==15297== 
+==15297== FILE DESCRIPTORS: 6 open (5 inherited) at exit.
+==15297== Open file descriptor 0:
+==15297==    at 0x49E1C1B: dup2 (in /usr/lib/x86_64-linux-gnu/libc.so.6)
+==15297==    by 0x40066FF: child_process (executor_pipe_helpers.c:53)
+==15297==    by 0x4006558: execute_pipeline (pipeline.c:95)
+==15297==    by 0x4006236: execute_commands (executor.c:97)
+==15297==    by 0x4001608: main (main.c:102)

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 19:58:23 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:03:16 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int wait_children(pid_t last_pid)
                 if (WTERMSIG(status) == SIGINT)
                     write(STDERR_FILENO, "\n", 1);
                 if (WTERMSIG(status) == SIGQUIT)
-                    write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
+                    write(STDERR_FILENO, "Quit (core dumped)\n", 20);
             }
         }
     }
@@ -76,7 +76,7 @@ int execute_pipeline(t_command *cmd_list, t_envp *env)
     
     last_pid = -1;
 
-    setup_signals(SHELL_EXECUTING);
+    setup_signals(SHELL_IGNORE);
     while (cmd)
     {
         if (create_pipe_if_needed(cmd, pipefd) == -1)

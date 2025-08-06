@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 22:45:55 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 22:21:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,34 +96,8 @@ char *get_var_value_and_advance(char *s, int *i, t_envp **my_env)
 }
 
 
-// int handel_heredoc_delimiter(char *s, int i, t_token **token)
-// {
-//     int     start = i;
-//     char    *delimiter_val;
-    
-//     while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '|' && s[i] != '<' && s[i] != '>')
-//     {
-//         if (s[i] == '\'' || s[i] == '"')
-//         {
-//             char quote_char = s[i];
-//             i++;
-//             while (s[i] && s[i] != quote_char)
-//                 i++;
-//             if (s[i])
-//                 i++;
-//         }
-//         else
-//         {
-//             i++;
-//         }
-//     }
 
-//     delimiter_val = ft_strndup(&s[start], i - start);
-
-// 	add_token(token, create_token(delimiter_val, 0, 0, 0));
-//     return (i);
-// }
-static int handel_operator(char *s, int i, t_token **token)
+static int handel_operator(char *s, int i, t_token **token, int *state)
 {
 	char *symb;
 
@@ -136,7 +110,7 @@ static int handel_operator(char *s, int i, t_token **token)
 		else if (ft_strcmp(symb, "<<") == 0)
 		{
 			add_token(token, create_token(symb, 5, 0, 0));
-			// i = handel_heredoc_delimiter(s, &i, token);// this 
+			*state = 1;
 		}
 		i += 2;
 	}
@@ -158,49 +132,49 @@ static int handel_operator(char *s, int i, t_token **token)
 static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	int attached;
+	int dont_expand = 0;
+	char *var_value;
 	attached = was_previous_space(s, i);
 	char *simple_str = ft_calloc(ft_strlen(s) * 2, 1);
 	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\'' &&
 		   s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
 	{
+		if(s[i] == '=' && s[i + 1] && s[i + 1] == '$')
+		{
+			dont_expand = 1;
+		}
 		if (s[i] == '$')
 		{
-
-			if(!(*token) || get_last_token((*token))->type != 5)
+			if (dont_expand)
 			{
-				char *var_value = get_var_value_and_advance(s, &i, my_env);
+				simple_str = handel_env_var(s, &i, my_env, simple_str);
+			}
+			else
+			{
+				var_value = get_var_value_and_advance(s, &i, my_env);
 				if (!var_value || *var_value == '\0')
 				{
-					// if (var_value)
-					 	// free(var_value);
 					var_value = ft_strdup("");
 					add_token(token, create_token(var_value, 0, 0, 0));
-					// free(var_value);
 					get_last_token(*token)->ignored = 1;
 					continue;
 				}
 				char **split_words = ft_split_advanced(var_value, " \t\n");
-				// free(var_value);
 				if (!split_words || !split_words[0])
 				{
-					// if (split_words)
-						// free_array(split_words, ft_strlen_2d(split_words));
 					var_value = ft_strdup("");
 					add_token(token, create_token(var_value, 0, 0, 0));
-					// free(var_value);
 					get_last_token(*token)->ignored = 1;
 					continue;
 				}
 				
 				int word_count = ft_strlen_2d(split_words);
 				char *temp = ft_strjoin(simple_str, split_words[0]);
-				// free(simple_str);
 				simple_str = temp;
 				
 				if (word_count > 1)
 				{
 					add_token(token, create_token(simple_str, 0, 0, 0));
-					// free(simple_str);
 					int k = 1;
 					while (k < word_count - 1)
 					{
@@ -209,21 +183,12 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 					}
 					simple_str = ft_strdup(split_words[word_count - 1]);
 				}
-				// free_array(split_words, ft_strlen_2d(split_words));
-			}
-			else
-			{
-				char ch[2] = {s[i++], '\0'};
-				char *temp = ft_strjoin(simple_str, ch);
-				// free(simple_str);
-				simple_str = temp;
 			}
 		}
 		else
 		{
 			char ch[2] = {s[i++], '\0'};
 			char *temp = ft_strjoin(simple_str, ch);
-			// free(simple_str);
 			simple_str = temp;
 		}
 	}
@@ -234,7 +199,6 @@ static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 			get_last_token(*token)->attached = 1;
 		add_token(token, new);
 	}
-	// free(simple_str);
 	return (i);
 }
 
@@ -251,17 +215,17 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 		if (s[i] == '$' && quote == '"')
 		{
 			
-			if(!(*token) || get_last_token((*token))->type != 5)
-			{
+			// if(!(*token) || get_last_token((*token))->type != 5)
+			// {
 				final_str = handel_env_var(s, &i, my_env, final_str);
-			}
-			else
-			{
-				char ch[2] = {s[i++], '\0'};
-				char *temp = ft_strjoin(final_str, ch);
-				// free(final_str);
-				final_str = temp;
-			}
+			// }
+			// else
+			// {
+			// 	char ch[2] = {s[i++], '\0'};
+			// 	char *temp = ft_strjoin(final_str, ch);
+			// 	// free(final_str);
+			// 	final_str = temp;
+			// }
 		}
 		else
 		{
@@ -293,29 +257,87 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	return (i);
 }
 
+int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state)
+{
+	int 	k;
+	int was_qoute;
+	char    *delimiter_val;
+	
+    while (ft_isspace(s[i]))
+		i++;
+	delimiter_val = ft_calloc(ft_strlen(s) + 1, sizeof(char));
+	if (!delimiter_val)
+		return (-1);
+	k = 0 ;
+	was_qoute = 0;
+    while (s[i] != '\0' && s[i] != ' ' && s[i] != '\t' && s[i] != '|' && s[i] != '<' && s[i] != '>')
+    {
+        if (s[i] == '\'' || s[i] == '"')
+        {
+			char quote = s[i];
+			was_qoute = 1;
+			i++;
+			while (s[i] && s[i] != quote)
+			{
+				delimiter_val[k++] = s[i++];
+			}
+			if (s[i] == quote)
+			{
+				i++;
+			}
+			else
+			{
+				ft_putstr_fd("minishell: Unclosed quote:", 2);
+				ft_putstr_fd(&quote, 2);
+				ft_putstr_fd("\n", 2);
+				return (-1);
+			}
+        }
+        else
+        {
+            delimiter_val[k++] = s[i++];
+        }
+    }
+	add_token(token, create_token(delimiter_val, 0, 0, was_qoute));
+	*state = 0;
+    return (i);
+}
+
 int split_token(char *s, t_envp **my_env, t_token **token)
 {
 	int i = 0;
+	int state;
+
+	state = 0;
 	while (s[i])
 	{
 		while (s[i] == ' ' || s[i] == '\t')
 			i++;
 		if (!s[i])
 			break;
-		if (s[i] == '\'' || s[i] == '"')
+		if (state == 1)
 		{
-			i = handel_quoted_str(s, i, my_env, token);
+			i = handel_heredoc_delimiter(s, i, token, &state);
 			if (i == -1)
 			{
-				// free_env(my_env);
-				// free_token(token);
 				return (0);
 			}
 		}
-		else if (s[i] == '|' || s[i] == '>' || s[i] == '<')
-			i = handel_operator(s, i, token);
 		else
-			i = handel_simple_str(s, i, my_env, token);
+		{
+			if (s[i] == '\'' || s[i] == '"')
+			{
+				i = handel_quoted_str(s, i, my_env, token);
+				if (i == -1)
+				{
+					return (0);
+				}
+			}
+			else if (s[i] == '|' || s[i] == '>' || s[i] == '<')
+				i = handel_operator(s, i, token, &state);
+			else
+				i = handel_simple_str(s, i, my_env, token);
+		}
 	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 18:56:00 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:48:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ void    setup_signals(int state)
         signal(SIGINT, sig_handler_inter);
         signal(SIGQUIT, SIG_IGN);
     }
-    else if (state == SHELL_EXECUTING)
+    else if (state == SHELL_IGNORE)
     {
         signal(SIGINT, SIG_IGN);
         signal(SIGQUIT, SIG_IGN);
     }
     else if (state == SHELL_HEREDOC)
     {
-        signal(SIGINT, SIG_IGN);
+        signal(SIGINT, sig_handler_heredoc);
         signal(SIGQUIT, SIG_IGN);
     }
     else if (state == CHILD_PROCESS)

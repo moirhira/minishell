@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 14:22:32 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int exec_command(t_command *cmd, t_envp *env)
     char **envp;
     int status;
 
+    status = 0;
     path = find_command_in_path(cmd->args[0], env, &status);
 	if (!path)
     {

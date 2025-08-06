@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 19:28:26 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 11:15:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,12 @@ int handel_input_redirection(t_token **token, t_command *head)
         return (0);
     while ((*token)->attached)
     {
-        char *old = full_str;
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
-        // free(old);
     }
     head->infile_count++;
     add_redirect(head, 2, full_str);
     *token = (*token)->next;
-    // free(full_str);
     return (1);
 }
 
@@ -52,7 +49,6 @@ int handel_output_redirection(t_token **token, t_command *head)
         return (0);
     while ((*token)->attached)
     {
-        char *old = full_str;
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
         // free(old);
@@ -73,7 +69,6 @@ int handel_append_redirection(t_token **token, t_command *head)
         return (0);
     while ((*token)->attached)
     {
-        char *old = full_str;
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
         // free(old);
@@ -87,30 +82,20 @@ int handel_append_redirection(t_token **token, t_command *head)
 
 int handel_heredoc(t_token **token, t_command *head)
 {
-    int need_quote = 0;
-
     *token = (*token)->next;
+    
     head->heredoc_count++;
-    //----------------------------------------------
+    
     char *full_str = ft_strdup((*token)->value);
     if (!full_str)
         return (0);
-    while ((*token)->attached)
-    {
-        if ((*token)->was_quoted)
-            need_quote = 1;
-        char *old = full_str;
-        *token = (*token)->next;
-        full_str = ft_strjoin(full_str, (*token)->value);
-        // free(old);
-    }
-    //----------------------------------------------
-    if (need_quote || (*token)->was_quoted)
+        
+    if ((*token)->was_quoted)
         add_redirect(head, 6, full_str);
     else
         add_redirect(head, 5, full_str);
+        
     *token = (*token)->next;
-    // free(full_str);
     return (1);
 }
 
@@ -121,7 +106,6 @@ void handel_argument(t_token **token, t_command *head)
         return;
     while ((*token)->attached)
     {
-        char *old = full_str;
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
         

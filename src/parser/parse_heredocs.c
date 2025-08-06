@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 21:03:46 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
             else
             {
                 char ch[2] = {line[i], '\0'};
-                char *old = processed_line;
                 processed_line = ft_strjoin(processed_line, ch);
                 // free(old);
                 i++;
@@ -79,7 +78,7 @@ void proccess_child(char *delimiter, int expnad, t_envp *env, char *filename)
 {
     int fd;
     
-    signal(SIGINT, SIG_DFL);
+    setup_signals(SHELL_HEREDOC);
     fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
     if (fd == -1)
         exit(EXIT_FAILURE);  
@@ -94,11 +93,12 @@ void proccess_child(char *delimiter, int expnad, t_envp *env, char *filename)
             break;
         }
         if (ft_strcmp(line, delimiter) == 0)
-        {
-            // free(line);
+        {   
+            free(line);
             break;
         }
         read_from_heredoc(fd, line, env, expnad);
+        free(line);
     }
     close(fd);
     free_all_memory();
@@ -110,7 +110,7 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
     pid_t pid;
     int status;
     
-    setup_signals(SHELL_HEREDOC);
+    setup_signals(SHELL_IGNORE);
     pid = fork();
     if (pid == -1)
         return (0);
@@ -126,7 +126,7 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
             g_signal_received = 1;
             if (WTERMSIG(status) == SIGINT)
             {
-                write(1,"\n",1);
+                write(STDERR_FILENO,"\n",1);
                 exit_status(130);
             }
             return (0);

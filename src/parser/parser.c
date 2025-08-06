@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 21:08:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 22:21:14 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,18 +138,18 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
     if (!split_token(cmd_line, my_env, token_lst))
         return (exit_status(2), 2);
 
-    t_token *ptr;
-    ptr = *token_lst;
-    while (ptr)
-    {
-        printf("value       : %s\n", ptr->value);
-        printf("type        : %d\n", ptr->type);
-        printf("attached    : %d\n", ptr->attached);
-        printf("was quoted  : %d\n", ptr->was_quoted);
-        printf("ignored     : %d\n", ptr->ignored);
-        printf("....................................\n");
-        ptr = ptr->next;
-    }
+    // t_token *ptr;
+    // ptr = *token_lst;
+    // while (ptr)
+    // {
+    //     printf("value       : %s\n", ptr->value);
+    //     printf("type        : %d\n", ptr->type);
+    //     printf("attached    : %d\n", ptr->attached);
+    //     printf("was quoted  : %d\n", ptr->was_quoted);
+    //     printf("ignored     : %d\n", ptr->ignored);
+    //     printf("....................................\n");
+    //     ptr = ptr->next;
+    // }
     if (!validate_syntaxe(token_lst))
     {
         exit_status (2);
@@ -163,7 +163,7 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
         return (exit_status(2), 2);
     }
 
-    print_commands(command_lst);
+    // print_commands(command_lst);
     return (exit_status(-1), 0);
 }
 

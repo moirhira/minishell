@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 19:07:36 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 20:48:33 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ extern volatile sig_atomic_t g_signal_received;
 typedef enum e_shell_state
 {
     SHELL_INTERACTIVE = 1,
-    SHELL_EXECUTING = 2,
+    SHELL_IGNORE = 2,
     SHELL_HEREDOC = 3,
     CHILD_PROCESS = 4
 }   t_shell_state;
