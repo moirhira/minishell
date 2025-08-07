@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:54:05 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/04 19:22:45 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:09:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 void    unset_variable(t_envp **env, char *var)
 {

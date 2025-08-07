@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 22:21:56 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/06 22:25:35 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,18 +214,7 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	{
 		if (s[i] == '$' && quote == '"')
 		{
-			
-			// if(!(*token) || get_last_token((*token))->type != 5)
-			// {
-				final_str = handel_env_var(s, &i, my_env, final_str);
-			// }
-			// else
-			// {
-			// 	char ch[2] = {s[i++], '\0'};
-			// 	char *temp = ft_strjoin(final_str, ch);
-			// 	// free(final_str);
-			// 	final_str = temp;
-			// }
+			final_str = handel_env_var(s, &i, my_env, final_str);
 		}
 		else
 		{

@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:34 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/02 22:43:43 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:08:50 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int is_new_line(char *cmd)
 {
@@ -48,7 +48,7 @@ int builtin_echo(char **cmd)
     }
 
     if (newline)
-        ft_putstr_fd("\n", 1);
+        ft_putstr_fd("\n", STDOUT_FILENO);
 
     return exit_status(0);
 }

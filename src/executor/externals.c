@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   single_command.c                                   :+:      :+:    :+:   */
+/*   externals.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/06 21:09:36 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:48:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,20 @@ int    is_builtin(const char *cmd)
     return (0);
 }
 
-void free_env_array(char **envp)
-{
-    int i = 0;
+// void free_env_array(char **envp)
+// {
+//     int i = 0;
 
-    if (!envp)
-        return;
+//     if (!envp)
+//         return;
 
-    while (envp[i])
-    {
-        // free(envp[i]);
-        i++;
-    }
-    // free(envp);
-}
+//     while (envp[i])
+//     {
+//         // free(envp[i]);
+//         i++;
+//     }
+//     // free(envp);
+// }
 
 
 
@@ -86,7 +86,12 @@ int	execute_external(t_command *cmd, t_envp *env)
 	if (pid == 0)
 	{
         setup_signals(CHILD_PROCESS);
-        setup_redirections(cmd, 1);
+        if (setup_redirections(cmd, 1) == 1)
+        {
+            
+            free_all_memory();
+            exit(1);
+        }
 		execve(path, cmd->args, envp);
         display_error(cmd->args[0], strerror(errno));
         // free(path);

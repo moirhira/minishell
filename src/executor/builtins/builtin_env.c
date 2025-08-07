@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekhallaf <ekhallaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 08:44:26 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/07/16 00:04:09 by ekhallaf         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:08:53 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int builtin_env(t_envp *envp)
 {

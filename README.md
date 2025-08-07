@@ -252,3 +252,176 @@ minishell$ scc: : command not found
 ==15297==    by 0x4006558: execute_pipeline (pipeline.c:95)
 ==15297==    by 0x4006236: execute_commands (executor.c:97)
 ==15297==    by 0x4001608: main (main.c:102)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==61865== 496 bytes in 31 blocks are still reachable in loss record 123 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x408183: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x40777D: ft_calloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x402E68: handel_simple_str (tokenizer.c:138)
+==61865==    by 0x402983: split_token (tokenizer.c:328)
+==61865==    by 0x403908: parse_command (parser.c:138)
+==61865==    by 0x4015DE: main (main.c:105)
+==61865== 
+==61865== 504 bytes in 1 blocks are still reachable in loss record 124 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x401B01: convert_env_to_array (utils_2.c:40)
+==61865==    by 0x4060DC: execute_external (single_command.c:71)
+==61865==    by 0x4068CC: execute_commands (executor.c:104)
+==61865==    by 0x4015F4: main (main.c:106)
+==61865== 
+==61865== 600 bytes in 15 blocks are still reachable in loss record 125 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x40327E: create_token (tokenizer_utils.c:18)
+==61865==    by 0x402D5C: handel_operator (tokenizer.c:122)
+==61865==    by 0x402967: split_token (tokenizer.c:326)
+==61865==    by 0x403908: parse_command (parser.c:138)
+==61865==    by 0x4015DE: main (main.c:105)
+==61865== 
+==61865== 720 bytes in 15 blocks are still reachable in loss record 128 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x403F61: creat_command (parser_utils_1.c:18)
+==61865==    by 0x403B00: handel_pipe (parser_utils.c:17)
+==61865==    by 0x40378A: parsing (parser.c:98)
+==61865==    by 0x403967: parse_command (parser.c:159)
+==61865==    by 0x4015DE: main (main.c:105)
+==61865== 
+==61865== 784 bytes in 62 blocks are still reachable in loss record 130 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x401413: retrieve_envp (main.c:51)
+==61865==    by 0x40151D: main (main.c:79)
+==61865== 
+==61865== 992 bytes in 62 blocks are still reachable in loss record 132 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x408183: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x4013C2: retrieve_envp (main.c:46)
+==61865==    by 0x40151D: main (main.c:79)
+==61865== 
+==61865== 992 bytes in 62 blocks are still reachable in loss record 133 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x408183: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x401413: retrieve_envp (main.c:51)
+==61865==    by 0x40151D: main (main.c:79)
+==61865== 
+==61865== 992 bytes in 62 blocks are still reachable in loss record 134 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x408183: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x4071A8: ft_strdup (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x401476: retrieve_envp (main.c:56)
+==61865==    by 0x40151D: main (main.c:79)
+==61865== 
+==61865== 992 bytes in 62 blocks are still reachable in loss record 135 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x408183: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x401B65: convert_env_to_array (utils_2.c:48)
+==61865==    by 0x4060DC: execute_external (single_command.c:71)
+==61865==    by 0x4068CC: execute_commands (executor.c:104)
+==61865==    by 0x4015F4: main (main.c:106)
+==61865== 
+==61865== 1,080 bytes in 27 blocks are still reachable in loss record 144 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x40327E: create_token (tokenizer_utils.c:18)
+==61865==    by 0x40320A: handel_simple_str (tokenizer.c:197)
+==61865==    by 0x402983: split_token (tokenizer.c:328)
+==61865==    by 0x403908: parse_command (parser.c:138)
+==61865==    by 0x4015DE: main (main.c:105)
+==61865== 
+==61865== 1,120 bytes in 70 blocks are still reachable in loss record 145 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x408183: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x407695: ft_strjoin (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x4031CF: handel_simple_str (tokenizer.c:191)
+==61865==    by 0x402983: split_token (tokenizer.c:328)
+==61865==    by 0x403908: parse_command (parser.c:138)
+==61865==    by 0x4015DE: main (main.c:105)
+==61865== 
+==61865== 1,488 bytes in 62 blocks are still reachable in loss record 146 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x4013C2: retrieve_envp (main.c:46)
+==61865==    by 0x40151D: main (main.c:79)
+==61865== 
+==61865== 1,874 bytes in 31 blocks are still reachable in loss record 149 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x40777D: ft_calloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x402E68: handel_simple_str (tokenizer.c:138)
+==61865==    by 0x402983: split_token (tokenizer.c:328)
+==61865==    by 0x403908: parse_command (parser.c:138)
+==61865==    by 0x4015DE: main (main.c:105)
+==61865== 
+==61865== 2,836 bytes in 62 blocks are still reachable in loss record 152 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x4071A8: ft_strdup (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x401476: retrieve_envp (main.c:56)
+==61865==    by 0x40151D: main (main.c:79)
+==61865== 
+==61865== 3,620 bytes in 62 blocks are still reachable in loss record 153 of 178
+==61865==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==61865==    by 0x40815D: ft_malloc (in /home/moirhira/Desktop/minishell/minishell)
+==61865==    by 0x401B65: convert_env_to_array (utils_2.c:48)
+==61865==    by 0x4060DC: execute_external (single_command.c:71)
+==61865==    by 0x4068CC: execute_commands (executor.c:104)
+==61865==    by 0x4015F4: main (main.c:106)
+==61865== 
+==61865== LEAK SUMMARY:
+==61865==    definitely lost: 0 bytes in 0 blocks
+==61865==    indirectly lost: 0 bytes in 0 blocks
+==61865==      possibly lost: 0 bytes in 0 blocks
+==61865==    still reachable: 27,651 bytes in 1,348 blocks
+==61865==         suppressed: 208,723 bytes in 252 blocks
+==61865== 
+==61865== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--61865-- 
+--61865-- used_suppression:     55 readline_general_leak readline.supp:80 suppressed: 187,995 bytes in 235 blocks
+--61865-- used_suppression:     15 libtinfo_leak readline.supp:42 suppressed: 19,184 bytes in 15 blocks
+--61865-- used_suppression:      1 readline_funmap_leak readline.supp:12 suppressed: 1,536 bytes in 1 blocks
+--61865-- used_suppression:      1 readline_prompt_leak readline.supp:2 suppressed: 8 bytes in 1 blocks
+==61865== 
+==61865== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+minishell$ 
+==61797== 
+==61797== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==61797== 
+==61797== HEAP SUMMARY:
+==61797==     in use at exit: 208,648 bytes in 249 blocks
+==61797==   total heap usage: 1,923 allocs, 1,674 frees, 258,709 bytes allocated
+==61797== 
+==61797== LEAK SUMMARY:
+==61797==    definitely lost: 0 bytes in 0 blocks
+==61797==    indirectly lost: 0 bytes in 0 blocks
+==61797==      possibly lost: 0 bytes in 0 blocks
+==61797==    still reachable: 0 bytes in 0 blocks
+==61797==         suppressed: 208,648 bytes in 249 blocks
+==61797== 
+==61797== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--61797-- 
+--61797-- used_suppression:     52 readline_general_leak readline.supp:80 suppressed: 187,920 bytes in 232 blocks
+--61797-- used_suppression:     15 libtinfo_leak readline.supp:42 suppressed: 19,184 bytes in 15 blocks
+--61797-- used_suppression:      1 readline_funmap_leak readline.supp:12 suppressed: 1,536 bytes in 1 blocks
+--61797-- used_suppression:      1 readline_prompt_leak readline.supp:2 suppressed: 8 bytes in 1 blocks
+==61797== 
+==61797== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

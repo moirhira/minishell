@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/06 21:03:16 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:09:28 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2])
 {
@@ -35,6 +35,8 @@ int create_pipe_if_needed(t_command *cmd, int pipefd[2])
             exit_status(1);
             return -1;
         }
+        fd_collector(pipefd[0], 0);
+        fd_collector(pipefd[1], 0);
     }
     return 0;
 }

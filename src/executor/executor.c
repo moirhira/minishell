@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 18:22:29 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 14:05:57 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ int exec_redirs_no_command(t_command *command)
 {
     int s_stdin = -1;
     int s_stdout = -1;
+    int status = 0;
 
     if (has_input_redir(command))
     {
         s_stdin = dup(STDIN_FILENO);
+        fd_collector(s_stdin, 0);
         if (s_stdin == -1)
         {
             display_error("dup Failed!", strerror(errno));
-            close(s_stdin);
             return (1);
         }
     }
@@ -33,30 +34,17 @@ int exec_redirs_no_command(t_command *command)
     if (has_output_redir(command))
     {
         s_stdout = dup(STDOUT_FILENO);
+        fd_collector(s_stdout, 0);
         if (s_stdout == -1)
         {
             display_error("dup Failed!", strerror(errno));
-            close(s_stdout);
             return (1);
         }
     }
 
     if (setup_redirections(command, 0) == 1)
     {
-        if (s_stdin != -1)
-        {
-            if (dup2(s_stdin, STDIN_FILENO) == -1)
-                display_error("dup2 Failed!", strerror(errno));
-            close(s_stdin);
-        }
-        
-        if (s_stdout != -1)
-        {
-            if (dup2(s_stdout, STDOUT_FILENO) == -1)
-                display_error("dup2 Failed!", strerror(errno));
-            close(s_stdout);
-        }
-        return (1);
+        status = 1;
     }
     
     if (s_stdin != -1)
@@ -73,7 +61,7 @@ int exec_redirs_no_command(t_command *command)
         close(s_stdout);
     }
 
-    return (0);
+    return (status);
 }
 
 

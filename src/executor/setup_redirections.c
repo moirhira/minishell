@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 18:42:29 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:51:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int f_error(int fd, t_redirect *redir, int target_fd)
         display_error(redir->filename, strerror(errno));
         return 0;
     }
-
+    
     if (dup2(fd, target_fd) == -1)
     {
         ft_putstr_fd("minishell: dup2 failed\n", 2);
@@ -46,7 +46,11 @@ int setup_redirections(t_command *cmd, int exit_or_return)
             if (!f_error(fd, redir, STDIN_FILENO))
             {
                 if (exit_or_return)
+                {
+                    fd_collector(-1, 1);
+                    free_all_memory();
                     exit(exit_status(1));
+                }
                 return(1);
             }
         }
@@ -56,7 +60,11 @@ int setup_redirections(t_command *cmd, int exit_or_return)
             if (!f_error(fd, redir, STDOUT_FILENO))
             {
                 if (exit_or_return)
+                {
+                    fd_collector(-1, 1);
+                    free_all_memory();
                     exit(exit_status(1));
+                }
                 return(1);
             }
         }
@@ -66,7 +74,11 @@ int setup_redirections(t_command *cmd, int exit_or_return)
             if (!f_error(fd, redir, STDOUT_FILENO))
             {
                 if (exit_or_return)
+                {
+                    fd_collector(-1, 1);
+                    free_all_memory();
                     exit(exit_status(1));
+                }
                 return(1);
             }
         }
@@ -75,3 +87,18 @@ int setup_redirections(t_command *cmd, int exit_or_return)
     return (0);
 }
 
+// s_valid_identifier(const char *str)
+// {
+//     int i = 1;
+//     if (!str || !str[0]) // check the first character of the arg 
+//         return 0;
+//     if (!ft_isalpha(str[0]) && str[0] != '_')
+//         return 0;
+//     while(str[i]) // check the rest of the arg
+//     {
+//         if (!ft_isalnum(str[i]) && str[i] != '_')
+//             return 0;
+//         i++;
+//     }
+//     return 1;
+// }

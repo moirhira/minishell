@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 19:30:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 09:11:51 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,3 +121,27 @@ int exit_status(int new_status)
         status = new_status;
     return (status);
 }
+
+int *fd_collector(int fd, int mode)
+{
+    static int fds[1024];
+    static int count;
+    int i;
+    
+    count = 0;
+    
+    if (mode == 0)
+    {
+        if (count < 1024)
+            fds[count++] = fd;
+    }
+    else if (mode == 1)
+    {
+        i = 0;
+        while (i < count)
+            close(fds[i++]);
+        count = 0;
+    }
+    return (NULL);
+}
+

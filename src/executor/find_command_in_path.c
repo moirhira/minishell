@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 20:41:16 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:34:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static int is_executable(const char *path)
 static int is_directory(const char *path)
 {
     struct stat st;
+    if (stat(path, &st) == -1)
+        return (0);
     return (S_ISDIR(st.st_mode));
 }
 

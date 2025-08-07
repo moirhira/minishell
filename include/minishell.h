@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 20:48:33 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:40:12 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 extern volatile sig_atomic_t g_signal_received;
 #define SIZE_ENV 1024
+
+
 
 typedef enum e_shell_state
 {
@@ -85,6 +87,8 @@ typedef struct s_envp
     char *value;
     struct s_envp *next;
 }   t_envp;
+
+int *fd_collector(int fd, int mode);
 
 // tokenizer.c
 int split_token(char *s, t_envp **my_env, t_token **token);
@@ -171,7 +175,7 @@ int	    builtin_exit(char **args, t_envp **env);
 int    builtin_echo(char **cmd);
 
 // helper
-int is_valid_identifier(const char *str);
+// int is_valid_identifier(const char *str);
 
 //pwd
 int	builtin_pwd(t_envp *env);

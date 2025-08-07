@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 20:21:34 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:50:20 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int main(int ac, char **av, char **env)
         if (!cmd_line)
         {
             free_all_memory();
+            fd_collector(-1, 1);
             // int i = 3;
             // while (i < 1024)
             //     close(i++);
@@ -107,6 +108,7 @@ int main(int ac, char **av, char **env)
         list_cmd = NULL;
         free(cmd_line);
     }
+    fd_collector(-1, 1);
     free_all_memory();
     return(exit_status (-1));
 }

@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 19:57:16 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 19:22:02 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:08:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int execute_builtin(t_command *cmd, t_envp **env)
 {
@@ -23,10 +23,10 @@ int execute_builtin(t_command *cmd, t_envp **env)
      if (has_input_redir(cmd))
      {
          s_stdin = dup(STDIN_FILENO);
+         fd_collector(s_stdin, 0);
          if (s_stdin == -1)
          {
              display_error("dup Failed!", strerror(errno));
-             close(s_stdin);
              return (1);
          }
      }
@@ -35,10 +35,10 @@ int execute_builtin(t_command *cmd, t_envp **env)
      if (has_output_redir(cmd))
      {
           s_stdout = dup(STDOUT_FILENO);
+          fd_collector(s_stdout, 0);
           if (s_stdout == -1)
           {
                display_error("dup Failed!", strerror(errno));
-               close(s_stdout);
                return (1);
           }
      }
@@ -80,6 +80,6 @@ int execute_builtin(t_command *cmd, t_envp **env)
                display_error("dup2 Failed!", strerror(errno));
           close(s_stdout);
      }
-    return (result);
+     return (result);
 }
 

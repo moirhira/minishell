@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:21 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 09:24:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:08:35 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 
 int builtin_cd(t_command *cmd, t_envp **env)
