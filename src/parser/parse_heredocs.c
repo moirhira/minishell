@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 21:03:46 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 21:45:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 void generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
 {
-    char *prefix = "/tmp/minishell_herdoc_";
-    
+    char *char_pid;
+    char *prefix;
+
+    prefix = "/tmp/minishell_herdoc_";
     int i = 0;
     while(prefix[i] && i + 1 < size_temp)
     {
         temp_name[i] = prefix[i];
         i++;
     }
-    char *char_pid = ft_itoa(pid);
+    char_pid = ft_itoa(pid);
     int j = 0;
     while(char_pid[j] && i + 1 < size_temp)
     {
@@ -31,7 +33,6 @@ void generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
         j++;
     }
     temp_name[i] = '\0';
-    // free(char_pid);
 }
 
 void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
@@ -44,7 +45,6 @@ void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
         processed_line = ft_calloc(1, sizeof(char));
         if (!processed_line)
         {
-            // free(line);
             close(fd);
             return;
         }
@@ -57,20 +57,16 @@ void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
             {
                 char ch[2] = {line[i], '\0'};
                 processed_line = ft_strjoin(processed_line, ch);
-                // free(old);
                 i++;
             }
         }
         write(fd, processed_line, ft_strlen(processed_line));
         write(fd, "\n", 1);
-        // free(processed_line);
-        // free(line);
     }
     else
     {
         write(fd, line, ft_strlen(line));
         write(fd, "\n", 1);
-        // free(line);
     }
 }
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 15:40:12 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/08 13:58:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_envp
     struct s_envp *next;
 }   t_envp;
 
-int *fd_collector(int fd, int mode);
+void fd_collector(int fd, int mode);
 
 // tokenizer.c
 int split_token(char *s, t_envp **my_env, t_token **token);
@@ -97,7 +97,7 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);
 void add_token(t_token **token_lst, t_token *new_token);
-char *get_env_value(t_envp *my_env, const char *var_name); // get the value of the env vars 
+char *get_env_value(t_envp *my_env, const char *var_name);
 int was_previous_space(char *s, int i);
 t_token *get_last_token(t_token *lst);
 
@@ -140,8 +140,6 @@ int     execute_commands(t_command *command, t_envp **env);
 int     execute_builtin(t_command *cmd, t_envp **env);
 int    builtin_cd(t_command *cmd, t_envp **env);
 char *find_command_in_path(char *cmd, t_envp *env, int *status);
-void    ft_swap(char **a, char **b);
-void    free_env_array(char **envp);
 
 // parse_herdocs.c
 void parse_heredocs(t_command *command, t_envp *my_env);
@@ -159,7 +157,6 @@ int has_output_redir(t_command *cmd);
 
 // for export 
 int     print_sorted_export(t_envp *env);
-int     is_valid_identifier(const char *str);
 int     builtin_export(t_command *cmd, t_envp **env);
 int     count_env(t_envp *env);
 void    sort_in_tab(char **array, int size);
@@ -174,8 +171,6 @@ int	    builtin_exit(char **args, t_envp **env);
 // echo
 int    builtin_echo(char **cmd);
 
-// helper
-// int is_valid_identifier(const char *str);
 
 //pwd
 int	builtin_pwd(t_envp *env);

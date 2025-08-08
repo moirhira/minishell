@@ -1,12 +1,12 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -g
-SRC = 	src/main.c src/utils/utils.c src/utils/utils_2.c src/utils/setup_signals.c src/utils/display_error.c\
+SRC = 	src/main.c src/utils/utils.c src/utils/utils_2.c src/utils/setup_signals.c src/utils/display_error.c \
 		src/parser/tokenizer.c src/parser/tokenizer_utils.c src/parser/parser.c src/parser/parser_utils.c src/parser/parser_utils_1.c src/parser/parse_heredocs.c\
-      	src/executor/builtins/builtin_cd.c src/executor/builtins/builtin_cmd.c src/executor/builtins/builtin_echo.c src/executor/builtins/builtin_env.c src/executor/builtins/builtin_exit.c src/executor/builtins/builtin_export.c\
-      	src/executor/builtins/builtin_pwd.c src/executor/builtins/builtin_unset.c src/executor/find_command_in_path.c  src/executor/helper.c \
-	  	src/executor/setup_redirections.c src/executor/externals.c src/executor/sort_in_tab.c src/executor/sorted_env.c src/executor/executor.c   \
-		src/executor/pipe/pipeline.c src/executor/pipe/executor_pipe_helpers.c src/executor/env_operations.c 
+      	src/executor/builtins/builtin_cd.c src/executor/builtins/builtin_cmd.c src/executor/builtins/builtin_echo.c src/executor/builtins/builtin_pwd.c src/executor/builtins/builtin_export_sorted_env.c\
+		src/executor/builtins/builtin_exit.c src/executor/builtins/builtin_export.c  src/executor/builtins/builtin_env.c src/executor/builtins/builtin_unset.c\
+	  	src/executor/setup_redirections.c src/executor/externals/externals.c src/executor/externals/find_command_in_path.c  src/executor/executor.c \
+		src/executor/pipe/pipeline.c src/executor/pipe/executor_pipe_helpers.c src/executor/env_operations.c \
 
 OBJ = ${SRC:.c=.o}
 LIBFT_DIR = libraries/libft

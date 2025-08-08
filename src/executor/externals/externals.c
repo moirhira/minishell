@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 16:48:04 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 21:13:05 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int    is_builtin(const char *cmd)
 {
@@ -30,23 +30,6 @@ int    is_builtin(const char *cmd)
     return (0);
 }
 
-// void free_env_array(char **envp)
-// {
-//     int i = 0;
-
-//     if (!envp)
-//         return;
-
-//     while (envp[i])
-//     {
-//         // free(envp[i]);
-//         i++;
-//     }
-//     // free(envp);
-// }
-
-
-
 int	execute_external(t_command *cmd, t_envp *env)
 {
 	pid_t	pid;
@@ -62,25 +45,18 @@ int	execute_external(t_command *cmd, t_envp *env)
             return (status);
         else
         {
-           	ft_putstr_fd("minishell: ", 2);
-            ft_putstr_fd(cmd->args[0], 2);
-            ft_putstr_fd(": command not found\n", 2);
+            display_error(cmd->args[0], "command not found");
             return (127);
         }
     }
 	envp = convert_env_to_array(env);
     if (!envp)
-    {
-        // free(path);
         return (1);
-    }
     setup_signals(SHELL_IGNORE);
 	pid = fork();
 	if (pid < 0)
 	{
         display_error("fork failed", strerror(errno));
-		// free(path);
-        // free_array(envp, ft_strlen_2d(envp));
 		return (1);
 	}
 	if (pid == 0)
@@ -88,14 +64,13 @@ int	execute_external(t_command *cmd, t_envp *env)
         setup_signals(CHILD_PROCESS);
         if (setup_redirections(cmd, 1) == 1)
         {
-            
             free_all_memory();
+            fd_collector(-1, 1);
             exit(1);
         }
 		execve(path, cmd->args, envp);
         display_error(cmd->args[0], strerror(errno));
-        // free(path);
-        // free_array(envp, ft_strlen_2d(envp));
+        fd_collector(-1, 1);
         free_all_memory();
 		exit(126);
 	}
@@ -103,8 +78,6 @@ int	execute_external(t_command *cmd, t_envp *env)
     {
         waitpid(pid, &status, 0);
         setup_signals(SHELL_INTERACTIVE);
-        // free(path);
-        // free_array(envp, ft_strlen_2d(envp));
         
         if (WIFSIGNALED(status))
         {

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 19:57:16 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 16:08:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/08 15:28:34 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,14 @@ int execute_builtin(t_command *cmd, t_envp **env)
      {
           if (dup2(s_stdin, STDIN_FILENO) == -1)
                display_error("dup2 Failed!", strerror(errno));
-          close(s_stdin);
      }
      
      if (s_stdout != -1)
      {
           if (dup2(s_stdout, STDOUT_FILENO) == -1)
                display_error("dup2 Failed!", strerror(errno));
-          close(s_stdout);
      }
+     fd_collector(-1, 1);
      return (result);
 }
 

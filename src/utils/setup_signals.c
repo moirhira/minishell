@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 20:48:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 21:09:23 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void sig_handler_heredoc(int sig)
 
 void    setup_signals(int state)
 {
-    // write(STDOUT_FILENO, "\r", 1);
     if (state == SHELL_INTERACTIVE)
     {
         signal(SIGINT, sig_handler_inter);

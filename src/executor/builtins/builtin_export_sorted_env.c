@@ -1,16 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sorted_env.c                                       :+:      :+:    :+:   */
+/*   builtin_export_sorted_env.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:12:09 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/05 20:21:33 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:30:54 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
+
+
+void sort_in_tab(char **array, int size)
+{
+    int i;
+	char *temp;
+	i = 0;
+    while (i < size - 1)
+    {
+        int j = i + 1;
+        while (j < size)
+        {
+            if (ft_strcmp(array[i], array[j]) > 0)
+			{
+				temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+            j++;
+        }
+        i++;
+    }
+}
 
 int count_env(t_envp *env)
 {
@@ -38,10 +61,7 @@ int	print_sorted_export(t_envp *env)
 	{
 		arr[i] = create_export_entry(env->key, env->value);
 		if (!arr[i])
-		{
-			// free_array(arr, i);
 			return (1);
-		}
 		env = env->next;
 		i++;
 	}
@@ -79,9 +99,9 @@ void	print_array(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		write(1, "declare -x ", 11);
-		write(1, arr[i], ft_strlen(arr[i]));
-		write(1, "\n", 1);
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd(arr[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}
 }

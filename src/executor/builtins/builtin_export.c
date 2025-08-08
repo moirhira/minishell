@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 15:09:02 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:31:38 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int builtin_export(t_command *cmd, t_envp **env)
     }
     
     if (!env || !*env)
-        return exit_status(1);
+        return(1);
     i = 1;
     final_status = 0;
     while (cmd->args[i])

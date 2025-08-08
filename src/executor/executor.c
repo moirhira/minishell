@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 14:05:57 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:55:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int exec_redirs_no_command(t_command *command)
         if (s_stdin == -1)
         {
             display_error("dup Failed!", strerror(errno));
-            return (1);
+            status = 1;
         }
     }
     
@@ -38,32 +38,51 @@ int exec_redirs_no_command(t_command *command)
         if (s_stdout == -1)
         {
             display_error("dup Failed!", strerror(errno));
-            return (1);
+            status = 1;
         }
     }
 
     if (setup_redirections(command, 0) == 1)
-    {
         status = 1;
-    }
     
     if (s_stdin != -1)
     {
         if (dup2(s_stdin, STDIN_FILENO) == -1)
             display_error("dup2 Failed!", strerror(errno));
-        close(s_stdin);
     }
-    
     if (s_stdout != -1)
     {
         if (dup2(s_stdout, STDOUT_FILENO) == -1)
             display_error("dup2 Failed!", strerror(errno));
-        close(s_stdout);
     }
-
+    fd_collector(-1, 1);
     return (status);
 }
 
+
+void cleanup_heredocs(t_command *command)
+{
+    t_command *current_cmd = command;
+    t_redirect *redir;
+
+    while (current_cmd)
+    {
+        redir = current_cmd->redirects;
+        while (redir)
+        {
+            if (redir->type == TOKEN_HEREDOC || redir->type == TOKEN_HEREDOC_QUOTED)
+            {
+                if (redir->filename)
+                {
+                    unlink(redir->filename);
+                    redir->filename = NULL;
+                }
+            }
+            redir = redir->next;
+        }
+        current_cmd = current_cmd->next; 
+    }
+}
 
 int execute_commands(t_command *command, t_envp **env)
 {
@@ -73,7 +92,7 @@ int execute_commands(t_command *command, t_envp **env)
     if (g_signal_received)
     {
         g_signal_received = 0;
-        return (exit_status(130));
+        exit_st = 130;
     }
     
     if (!command)
@@ -87,46 +106,16 @@ int execute_commands(t_command *command, t_envp **env)
     else if (!command->pipe && (!command->args || !command->args[0]))
     {
         if (command->redirects)
-        {
             exit_st = exec_redirs_no_command(command);
-            return (exit_status(exit_st));
-        }
-        
-        return 0;
     }
-    else if (is_builtin(command->args[0]))
+    else if (command && is_builtin(command->args[0]))
     {
         exit_st = execute_builtin(command,env);
-        return (exit_status(exit_st));
     }
-    else
+    else if (command)
     {
         exit_st = execute_external(command, *env);
     }
-        
+    cleanup_heredocs(command);
     return (exit_status(exit_st));
 }
-    
-    // if (!command->args || !command->args[0])
-    // {
-    //     if (command->redirects)
-    //     {
-    //         exit_st = exec_redirs_no_command(command);
-    //         return (exit_status(exit_st));
-    //     }
-    //     return 0;
-    // }
-    
-    // if (is_builtin(command->args[0]) && command->next == NULL)
-    // {
-    //     exit_st = execute_builtin(command,env);
-    //     return (exit_status(exit_st));
-    // }
-    // else if (command && !command->pipe)
-    // {
-    //     exit_st = execute_external(command, *env);
-    // }
-    // else 
-    // {
-    //     exit_st = execute_pipeline(command, *env);
-    // }

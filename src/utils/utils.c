@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 22:07:56 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 09:11:51 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:04:40 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	free_token(t_token **token)
 	while (current)
 	{
 		next = current->next;
-		// free(current->value);
-		// free(current);
 		current = next;
 	}
 	*token = NULL;
@@ -122,17 +120,15 @@ int exit_status(int new_status)
     return (status);
 }
 
-int *fd_collector(int fd, int mode)
+void fd_collector(int fd, int mode)
 {
     static int fds[1024];
     static int count;
     int i;
     
-    count = 0;
-    
     if (mode == 0)
     {
-        if (count < 1024)
+        if (fd >= 0 && count < 1024)
             fds[count++] = fd;
     }
     else if (mode == 1)
@@ -142,6 +138,5 @@ int *fd_collector(int fd, int mode)
             close(fds[i++]);
         count = 0;
     }
-    return (NULL);
 }
 

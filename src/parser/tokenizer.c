@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 22:25:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:11:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 	if (!s[*i + 1] || ft_isspace(s[*i + 1]) || s[*i + 1] == '"')
 	{
 		char *temp = ft_strjoin(curnt_str, "$");
-		// free(curnt_str);
 		(*i)++;
 		return (temp);
 	}
@@ -25,7 +24,6 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?' && s[*i + 1] != '"')
 	{
 		char *temp = ft_strjoin(curnt_str, "$");
-		// free(curnt_str);
 		(*i)++;
 		return (temp);
 	}
@@ -37,8 +35,6 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 		(*i)++;
 		char *exit_str = ft_itoa(exit_status(-1));
 		char *temp = ft_strjoin(curnt_str, exit_str);
-		// free(curnt_str);
-		// free(exit_str);
 		return (temp);
 	}
 
@@ -50,10 +46,8 @@ char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str)
 	if (var_value)
 	{
 		char *temp = ft_strjoin(curnt_str, var_value);
-		// free(curnt_str);
 		curnt_str = temp;
 	}
-	// free(var_name);
 	return (curnt_str);
 }
 
@@ -308,9 +302,7 @@ int split_token(char *s, t_envp **my_env, t_token **token)
 		{
 			i = handel_heredoc_delimiter(s, i, token, &state);
 			if (i == -1)
-			{
 				return (0);
-			}
 		}
 		else
 		{

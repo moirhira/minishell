@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:34 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 15:08:50 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:14:06 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ int builtin_echo(char **cmd)
     if (newline)
         ft_putstr_fd("\n", STDOUT_FILENO);
 
-    return exit_status(0);
+    return (0);
 }

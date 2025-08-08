@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 20:54:05 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 15:09:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:32:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ void    unset_variable(t_envp **env, char *var)
                 prev->next = tmp->next;
             else
                 *env = tmp->next;
-            // free(tmp->key);
-            // free(tmp->value);
-            // free(tmp);
             return;    
         }
         prev = tmp;
@@ -44,5 +41,5 @@ int builtin_unset(char **args, t_envp **env)
         unset_variable(env, args[i]);
         i++;
     }
-    return exit_status(0);
+    return (0);
 }

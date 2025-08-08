@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 15:34:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/07 20:37:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 
 char	*ft_strjoin_path(const char *dir, const char *cmd)
@@ -92,21 +92,14 @@ char *find_command_in_path(char *cmd, t_envp *env, int *status)
     {
         full = ft_strjoin_path(paths[i], cmd);
         if (!full)
-        {
-            // free_array(paths, ft_strlen_2d(paths));
             return (NULL);
-        }
         if (is_executable(full))
         {
             char *res = ft_strdup(full);
-            // free(full);
-            // free_array(paths, ft_strlen_2d(paths));
             return (res);
         }
-        // free(full);
         i++;
     }
-    // free_array(paths, ft_strlen_2d(paths));
     return (NULL);
 }
 

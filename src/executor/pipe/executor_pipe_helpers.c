@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 15:09:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:34:31 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,9 @@ int exec_command(t_command *cmd, t_envp *env)
     
     envp = convert_env_to_array(env);
     if (!envp)
-    {
-        // free(path)
         return (1);
-    }
     execve(path, cmd->args, envp);
     display_error(cmd->args[0], strerror(errno));
-    // free(path);
-    // free_array(envp, ft_strlen_2d(envp));
     return(126);
 }
 
@@ -50,7 +45,6 @@ void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)
     
     if (prev_pipe != -1)
     {
-        
         dup2(prev_pipe, STDIN_FILENO);
         close(prev_pipe);
     }
@@ -66,6 +60,6 @@ void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)
     else if (cmd->args && cmd->args[0])
         exit_st = exec_command(cmd, env);
     free_all_memory();
-    fd_collector(-1, 2);
+    fd_collector(-1, 1);
     exit(exit_st);
 }
