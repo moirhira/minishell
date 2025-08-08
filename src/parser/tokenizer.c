@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 20:11:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/08 21:10:46 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,75 +125,55 @@ static int handel_operator(char *s, int i, t_token **token, int *state)
 
 static int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
-	int attached;
-	int dont_expand = 0;
-	char *var_value;
-	attached = was_previous_space(s, i);
-	char *simple_str = ft_calloc(ft_strlen(s) * 2, 1);
-	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\'' &&
-		   s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
-	{
-		if(s[i] == '=' && s[i + 1] && s[i + 1] == '$')
-		{
-			dont_expand = 1;
-		}
-		if (s[i] == '$')
-		{
-			if (dont_expand)
-			{
-				simple_str = handel_env_var(s, &i, my_env, simple_str);
-			}
-			else
-			{
-				var_value = get_var_value_and_advance(s, &i, my_env);
-				if (!var_value || *var_value == '\0')
-				{
-					var_value = ft_strdup("");
-					add_token(token, create_token(var_value, 0, 0, 0));
-					get_last_token(*token)->ignored = 1;
-					continue;
-				}
-				char **split_words = ft_split_advanced(var_value, " \t\n");
-				if (!split_words || !split_words[0])
-				{
-					var_value = ft_strdup("");
-					add_token(token, create_token(var_value, 0, 0, 0));
-					get_last_token(*token)->ignored = 1;
-					continue;
-				}
-				
-				int word_count = ft_strlen_2d(split_words);
-				char *temp = ft_strjoin(simple_str, split_words[0]);
-				simple_str = temp;
-				
-				if (word_count > 1)
-				{
-					add_token(token, create_token(simple_str, 0, 0, 0));
-					int k = 1;
-					while (k < word_count - 1)
-					{
-						add_token(token, create_token(split_words[k], 0, 0, 0));
-						k++;
-					}
-					simple_str = ft_strdup(split_words[word_count - 1]);
-				}
-			}
-		}
-		else
-		{
-			char ch[2] = {s[i++], '\0'};
-			char *temp = ft_strjoin(simple_str, ch);
-			simple_str = temp;
-		}
-	}
-	if (simple_str && *simple_str)
-	{
-		t_token *new = create_token(simple_str, 0, 0, 0);
-		if (*token && attached)
-			get_last_token(*token)->attached = 1;
-		add_token(token, new);
-	}
-	return (i);
+    int attached = was_previous_space(s, i);
+    char *var_value;
+
+    char *simple_str = ft_calloc(1, 1);
+    while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\'' &&
+           s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
+    {
+        if (s[i] == '$')
+        {
+            var_value = get_var_value_and_advance(s, &i, my_env);
+            if (!var_value)
+                var_value = ft_strdup("");
+
+            char *temp = ft_strjoin(simple_str, var_value);
+            simple_str = temp;
+        }
+        else
+        {
+            char ch[2] = {s[i++], '\0'};
+            char *temp = ft_strjoin(simple_str, ch);
+            simple_str = temp;
+        }
+    }
+
+    if (simple_str && *simple_str)
+    {
+        char **split_words = ft_split_advanced(simple_str, " \t\n");
+
+        if (!split_words || !split_words[0])
+        {
+            add_token(token, create_token(ft_strdup(""), 0, 0, 0));
+            get_last_token(*token)->ignored = 1;
+        }
+        else
+        {
+			int k = 0;
+            while (split_words[k] != NULL)
+            {
+                t_token *new = create_token(ft_strdup(split_words[k]), 0, 0, 0);
+                
+                if (*token && attached)
+					get_last_token(*token)->attached = 1;
+                
+                add_token(token, new);
+				k++;
+            }
+        }
+    }
+    return (i);
 }
 
 static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
@@ -215,11 +195,7 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 			char ch[2] = {s[i++], '\0'};
 			char *temp = ft_strjoin(final_str, ch);
 			if (!temp)
-			{
-				// free(final_str);
 				return (-1);
-			}
-			// free(final_str);
 			final_str = temp;
 		}
 	}
@@ -228,14 +204,12 @@ static int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 		ft_putstr_fd("minishell: Unclosed quote:", 2);
 		ft_putstr_fd(&quote, 2);
 		ft_putstr_fd("\n", 2);
-		// free(final_str);
 		return (-1);
 	}
 	t_token *new = create_token(final_str, 0, 0, 1);
 	if (*token && attached)
 		get_last_token(*token)->attached = 1;
 	add_token(token, new);
-	// free(final_str);
 	i++;
 	return (i);
 }
