@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 16:27:40 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:21:32 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ int    builtin_cd(t_command *cmd, t_envp **env);
 char *find_command_in_path(char *cmd, t_envp *env, int *status);
 
 // parse_herdocs.c
-void parse_heredocs(t_command *command, t_envp *my_env);
+int parse_heredocs(t_command *command, t_envp *my_env);
 
 
 // setup_signals.c

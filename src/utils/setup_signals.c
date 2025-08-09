@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 21:09:23 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:17:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,6 @@ void sig_handler_inter(int sig)
     }
 }
 
-void sig_handler_heredoc(int sig)
-{
-    if (sig == SIGINT)
-    {
-        g_signal_received = SIGINT;
-        close(STDIN_FILENO);
-    }
-}
 
 void    setup_signals(int state)
 {
@@ -49,7 +41,7 @@ void    setup_signals(int state)
     }
     else if (state == SHELL_HEREDOC)
     {
-        signal(SIGINT, sig_handler_heredoc);
+        signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_IGN);
     }
     else if (state == CHILD_PROCESS)

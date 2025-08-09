@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/08 14:55:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:25:48 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,7 @@ void cleanup_heredocs(t_command *command)
 int execute_commands(t_command *command, t_envp **env)
 {
     int exit_st = 0;
-    parse_heredocs(command, (*env));
-   
-    if (g_signal_received)
-    {
-        g_signal_received = 0;
-        exit_st = 130;
-    }
+       
     
     if (!command)
         return (0);

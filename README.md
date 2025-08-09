@@ -320,3 +320,16 @@ $9HOME
 
 minishell$ wc -l | $DONTEXISt
 minishell: syntax error near unexpected token `newline'
+
+
+
+
+
+
+
+
+
+
+
+-===========================================
+change in pwd

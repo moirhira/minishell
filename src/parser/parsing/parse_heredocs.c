@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 12:14:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 17:37:50 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,11 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
         setup_signals(SHELL_INTERACTIVE);
         if(WIFSIGNALED(status))
         {
-            unlink(temp_filename);
-            g_signal_received = 1;
             if (WTERMSIG(status) == SIGINT)
             {
+                g_signal_received = SIGINT;
+                unlink(temp_filename);
                 write(STDERR_FILENO,"\n",1);
-                exit_status(130);
             }
             return (0);
         }
@@ -132,10 +131,10 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
     return (0);
 }
 
-void parse_heredocs(t_command *command, t_envp *my_env)
+int parse_heredocs(t_command *command, t_envp *my_env)
 {
     t_command *cmd = command;
-     g_signal_received = 0;
+    g_signal_received = 0;
     while (cmd)
     {
         if (cmd->heredoc_count > 0)
@@ -153,11 +152,12 @@ void parse_heredocs(t_command *command, t_envp *my_env)
                     if (fill_herdoc(delimiter, expand_var, my_env, temp_filename))
                         redir->filename = ft_strdup(temp_filename);
                     else if (g_signal_received)
-                        return;
+                        return (1);
                 }
                 redir = redir->next;
             }
         }
         cmd = cmd->next;
     }
+    return (0);
 }
