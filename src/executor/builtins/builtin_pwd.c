@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 08:44:41 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 15:20:14 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 16:33:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,15 @@ int	builtin_pwd(t_envp *env)
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		printf("%s\n", cwd);
+		ft_putstr_fd(cwd, STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
         return (0);
 	}
 	else
 	{
-		display_error("pwd", strerror(errno));
+		display_error("pwd", "fatal error: current directory not set");
 		return (1);
 	}
 }
 
-//what i've changed
 
-//old version :
-///   uses getcwd() to query the kernel for the real current working directory.
-///   this always reflects the real filesystem, even if PWD is wrong or unset.
-///   if the directory was deleted, getcwd() fails, and it prints an error.
-
-// second version (current):
-///   uses getenv("PWD") to read the PWD environment variable.
-///   this doesn't verify the filesystem—it just prints the value stored in the variable.
-///   if the directory is deleted, it will still print the old value until i cd somewhere else.

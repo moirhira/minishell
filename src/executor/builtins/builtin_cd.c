@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:21 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 15:08:35 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:46:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int builtin_cd(t_command *cmd, t_envp **env)
     
     if (getcwd(cwd, sizeof(cwd)) != NULL)
     {
-        if (update_env_var(env, "OLDPWD", cwd) != 0)
+        if (update_env_var(env, "OLDPWD", cwd) != 0) // get value of PWD before change. 
         {
             display_error("cd", "failed to update OLDPWD");
             return (1);

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 20:37:37 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 14:44:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,12 @@ char *find_command_in_path(char *cmd, t_envp *env, int *status)
         full = ft_strjoin_path(paths[i], cmd);
         if (!full)
             return (NULL);
-        if (is_executable(full))
+        if(is_directory(full))
+        {
+            i++;
+            continue;
+        }
+        if (is_executable(full)) // check if exist first then check permission.
         {
             char *res = ft_strdup(full);
             return (res);
