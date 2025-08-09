@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 19:28:41 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 12:15:08 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 t_token *create_token(char *str, int type, int is_attached, int was_quoted)
 {

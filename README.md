@@ -299,3 +299,24 @@ warning: here-document delimited by end-of-file (wanted `a')
 --1967-- used_suppression:      1 readline_prompt_leak readline.supp:2 suppressed: 8 bytes in 1 blocks
 ==1967== 
 ==1967== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+
+
+
+
+===================================================
+
+
+
+
+minishell$ echo $9HOME
+$9HOME
+
+\
+
+
+
+
+
+minishell$ wc -l | $DONTEXISt
+minishell: syntax error near unexpected token `newline'

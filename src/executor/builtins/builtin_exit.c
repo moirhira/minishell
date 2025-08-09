@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 23:00:53 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/08 21:53:41 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/08 22:18:38 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int check_overflow(long result, int digit, int sign, int base)
 {
     if (sign == 1 && result > (LONG_MAX - digit) / base)
         return 1;
-    if (sign == -1 && result < (LONG_MIN + digit) / base)
+    if (sign == -1 && result > ((unsigned long)-(LONG_MIN + digit)) / base)
         return -1;
     return 0;
 }

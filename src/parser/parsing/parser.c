@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/08 21:09:15 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 12:14:50 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int validate_syntaxe(t_token **token_lst)
 {
@@ -158,8 +158,6 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
     *command_lst = NULL;
     if (!parsing(token_lst, command_lst))
     {
-        // free_token(token_lst);
-        // free_command(command_lst);
         return (exit_status(2), 2);
     }
 

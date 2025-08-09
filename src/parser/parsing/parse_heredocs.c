@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 21:45:25 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 12:14:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 void generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
 {

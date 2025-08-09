@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/08 13:58:55 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 13:46:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,12 @@ void fd_collector(int fd, int mode);
 // tokenizer.c
 int split_token(char *s, t_envp **my_env, t_token **token);
 char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
+
+//qouted_command.c
+int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token);
+
+//simple_command.c
+int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token);
 
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);

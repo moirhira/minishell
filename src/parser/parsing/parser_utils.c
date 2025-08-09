@@ -6,11 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/06 11:15:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 12:14:45 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst)
 {
