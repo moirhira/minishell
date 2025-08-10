@@ -4,7 +4,7 @@ SRC  = 	ft_split.c ft_strcat.c ft_strchr.c ft_strdup.c \
 		ft_isalnum.c ft_substr.c ft_strjoin.c ft_calloc.c\
 		ft_bzero.c ft_strncmp.c ft_itoa.c ft_putstr_fd.c \
 		ft_isspace.c ft_strlcat.c ft_isalpha.c ft_split_advanced.c\
-		ft_strcpy.c ft_malloc.c ft_strndup.c
+		ft_strcpy.c ft_malloc.c ft_strndup.c ft_putchar.c
 OBJ  = $(SRC:.c=.o)
 CC   = cc
 FLAGS = -Wall

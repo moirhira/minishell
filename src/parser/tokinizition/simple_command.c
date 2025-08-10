@@ -6,161 +6,122 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 13:40:58 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 13:42:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 20:54:21 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-char *get_var_value_and_advance(char *s, int *i, t_envp **my_env, int *q)
+typedef struct s_str_data
 {
+	char *simple_str;
+	int attached;
+	int dont_trim;
+	int unclose_quote;
+	t_envp **my_env;
+	t_token **token;
+}	t_str_data;
+
+
+static void process_dolar(char *s, int *i, t_str_data *data)
+{
+	char *var_value;
+	char *temp;
 	
-	if (s[*i + 1] && (s[*i + 1] == '\''))
+	if (data->dont_trim)
 	{
-		*i += 2;
-		int start = *i;
-		while (s[*i] && s[*i] != '\'')
-			(*i)++;
-		if (!s[*i])
-		{
-			*q = 1;
-			ft_putstr_fd("minishell: Unclosed quote: '\n", 2);
-			return (NULL);
-		}
-		char *string = ft_substr(s, start, *i - start);
-		if (s[*i] == '\'')
-            (*i)++;
-		return (string);
+		data->simple_str = handel_env_var(s, i, data->my_env, data->simple_str);
 	}
+	else
+	{
+		var_value = get_var_value_and_advance(s, i, data->my_env, &data->unclose_quote);
+
+		if (!var_value)
+		{
+			add_token(data->token, create_token(ft_strdup(""), 0, 0, 0));
+			get_last_token(*(data->token))->ignored = 1;
+			return;
+		}
+
+		temp = ft_strjoin(data->simple_str, var_value);
+		data->simple_str = temp;
+	}
+}
+
+static void process_regular_char(char *s, int *i, t_str_data *data)
+{
+	char ch[2];
+	char *temp;
 	
-	if (s[*i + 1] == '"')
+	ch[0] = s[(*i)++];
+	ch[1] = '\0';
+	temp = ft_strjoin(data->simple_str, ch);
+	data->simple_str = temp;
+}
+
+static int extract_simple_str(char *s, int i, t_str_data *data)
+{
+	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\'' &&
+           s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
     {
-        *i += 2; 
-        char *res = ft_strdup("");
-        while (s[*i] && s[*i] != '"')
+		if(s[i] == '=' && s[i + 1] && s[i + 1] == '$')
+			data->dont_trim = 1;
+        if (s[i] == '$')
         {
-            if (s[*i] == '$')
-			{
-				char *var_val = get_var_value_and_advance(s, i, my_env, q);
-				if (!var_val)
-					var_val = ft_strdup("");
-				char *temp = ft_strjoin(res, var_val);
-            	res = temp;
-			} 
-            else
-			{
-				char *str = ft_substr(s, *i , 1);
-				char *tmp = ft_strjoin(res, str);
-				res = tmp;
-				(*i)++;
-			}
+			process_dolar(s, &i, data);
         }
-		if (!s[*i])
-		{
-			*q = 1;
-			ft_putstr_fd("minishell: Unclosed quote: \"\n", 2);
-			return (NULL);
-		}
-        if (s[*i] == '"')
-            (*i)++;
-        return res;
+        else
+        {
+            process_regular_char(s, &i, data);
+        }
+		if (data->unclose_quote)
+			return (-1);
     }
-	
-	if (!s[*i + 1] || ft_isspace(s[*i + 1]))
-	{
-		(*i)++;
-		return (ft_strdup("$"));
-	}
-	if (!ft_isalpha(s[*i + 1]) && s[*i + 1] != '_' && s[*i + 1] != '?')
-	{
-		(*i)++;
-		return (ft_strdup("$"));
-	}
-	
-	(*i)++;
+	return (i);
+}
 
-	if (s[*i] == '?')
-	{
-		(*i)++;
-		return (ft_itoa(exit_status(-1)));
-	}
+static void process_split_words(char **split_words, t_str_data *data)
+{
+	int k;
+	t_token *new;
 
-	int var_start = *i;
-	while (s[*i] && (ft_isalnum(s[*i]) || s[*i] == '_'))
-		(*i)++;
-	char *var_name = ft_substr(s, var_start, *i - var_start);
-	char *var_value = get_env_value(*my_env, var_name);
-	if (var_value)
-		return (ft_strdup(var_value));
-	return (NULL);
+	k = 0;
+	while (split_words[k] != NULL)
+	{
+		new = create_token(ft_strdup(split_words[k]), 0, 0, 0);
+		if (*(data->token) && data->attached)
+			get_last_token(*(data->token))->attached = 1;
+		
+		add_token(data->token, new);
+		k++;
+	}
 }
 
 int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
-    int attached = was_previous_space(s, i);
-    char *var_value;
-	int dont_trim = 0;
-    char *simple_str = ft_calloc(1, 1);
-	int unclose_qoute = 0;
-    while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '\'' &&
-           s[i] != '"' && s[i] != '|' && s[i] != '>' && s[i] != '<')
-    {
-		if(s[i] == '=' && s[i + 1] && s[i + 1] == '$')
-		{
-			dont_trim = 1;
-		}
-        if (s[i] == '$')
-        {
-			if (dont_trim)
-			{
-				simple_str = handel_env_var(s, &i, my_env, simple_str);
-			}
-            else
-			{
-				var_value = get_var_value_and_advance(s, &i, my_env, &unclose_qoute);
-				if (unclose_qoute)
-					return (-1);
-				if (!var_value)
-				{
-					add_token(token, create_token(ft_strdup(""), 0, 0, 0));
-					get_last_token(*token)->ignored = 1;
-					continue;
-				}
-
-				char *temp = ft_strjoin(simple_str, var_value);
-				simple_str = temp;
-			}
-        }
-        else
-        {
-            char ch[2] = {s[i++], '\0'};
-            char *temp = ft_strjoin(simple_str, ch);
-            simple_str = temp;
-        }
-    }
+	t_str_data data;
+	char **split_words;
 	
-    if (simple_str && *simple_str)
+	data.attached = was_previous_space(s, i);
+	data.dont_trim = 0;
+	data.unclose_quote = 0;
+	data.simple_str = ft_calloc(1, 1);
+	data.my_env = my_env;
+	data.token = token;
+	i = extract_simple_str(s, i, &data);
+	if (i == -1)
+		return (-1);
+    if (data.simple_str && *(data.simple_str))
     {
-        char **split_words = ft_split_advanced(simple_str, " \t\n");
-
+        split_words = ft_split_advanced(data.simple_str, " \t\n");
         if (!split_words || !split_words[0])
         {
             add_token(token, create_token(ft_strdup(""), 0, 0, 0));
             get_last_token(*token)->ignored = 1;
         }
         else
-        {
-			int k = 0;
-            while (split_words[k] != NULL)
-            {
-                t_token *new = create_token(ft_strdup(split_words[k]), 0, 0, 0);
-                if (*token && attached)
-					get_last_token(*token)->attached = 1;
-                
-                add_token(token, new);
-				k++;
-            }
-        }
+			process_split_words(split_words, &data);
     }
     return (i);
 }
+

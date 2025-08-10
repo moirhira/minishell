@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:53:22 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 20:17:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 23:01:15 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 int	    ft_strlen_2d(char **str);
 char	*ft_itoa(int n);
 void	ft_putstr_fd(char *s, int fd);
+void	ft_putchar_fd(char c, int fd);
 int     ft_isspace(char c);
 int	    ft_isalpha(int c);
 char    **ft_split_advanced(char const *s, const char *charset);

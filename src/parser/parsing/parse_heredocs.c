@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 14:33:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 22:44:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,6 @@ void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
     if (expnad_var)
     {
         processed_line = ft_calloc(1, sizeof(char));
-        if (!processed_line)
-        {
-            close(fd);
-            return;
-        }
         i = 0;
         while (line[i])
         {

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 14:49:55 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:20:35 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,3 +107,4 @@ int handel_argument(t_token **token, t_command *head)
     *token = (*token)->next;
     return (1);
 }
+

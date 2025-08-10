@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 15:49:36 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 20:28:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,16 @@ int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token);
 //simple_command.c
 int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token);
 
+// simple_command_env.c
+char *get_var_value_and_advance(char *s, int *i, t_envp **my_env, int *q);
+
 // heredoc_command.c
-int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state);\
+int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state);
 
 // operator_command.c
 int handel_operator(char *s, int i, t_token **token, int *state);
+
+
 
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);

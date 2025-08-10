@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/10 15:33:44 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 15:47:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 21:19:46 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,4 @@ int handel_operator(char *s, int i, t_token **token, int *state)
 		return (single_operator(s, i, token));
 	}
 }
+

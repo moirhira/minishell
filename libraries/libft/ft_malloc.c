@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 14:44:15 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 20:15:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 22:09:46 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,17 @@ void *ft_malloc(size_t size)
     head = get_mem_head();
     allocated_mem = malloc(size);
     if (!allocated_mem)
-        return (NULL);
-    
+    {
+        free_all_memory();
+        exit(1);
+    }
     new_node = malloc(sizeof(t_memory_alloc));
     if (!new_node)
     {
         free(allocated_mem);
-        return (NULL);
+        free_all_memory();
+        exit(1);
     }
-    
     new_node->mem_segment = allocated_mem;
     new_node->next = *head;
     *head = new_node;
