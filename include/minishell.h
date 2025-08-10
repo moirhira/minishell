@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 21:03:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 10:01:17 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ t_command *creat_command(void);
 void add_command(t_command **command_lst, t_command *new_command);
 void add_argument(t_command *cmd, char *arg);
 void  add_redirect(t_command *cmd, int type, const char *filename);
+
+// validate_syntaxe.c
+
+int validate_syntaxe(t_token **token_lst);
 
 // utils.c
 int     exit_status(int new_status);

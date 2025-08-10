@@ -6,79 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 16:12:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 11:48:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-int validate_syntaxe(t_token **token_lst)
-{
-    t_token *token = *token_lst;
-    
-    if (!token)
-        return (1);
-    
-    if (token->type == 1)
-    {
-        if (token->next && token->next->type == 1)
-            printf("minishell: syntax error near unexpected token `||'\n");
-        else
-            printf("minishell: syntax error near unexpected token `%s'\n", token->value);
-        return (0);
-    }
-    while (token)
-    {
-        if (token->type != 0)
-        {
-            if (!token->next)
-            {
-                ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-                exit_status(2);
-                return (0);
-            }
-            if (token->type == 1 && token->next->type == 1)
-            {
-                ft_putstr_fd("minishell: syntax error near unexpected token `||'\n", 2); 
-                exit_status(2);
-                return (0);
-            }
-            if (token->type != 1)
-            {
-                if (token->next->type != 0)
-                {
-                    ft_putstr_fd("minishell: syntax error near unexpected token ", 2 ); 
-                    ft_putstr_fd(token->next->value, 2);
-                    ft_putstr_fd("\n", 2);
-                    exit_status(2);
-                    return (0);
-                }
-            }
-        }
-        if (token->type == TOKEN_OUTPUT && token->ignored)
-        {
-            display_error(token->value, "ambiguous redirect");
-            exit_status(2);
-            return (0);
-        }
-        token = token->next;
-    }
-    return (1);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 {
@@ -95,29 +27,32 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             add_command(cmd_lst, creat_command());
             head = *cmd_lst;
         }
-        if (token->type == 1 && !handel_pipe(&token, &head, cmd_lst)) // |
-            return (NULL);
-        else if (token->type == 2) // <
+        if (token->type == 1)
+        {
+            if (!handel_pipe(&token, &head, cmd_lst))
+                return (NULL);
+        }
+        else if (token->type == 2)
         {
             if (!handel_input_redirection(&token, head))
                 return (NULL);
         }
-        else if (token->type == 3) // >
+        else if (token->type == 3)
         {
             if (!handel_output_redirection(&token, head))
                 return (NULL);
         }
-        else if (token->type == 4) // >>
+        else if (token->type == 4) 
         {
             if (!handel_append_redirection(&token, head))
                 return (NULL);
         }
-        else if (token->type == 5) // << herdoc
+        else if (token->type == 5) 
         {
             if (!handel_heredoc(&token, head))
                 return (NULL);
         }
-        else if (token->ignored == 1)
+        else if (token && token->ignored == 1)
         {
             exit_status(0);
             token = token->next;
@@ -125,13 +60,8 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
         else
             handel_argument(&token, head);
     }
-    return (t_command *)(1);// SHOULD BE REPLACED
+    return (head);
 }
-// print commands------------------------
-void print_commands(t_command **commads);
-//---------------------------------------
-
-
 
 int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, t_envp **my_env)
 {
@@ -148,8 +78,6 @@ int parse_command(t_token **token_lst, t_command **command_lst, char *cmd_line, 
     {
         return (exit_status(2), 2);
     }
-
-    // print_commands(command_lst);
     return (exit_status(-1), 0);
 }
 

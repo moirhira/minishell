@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 17:37:50 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 13:28:09 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void proccess_child(char *delimiter, int expnad, t_envp *env, char *filename)
     setup_signals(SHELL_HEREDOC);
     fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
     if (fd == -1)
-        exit(EXIT_FAILURE);  
+        exit(EXIT_FAILURE);
+    fd_collector(fd, 0);
     while (1)
     {
         char *line = readline("> ");
@@ -116,15 +117,22 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
     {
         waitpid(pid, &status, 0);
         setup_signals(SHELL_INTERACTIVE);
-        if(WIFSIGNALED(status))
+        if(WIFEXITED(status))
         {
-            if (WTERMSIG(status) == SIGINT)
+            if (WEXITSTATUS(status) == EXIT_SUCCESS)
+                return (1);
+            else if (WEXITSTATUS(status) == 130)
             {
                 g_signal_received = SIGINT;
                 unlink(temp_filename);
-                write(STDERR_FILENO,"\n",1);
+                return (0);
             }
-            return (0);
+            else
+            {
+                g_signal_received = WEXITSTATUS(status);
+                unlink (temp_filename);
+                return (0);
+            }
         }
         return (1);
     }

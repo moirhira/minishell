@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 20:27:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 20:59:41 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 12:20:49 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state)
 				i++;
 			else
 			{
-				ft_putstr_fd("minishell: Unclosed quote:", 2);
-				ft_putstr_fd(&quote, 2);
+				ft_putstr_fd("minishell: Unclosed quote: ", 2);
+				write(2,&quote, 1);
 				ft_putstr_fd("\n", 2);
 				return (-1);
 			}

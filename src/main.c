@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 17:42:58 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 13:28:21 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int main(int ac, char **av, char **env)
             list_cmd = NULL;
             continue;
         }
+        free(cmd_line);
         if (parse_heredocs(list_cmd, my_env) != 0)
         {
             if (g_signal_received)
@@ -119,7 +120,7 @@ int main(int ac, char **av, char **env)
         execute_commands(list_cmd,&my_env);
         token_list = NULL;
         list_cmd = NULL;
-        free(cmd_line);
+        
     }
     fd_collector(-1, 1);
     free_all_memory();

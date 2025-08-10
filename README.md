@@ -333,3 +333,4 @@ minishell: syntax error near unexpected token `newline'
 
 -===========================================
 change in pwd
+change in find_command_path 

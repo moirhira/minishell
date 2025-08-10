@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 17:17:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 13:06:13 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@ void sig_handler_inter(int sig)
 }
 
 
+void sig_handler_heredoc(int sig)
+{
+    (void)sig;
+    write(STDOUT_FILENO, "\n", 1);
+    free_all_memory();
+    fd_collector(-1, 1);
+    exit(130);
+}
+
 void    setup_signals(int state)
 {
     if (state == SHELL_INTERACTIVE)
@@ -41,7 +50,7 @@ void    setup_signals(int state)
     }
     else if (state == SHELL_HEREDOC)
     {
-        signal(SIGINT, SIG_DFL);
+        signal(SIGINT, sig_handler_heredoc);
         signal(SIGQUIT, SIG_IGN);
     }
     else if (state == CHILD_PROCESS)
