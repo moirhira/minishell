@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 17:21:32 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 21:03:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,9 @@ int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token);
 //simple_command.c
 int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token);
 
+// heredoc_command.c
+int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state);
+
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);
 void add_token(t_token **token_lst, t_token *new_token);
@@ -122,13 +125,9 @@ void handel_argument(t_token **token, t_command *head);
 t_command *creat_command(void);
 void add_command(t_command **command_lst, t_command *new_command);
 void add_argument(t_command *cmd, char *arg);
-int check_next_token(t_token *token, t_command *head);
 void  add_redirect(t_command *cmd, int type, const char *filename);
 
 // utils.c
-void	free_token(t_token **stacka);
-void	free_env(t_envp **env);
-void	free_command(t_command **command);
 int     exit_status(int new_status);
 
 

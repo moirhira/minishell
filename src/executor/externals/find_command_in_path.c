@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/09 14:44:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 09:38:17 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ static int is_directory(const char *path)
 
 char *find_command_in_path(char *cmd, t_envp *env, int *status)
 {
-    char *path_env = get_env_value(env, "PATH");
-    if (!path_env)
-        return ft_strdup(cmd);
     char *full;
+    char *path_env;
+    char **paths;
+    int i;
+    // if (!path_env)
+    //     return ft_strdup(cmd);
 
     if (!cmd || !*cmd)
         return (NULL);
@@ -61,7 +63,7 @@ char *find_command_in_path(char *cmd, t_envp *env, int *status)
     {
         if (!is_file_exists(cmd))
         {
-            display_error(cmd, strerror(errno));
+            display_error(cmd, "No such file or directory");
             *status = 127;
             return (NULL);
         }
@@ -73,38 +75,51 @@ char *find_command_in_path(char *cmd, t_envp *env, int *status)
         }
         if(!is_executable(cmd))
         {
-            display_error(cmd, strerror(errno));
+            display_error(cmd, "Permission denied");
             *status = 126;
             return (NULL);
         }
         return (ft_strdup(cmd));
     }
 
-    if (!path_env)
+    path_env = get_env_value(env, "PATH");
+    if (!path_env || !*path_env)
+    {
+        display_error(cmd, "No such file or directory");
+        *status = 127;
         return (NULL);
+    }
+        
 
-    char **paths = ft_split_advanced(path_env, ":");
+    paths = ft_split_advanced(path_env, ":");
     if (!paths)
         return (NULL);
 
-    int i = 0;
+    i = 0;
     while (paths[i])
     {
         full = ft_strjoin_path(paths[i], cmd);
         if (!full)
             return (NULL);
-        if(is_directory(full))
+        if (is_file_exists(full))
         {
-            i++;
-            continue;
-        }
-        if (is_executable(full)) // check if exist first then check permission.
-        {
-            char *res = ft_strdup(full);
-            return (res);
+            if(is_directory(full))
+            {
+                i++;
+                continue;
+            }
+            if (!is_executable(full))
+            {
+                display_error(cmd, "Permission denied");
+                *status = 126;
+                return (NULL);
+            }
+            return (ft_strdup(full));
         }
         i++;
     }
+    display_error(cmd, "Command not found");
+    *status = 127;
     return (NULL);
 }
 

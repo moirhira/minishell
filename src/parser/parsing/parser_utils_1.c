@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/09 16:28:02 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 21:01:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,34 +98,5 @@ void add_argument(t_command *cmd, char *arg)
     }
     new_args[i++] = ft_strdup(arg);
     new_args[i] = NULL;
-    // free(cmd->args);
     cmd->args = new_args;
-}
-
-int check_next_token(t_token *token, t_command *head)
-{
-    if (!token->next)
-    {
-        ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
-        exit_status(2);
-        return (0);
-    }
-    if (token->type == 1 && token->next->type == 1)
-    {
-        ft_putstr_fd("minishell: syntax error near unexpected token `||'\n", 2); 
-        exit_status(2);
-        return (0);
-    }
-    if (token->type != 1)
-    {
-        if (token->next->type != 0)
-        {
-            ft_putstr_fd("minishell: syntax error near unexpected token", 2 ); 
-            ft_putstr_fd(token->next->value, 2);
-            ft_putstr_fd("\n", 2);
-            exit_status(2);
-            return (0);
-        }
-    }
-    return (1);
 }

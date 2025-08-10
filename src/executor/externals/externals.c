@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 21:13:05 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/09 21:11:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,7 @@ int	execute_external(t_command *cmd, t_envp *env)
 	path = find_command_in_path(cmd->args[0], env, &status);
 	if (!path)
     {
-        if (status == 126 || status == 127)
-            return (status);
-        else
-        {
-            display_error(cmd->args[0], "command not found");
-            return (127);
-        }
+        return (status);
     }
 	envp = convert_env_to_array(env);
     if (!envp)
