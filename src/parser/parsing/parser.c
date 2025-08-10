@@ -6,11 +6,35 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 11:48:37 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 14:52:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
+
+int parsing_helper(t_token **token, t_command **head, t_command **cmd_lst)
+{
+    if ((*token)->type == 1)
+        return (handel_pipe(token, head, cmd_lst));
+    else if ((*token)->type == 2)
+        return (handel_input_redirection(token, *head));
+    else if ((*token)->type == 3)
+        return (handel_output_redirection(token, *head));
+    else if ((*token)->type == 4) 
+        return (handel_append_redirection(token, *head));
+    else if ((*token)->type == 5) 
+        return (handel_heredoc(token, *head));
+    else if ((*token)->ignored == 1)
+    {
+        exit_status(0);
+        *token = (*token)->next;
+    }
+    else
+    {
+        return (handel_argument(token, *head));
+    }
+    return (1);
+}
 
 t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 {
@@ -19,7 +43,6 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
 
     head = NULL;
     token = *token_lst;
-
     while (token)
     {
         if (!head)
@@ -27,38 +50,8 @@ t_command *parsing(t_token **token_lst, t_command **cmd_lst)
             add_command(cmd_lst, creat_command());
             head = *cmd_lst;
         }
-        if (token->type == 1)
-        {
-            if (!handel_pipe(&token, &head, cmd_lst))
-                return (NULL);
-        }
-        else if (token->type == 2)
-        {
-            if (!handel_input_redirection(&token, head))
-                return (NULL);
-        }
-        else if (token->type == 3)
-        {
-            if (!handel_output_redirection(&token, head))
-                return (NULL);
-        }
-        else if (token->type == 4) 
-        {
-            if (!handel_append_redirection(&token, head))
-                return (NULL);
-        }
-        else if (token->type == 5) 
-        {
-            if (!handel_heredoc(&token, head))
-                return (NULL);
-        }
-        else if (token && token->ignored == 1)
-        {
-            exit_status(0);
-            token = token->next;
-        }
-        else
-            handel_argument(&token, head);
+        if (!parsing_helper(&token, &head, cmd_lst))
+            return (NULL);
     }
     return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 13:28:09 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 14:33:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,21 +141,25 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
 
 int parse_heredocs(t_command *command, t_envp *my_env)
 {
-    t_command *cmd = command;
+    int expand_var;
+    char *delimiter;
+    char temp_filename[256];
+    t_redirect  *redir;
+    t_command *cmd;
+    
+    cmd = command;
     g_signal_received = 0;
     while (cmd)
     {
         if (cmd->heredoc_count > 0)
         {
-            t_redirect  *redir = cmd->redirects;
+            redir = cmd->redirects;
             while (redir)
             {
                 if (redir->type == TOKEN_HEREDOC || redir->type == TOKEN_HEREDOC_QUOTED)
                 {
-                    char *delimiter = redir->filename;
-                    int expand_var = (redir->type == TOKEN_HEREDOC);
-                    
-                    char temp_filename[256];
+                    delimiter = redir->filename;
+                    expand_var = (redir->type == TOKEN_HEREDOC);
                     generate_unique_name(temp_filename,sizeof(temp_filename), getpid());
                     if (fill_herdoc(delimiter, expand_var, my_env, temp_filename))
                         redir->filename = ft_strdup(temp_filename);

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:48:08 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 11:18:21 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 14:49:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int handel_input_redirection(t_token **token, t_command *head)
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
     }
-    head->infile_count++;
     add_redirect(head, 2, full_str);
     *token = (*token)->next;
     return (1);
@@ -51,12 +50,9 @@ int handel_output_redirection(t_token **token, t_command *head)
     {
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
-        // free(old);
     }
-    head->outfile_count++;
     add_redirect(head, 3, full_str);
     *token = (*token)->next;
-    // free(full_str);
     return (1);
 }
 int handel_append_redirection(t_token **token, t_command *head)
@@ -71,12 +67,9 @@ int handel_append_redirection(t_token **token, t_command *head)
     {
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
-        // free(old);
     }
-    head->append_count++;
     add_redirect(head, 4, full_str);
     *token = (*token)->next;
-    // free(full_str);
     return (1);
 }
 
@@ -99,19 +92,18 @@ int handel_heredoc(t_token **token, t_command *head)
     return (1);
 }
 
-void handel_argument(t_token **token, t_command *head)
+int handel_argument(t_token **token, t_command *head)
 {
     char *full_str = ft_strdup((*token)->value);
     if (!full_str)
-        return;
+        return (0);
     while ((*token)->attached)
     {
         *token = (*token)->next;
         full_str = ft_strjoin(full_str, (*token)->value);
-        
-        // free(old);
     }
-    add_argument(head, full_str);
-    // free(full_str);
+    if (add_argument(head, full_str) == 0)
+        return (0);
     *token = (*token)->next;
+    return (1);
 }

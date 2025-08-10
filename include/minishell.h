@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 10:01:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:49:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,6 @@ typedef struct s_command
 {
     char **args; 
     int heredoc_count;
-    int infile_count;
-    int outfile_count;
-    int append_count; 
     int pipe;
     struct s_redirect *redirects;
     struct s_command *next;
@@ -101,7 +98,10 @@ int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token);
 int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token);
 
 // heredoc_command.c
-int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state);
+int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state);\
+
+// operator_command.c
+int handel_operator(char *s, int i, t_token **token, int *state);
 
 // tokenizer_utils.c
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);
@@ -119,12 +119,12 @@ int handel_input_redirection(t_token **token, t_command *head);
 int handel_output_redirection(t_token **token, t_command *head);
 int handel_append_redirection(t_token **token, t_command *head);
 int handel_heredoc(t_token **token, t_command *head);
-void handel_argument(t_token **token, t_command *head);
+int handel_argument(t_token **token, t_command *head);
 
 //parser_utils_1.c
 t_command *creat_command(void);
 void add_command(t_command **command_lst, t_command *new_command);
-void add_argument(t_command *cmd, char *arg);
+int add_argument(t_command *cmd, char *arg);
 void  add_redirect(t_command *cmd, int type, const char *filename);
 
 // validate_syntaxe.c
@@ -216,4 +216,3 @@ int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2]);
 
 
 #endif
-
