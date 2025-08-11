@@ -6,41 +6,43 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 11:09:06 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/09 17:25:48 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:34:29 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+static int save_std_in_out(t_command *cmd, int *s_stdin, int *s_stdout)
+{
+	*s_stdin = -1;
+	*s_stdout = -1;
+     
+	if (has_input_redir(cmd))
+	{
+		*s_stdin = dup(STDIN_FILENO);
+		if (*s_stdin == -1)
+               return (display_error("dup Failed!", strerror(errno)), 1);
+		fd_collector(*s_stdin, 0);
+	}
+	if (has_output_redir(cmd))
+	{
+		*s_stdout = dup(STDOUT_FILENO);
+		if (*s_stdout == -1)
+               return (display_error("dup Failed!", strerror(errno)), 1);
+		fd_collector(*s_stdout, 0);
+	}
+	return (0);
+}
 
 int exec_redirs_no_command(t_command *command)
 {
-    int s_stdin = -1;
-    int s_stdout = -1;
-    int status = 0;
-
-    if (has_input_redir(command))
-    {
-        s_stdin = dup(STDIN_FILENO);
-        fd_collector(s_stdin, 0);
-        if (s_stdin == -1)
-        {
-            display_error("dup Failed!", strerror(errno));
-            status = 1;
-        }
-    }
+    int s_stdin;
+    int s_stdout;
+    int status;
     
-
-    if (has_output_redir(command))
-    {
-        s_stdout = dup(STDOUT_FILENO);
-        fd_collector(s_stdout, 0);
-        if (s_stdout == -1)
-        {
-            display_error("dup Failed!", strerror(errno));
-            status = 1;
-        }
-    }
+    status = 0;
+    if (save_std_in_out(command, &s_stdin, &s_stdout) == 1)
+          return (-1);
 
     if (setup_redirections(command, 0) == 1)
         status = 1;
@@ -91,8 +93,6 @@ int execute_commands(t_command *command, t_envp **env)
     
     if (!command)
         return (0);
-        
-
     if (command->pipe)
     {
         exit_st = execute_pipeline(command, *env);

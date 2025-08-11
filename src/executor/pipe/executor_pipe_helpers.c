@@ -6,11 +6,29 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/11 10:55:20 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:13:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
+
+int    is_builtin(const char *cmd)
+{
+    int i;
+    
+    const char *builtins[] = {
+        "echo", "export", "pwd", "cd", 
+        "unset", "env", "exit", NULL };
+    
+    i = 0;
+    while(builtins[i])
+    {
+        if(ft_strcmp(cmd,builtins[i]) == 0)
+            return (1);
+        i++;    
+    }
+    return (0);
+}
 
 int exec_command(t_command *cmd, t_envp *env)
 {

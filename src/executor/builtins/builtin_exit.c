@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 23:00:53 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/08 22:18:38 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 21:00:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static const char *skip_spaces_and_sign(const char *str, int *sign)
             *sign = -1;
         str++;
     }
-    return str;
+    return (str);
 }
 
 static int check_overflow(long result, int digit, int sign, int base)
@@ -60,12 +60,14 @@ long my_strtol(const char *str, char **endptr, int base)
         result = result * base + digit;
         str++;
     }
+    while (ft_isspace(*str))
+        str++;
     if (endptr)
         *endptr = (char *)str;
-    return result * sign;
+    return (result * sign);
 }
 
-int builtin_exit(char **args, t_envp **env)
+int builtin_exit(char **args)
 {
     long code = 0;
     char *endptr;
@@ -83,9 +85,8 @@ int builtin_exit(char **args, t_envp **env)
         }
         if (args[2])
         {
-            write(STDERR_FILENO, "exit: too many arguments\n", 25);
-            exit_status(1);
-            return 1;
+            display_error("exit", "too many arguments");
+            return (exit_status(1));
         }
         exit_status((unsigned char)code);
         fd_collector(-1, 1);
@@ -96,3 +97,5 @@ int builtin_exit(char **args, t_envp **env)
     free_all_memory();
     exit(exit_status(-1));
 }
+
+

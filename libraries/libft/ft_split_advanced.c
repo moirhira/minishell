@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/31 20:41:26 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/05 20:14:07 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:44:45 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,3 +96,4 @@ char **ft_split_advanced(char const *s, const char *charset)
     res[i] = NULL;
     return (res);
 }
+

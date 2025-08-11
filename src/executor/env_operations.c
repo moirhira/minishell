@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:28:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 20:42:41 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:31:03 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,51 @@ t_envp	*ft_lstlast(t_envp *lst)
 	}
 	return (lst);
 }
+
+static t_envp *new_env_node(char *key, char *value)
+{
+    t_envp *new_node = ft_malloc(sizeof(t_envp));
+    new_node->key = ft_strdup(key);
+    if (value)
+        new_node->value = ft_strdup(value);
+    else
+        new_node->value = NULL;
+    new_node->next = NULL;
+    return (new_node);
+}
+
+static void append_env(t_envp **env, t_envp *node)
+{
+    t_envp *last;
+    
+    last = ft_lstlast(*env);
+    if (last)
+        last->next = node;
+    else
+        *env = node;
+
+}
 int  update_env_var(t_envp **env, char *key, char *value)
 {
+    t_envp *tmp;
+    
+    
     if (!env || !key)
         return (-1);
-
-    t_envp *tmp = *env;
-    t_envp *last = NULL;
-
+    tmp = *env;
     while (tmp)
     {
         if (ft_strcmp(tmp->key, key) == 0)
         {
             if (value)
-            {
                 tmp->value = ft_strdup(value);
-                if (!tmp->value)
-                    return (-1);
-            }
             else
                 tmp->value = NULL;
             return (0);
         }
         tmp = tmp->next;
     }
-    t_envp *new_node = ft_malloc(sizeof(t_envp));
-    if (!new_node)
-        return (-1);
-
-    new_node->key = ft_strdup(key);
-    if (value)
-    {
-        new_node->value = ft_strdup(value);
-        if (!new_node->value)
-            return (-1);
-    }
-    else
-        new_node->value = NULL;
-        
-    new_node->next = NULL;
-
-    last = ft_lstlast(*env);
-    if (last)
-        last->next = new_node;
-    else
-        *env = new_node;
+    append_env(env, new_env_node(key, value));
     return (0);
 }
+

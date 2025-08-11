@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 08:44:26 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 20:14:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 20:45:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int builtin_env(t_envp *envp)
 {
+    t_envp *env;
+    
     if (!envp)
         return (1);
-    t_envp *env = envp;
-    
+    env = envp;
     while (env)
     {
         if (env->value)

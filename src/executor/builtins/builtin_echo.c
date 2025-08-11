@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:34 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/07 20:14:06 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 20:45:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int builtin_echo(char **cmd)
         newline = 0;
         i++;
     }
-
     while (cmd[i])
     {
         ft_putstr_fd(cmd[i], STDOUT_FILENO);
@@ -49,6 +48,5 @@ int builtin_echo(char **cmd)
 
     if (newline)
         ft_putstr_fd("\n", STDOUT_FILENO);
-
     return (0);
 }

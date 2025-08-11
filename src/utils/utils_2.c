@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:51:44 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/07 21:10:54 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 23:05:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,13 @@ char **convert_env_to_array(t_envp *env)
     int count = 0;
     t_envp *tmp = env;
     
-    while (tmp)
-    {
-        count++;
-        tmp = tmp->next;
-    }
+    count = ft_lstsize(env);
     char **envp = ft_malloc(sizeof(char *) * (count + 1));
-    if (!envp)
-        return NULL;
     tmp = env;
     int i = 0;
     while (tmp)
     {
-        envp[i] = ft_malloc(ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2);
-        if (!envp[i])
-            return NULL;        
+        envp[i] = ft_malloc(ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2);       
         ft_strcpy(envp[i], tmp->key);
         ft_strcat(envp[i], "=");
         ft_strcat(envp[i], tmp->value);

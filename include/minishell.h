@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 14:49:42 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 21:22:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,12 @@ int     execute_builtin(t_command *cmd, t_envp **env);
 int    builtin_cd(t_command *cmd, t_envp **env);
 char *find_command_in_path(char *cmd, t_envp *env, int *status);
 
+// find_command_inpath.c
+char	*ft_strjoin_path(const char *dir, const char *cmd);
+int is_file_exists(const char *path);
+int is_executable(const char *path);
+int is_directory(const char *path);
+
 // parse_herdocs_1.c
 int parse_heredocs(t_command *command, t_envp *my_env);
 
@@ -175,15 +181,13 @@ int has_output_redir(t_command *cmd);
 // for export 
 int     print_sorted_export(t_envp *env);
 int     builtin_export(t_command *cmd, t_envp **env);
-int     count_env(t_envp *env);
-void    sort_in_tab(char **array, int size);
 int     print_sorted_export(t_envp *env);
 
 // unset
 int    builtin_unset(char **args, t_envp **env);
 
 // exit
-int	    builtin_exit(char **args, t_envp **env);
+int	    builtin_exit(char **args);
 
 // echo
 int    builtin_echo(char **cmd);
@@ -197,11 +201,7 @@ int   builtin_env(t_envp *envp);
 
 
 // helper 2
-void    sort_in_tab(char **array, int size);
-int     count_env(t_envp *env);
 int	    print_sorted_export(t_envp *env);
-char	*create_export_entry(char *key, char *value);
-void	print_array(char **arr);
 
 
 // execute single command 
