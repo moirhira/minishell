@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 20:27:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 16:09:05 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 16:25:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state)
 	
     while (ft_isspace(s[i]))
 		i++;
+	if (s[i] == '<' || s[i] == '>' || s[i] == '|')
+    {
+        ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+        ft_putchar_fd(s[i], 1);
+        ft_putstr_fd("'\n", 2);
+        return (-1);
+    }
 	data.delimiter_val = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!data.delimiter_val)
 		return (-1);

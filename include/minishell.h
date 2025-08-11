@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 20:28:25 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 14:49:42 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,11 @@ int     execute_builtin(t_command *cmd, t_envp **env);
 int    builtin_cd(t_command *cmd, t_envp **env);
 char *find_command_in_path(char *cmd, t_envp *env, int *status);
 
-// parse_herdocs.c
+// parse_herdocs_1.c
 int parse_heredocs(t_command *command, t_envp *my_env);
+
+// parse_heredoc_2.c
+int fill_herdoc(char *delimiter, int expand_var, t_envp *my_env, char *temp_filename);
 
 
 // setup_signals.c
