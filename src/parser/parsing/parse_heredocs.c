@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 22:44:04 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/11 09:39:53 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void read_from_heredoc(int fd, char *line, t_envp *my_env, int expnad_var)
                 processed_line = handel_env_var(line, &i, &my_env, processed_line);
             else
             {
-                char ch[2] = {line[i], '\0'};
-                processed_line = ft_strjoin(processed_line, ch);
+                // char ch[2] = {line[i], '\0'};
+                processed_line = ft_strjoin(processed_line, ft_strdup(&line[i]));
                 i++;
             }
         }
@@ -97,10 +97,36 @@ void proccess_child(char *delimiter, int expnad, t_envp *env, char *filename)
     exit(EXIT_SUCCESS);
 }
 
+int wait_for_child(pid_t pid, char *temp_filename)
+{
+    int status;
+    
+    waitpid(pid, &status, 0);
+    setup_signals(SHELL_INTERACTIVE);
+    if(WIFEXITED(status))
+    {
+        if (WEXITSTATUS(status) == EXIT_SUCCESS)
+            return (1);
+        else if (WEXITSTATUS(status) == 130)
+        {
+            g_signal_received = SIGINT;
+            unlink(temp_filename);
+            return (0);
+        }
+        else
+        {
+            g_signal_received = WEXITSTATUS(status);
+            unlink (temp_filename);
+            return (0);
+        }
+    }
+    return (1);
+}
+
 int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_filename)
 {
     pid_t pid;
-    int status;
+    
     
     setup_signals(SHELL_IGNORE);
     pid = fork();
@@ -109,28 +135,7 @@ int fill_herdoc(char *delimiter, int expnad_var, t_envp *my_env, char *temp_file
     if (pid == 0)
         proccess_child(delimiter, expnad_var, my_env, temp_filename);
     else
-    {
-        waitpid(pid, &status, 0);
-        setup_signals(SHELL_INTERACTIVE);
-        if(WIFEXITED(status))
-        {
-            if (WEXITSTATUS(status) == EXIT_SUCCESS)
-                return (1);
-            else if (WEXITSTATUS(status) == 130)
-            {
-                g_signal_received = SIGINT;
-                unlink(temp_filename);
-                return (0);
-            }
-            else
-            {
-                g_signal_received = WEXITSTATUS(status);
-                unlink (temp_filename);
-                return (0);
-            }
-        }
-        return (1);
-    }
+        return (wait_for_child(pid, temp_filename));
     return (0);
 }
 
