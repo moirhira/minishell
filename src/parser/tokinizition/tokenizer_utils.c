@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 15:12:58 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:57:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 t_token *create_token(char *str, int type, int is_attached, int was_quoted)
 {
     t_token *new;
+    
     new = (t_token *)ft_malloc(sizeof(t_token));
     if (!new)
         return (NULL);
@@ -31,6 +32,7 @@ t_token *create_token(char *str, int type, int is_attached, int was_quoted)
 void add_token(t_token **token_lst, t_token *new_token)
 {
     t_token *ptr;
+    
     if (!*token_lst)
     {
         *token_lst = new_token;
@@ -44,8 +46,9 @@ void add_token(t_token **token_lst, t_token *new_token)
 char *get_env_value(t_envp *my_env, const char *var_name)
 {
     t_envp *ptr;
-	size_t len = ft_strlen(var_name);
-	
+	size_t len;
+    
+    len = ft_strlen(var_name);	
     ptr = my_env;
 	while (ptr)
 	{

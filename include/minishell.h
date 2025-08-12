@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/12 09:41:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:56:00 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ t_envp  *retrieve_envp(char **env);
 
 // for export 
 int     print_sorted_export(t_envp *env);
+int handle_export_arg(char *arg, t_envp **env);
 int     builtin_export(t_command *cmd, t_envp **env);
 
 // unset

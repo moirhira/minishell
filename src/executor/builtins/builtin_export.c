@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 09:49:31 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/11 21:35:18 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 13:34:28 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int check_var(char *str, char *arg)
     return (1);
 }
 
-int handel_export_arg(char *arg, t_envp **env)
+int handle_export_arg(char *arg, t_envp **env)
 {
     char *key;
     char *value;
@@ -81,7 +81,7 @@ int builtin_export(t_command *cmd, t_envp **env)
     final_status = 0;
     while (cmd->args[i])
     {
-        if (handel_export_arg(cmd->args[i], env) != 0)
+        if (handle_export_arg(cmd->args[i], env) != 0)
             final_status = 1;
         i++;
     }

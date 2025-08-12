@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/12 11:33:53 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:14:46 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char *handle_absolute_path(char *cmd, int *status)
     }
     if(!is_executable(cmd))
     {
-        display_error(cmd, "Permmission denied");
+        display_error(cmd, "Permission denied");
         *status = 126;
         return (NULL);
     }
