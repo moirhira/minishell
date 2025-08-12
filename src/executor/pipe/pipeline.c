@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 23:01:03 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/11 10:59:46 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 21:07:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,26 +69,22 @@ static int wait_children(pid_t last_pid)
 }
 
 
-int execute_pipeline(t_command *cmd_list, t_envp *env)
+static pid_t run_pipeline(t_command *cmd, t_envp *env)
 {
+    pid_t last_pid;
     int prev_pipe;
     int pipefd[2];
     pid_t pid;
-    pid_t last_pid;
-    t_command *cmd;
-    int result;
     
     last_pid = -1;
     prev_pipe = -1;
-    cmd = cmd_list;
-    setup_signals(SHELL_IGNORE);
     while (cmd)
     {
         if (create_pipe_if_needed(cmd, pipefd) == -1)
-            return (1);
+            return (-1);
         pid = fork();
         if (pid == -1)
-            return (display_error("fork", strerror(errno)), 1);
+            return (display_error("fork", strerror(errno)), -1);
         if (pid == 0)
             child_process(cmd, prev_pipe, pipefd, env);
         if (!cmd->next)
@@ -96,8 +92,23 @@ int execute_pipeline(t_command *cmd_list, t_envp *env)
         prev_pipe = parent_pipe_cleanup(prev_pipe, cmd, pipefd);
         cmd = cmd->next;
     }
+    return (last_pid);
+}
+
+int execute_pipeline(t_command *cmd_list, t_envp *env)
+{
+    pid_t last_pid;
+    int result;
+    
+    
+    setup_signals(SHELL_IGNORE);
+    last_pid = run_pipeline(cmd_list, env);
+    if (last_pid == -1)
+        return (1);
     result = wait_children(last_pid);
     setup_signals(SHELL_INTERACTIVE);
     return (result);
 }
+
+
 

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/12 09:08:31 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:48:25 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int open_redir_file(t_redirect *redir, int flags, int mode, int exit_retu
     int fd;
     int target_file;
     
-    if (flags & O_WRONLY)
+    if (flags & O_WRONLY) 
         target_file = STDOUT_FILENO;
     else
         target_file = STDIN_FILENO;
@@ -80,3 +80,4 @@ int setup_redirections(t_command *cmd, int exit_or_return)
     }
     return (0);
 }
+

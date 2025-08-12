@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:28:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/12 09:39:12 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:48:45 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void append_env(t_envp **env, t_envp *node)
 int  update_env_var(t_envp **env, char *key, char *value)
 {
     t_envp *tmp;
-    
     
     if (!env || !key)
         return (-1);

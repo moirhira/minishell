@@ -7,7 +7,7 @@ SRC  = 	ft_split.c ft_strcat.c ft_strchr.c ft_strdup.c \
 		ft_strcpy.c ft_malloc.c ft_strndup.c ft_putchar.c
 OBJ  = $(SRC:.c=.o)
 CC   = cc
-FLAGS = -Wall
+FLAGS = -Wall -Wextra -Werror
 
 all : $(NAME)
 

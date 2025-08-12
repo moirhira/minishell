@@ -6,14 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:51:44 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/12 09:28:30 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:57:28 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/minishell.h"
-
-
 
 char **convert_env_to_array(t_envp *env)
 {
@@ -61,7 +58,9 @@ int has_input_redir(t_command *cmd)
     redir = cmd->redirects;
     while (redir)
     {
-        if (redir->type == TOKEN_INPUT || redir->type == TOKEN_HEREDOC || redir->type == TOKEN_HEREDOC_QUOTED)
+        if (redir->type == TOKEN_INPUT ||
+             redir->type == TOKEN_HEREDOC 
+             || redir->type == TOKEN_HEREDOC_QUOTED)
             return (1);
         redir = redir->next;
     }

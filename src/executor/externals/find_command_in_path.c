@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/12 14:14:46 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 21:54:06 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,12 @@ static char *handle_absolute_path(char *cmd, int *status)
     return (ft_strdup(cmd));
 }
 
-static char *find_exec_in_path(char **paths, char *cmd, int *status)
+static char *find_exec_in_path(char **paths, char *cmd, int *found_no_perms)
 {
     int i;
     char *full;
-    int found_no_perms;
     
     i = 0;
-    found_no_perms = 0;
     while (paths[i])
     {
         full = ft_strjoin_path(paths[i], cmd);
@@ -56,26 +54,24 @@ static char *find_exec_in_path(char **paths, char *cmd, int *status)
             if (is_executable(full))
                 return (full);
             else
-            {
-                found_no_perms = 1;
-                i++;
-                continue;
-            }
+                *found_no_perms = 1;
         }
         i++;
     }
-    if (found_no_perms)
-        *status = 126;
-    else
-        *status = 127;
     return (NULL);
 }
 
 static char *handle_relative_path(char *cmd, int *status, char **paths)
 {
     char *result;
-   
-    result = find_exec_in_path(paths, cmd, status);
+    int found_no_perms;
+    
+    found_no_perms = 0;
+    result = find_exec_in_path(paths, cmd, &found_no_perms);
+    if (found_no_perms)
+        *status = 126;
+    else
+        *status = 127;
     if (!result)
     {
         if (*status == 127)

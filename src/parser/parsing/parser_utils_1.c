@@ -6,25 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 15:07:34 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:09:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-t_command *creat_command(void)
-{
-    t_command *new_cmd;
-    new_cmd = (t_command *)ft_malloc(sizeof(t_command));
-    if (!new_cmd)
-        return (NULL);
-    new_cmd->args = NULL;
-    new_cmd->heredoc_count = 0;
-    new_cmd->pipe = 0;
-    new_cmd->redirects = NULL;
-    new_cmd->next = NULL;
-    return (new_cmd);
-}
 
 void add_command(t_command **command_lst, t_command *new_command)
 {
@@ -48,8 +34,6 @@ void  add_redirect(t_command *cmd, int type, const char *filename)
     
     ptr = NULL;
     new = (t_redirect *)ft_malloc(sizeof(t_redirect));
-    if (!new)
-        return;
     new->filename = ft_strdup(filename);
     new->type = type;
     new->content = NULL;
@@ -85,8 +69,6 @@ int extend_args(t_command *cmd, char *arg)
     while (cmd->args[len])
         len++;
     new_args = (char **)ft_malloc(sizeof(char *) * (len + 2));
-    if (!new_args)
-        return (0);
     i = 0;
     while (i < len)
     {

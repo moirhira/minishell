@@ -6,11 +6,20 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 16:34:48 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:09:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
+
+int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst)
+{
+    add_command(cmd_lst, creat_command());
+    (*head)->pipe = 1;
+    *head = (*head)->next;
+    *token = (*token)->next;
+    return (1);
+}
 
 int parsing_helper(t_token **token, t_command **head, t_command **cmd_lst)
 {
@@ -34,6 +43,17 @@ int parsing_helper(t_token **token, t_command **head, t_command **cmd_lst)
         return (handel_argument(token, *head));
     }
     return (1);
+}
+t_command *creat_command(void)
+{
+    t_command *new_cmd;
+    new_cmd = (t_command *)ft_malloc(sizeof(t_command));
+    new_cmd->args = NULL;
+    new_cmd->heredoc_count = 0;
+    new_cmd->pipe = 0;
+    new_cmd->redirects = NULL;
+    new_cmd->next = NULL;
+    return (new_cmd);
 }
 
 t_command *parsing(t_token **token_lst, t_command **cmd_lst)

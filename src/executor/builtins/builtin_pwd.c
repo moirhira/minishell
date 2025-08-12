@@ -6,13 +6,13 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 08:44:41 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/11 22:54:20 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:14:45 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-int	builtin_pwd(t_envp *env)
+int	builtin_pwd(void)
 {
 	char cwd[PATH_MAX];
 

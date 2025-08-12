@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 19:57:16 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 21:00:59 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:14:36 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int     run_builtin(t_command *cmd, t_envp **env)
           if (ft_strcmp(cmd->args[0], "cd") == 0)
                result = builtin_cd(cmd, env);
           else if (ft_strcmp(cmd->args[0], "pwd") == 0)
-               result = builtin_pwd(*env);
+               result = builtin_pwd();
           else if (ft_strcmp(cmd->args[0], "echo") == 0)
                result = builtin_echo(cmd->args);
           else if (ft_strcmp(cmd->args[0], "env") == 0)

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 14:51:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:13:37 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
 {
+    size_t i;
     char *char_pid;
     char *prefix;
 
     prefix = "/tmp/minishell_herdoc_";
-    int i = 0;
+    i = 0;
     while(prefix[i] && i + 1 < size_temp)
     {
         temp_name[i] = prefix[i];

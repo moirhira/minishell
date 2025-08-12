@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/12 13:56:00 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 22:14:29 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <limits.h>
-#include <string.h>
 #include "../libraries/libft/libft.h"
 #include <linux/limits.h>
 #include <fcntl.h> 
@@ -38,14 +37,14 @@ typedef enum e_shell_state
 }   t_shell_state;
 
 typedef enum e_token_type {
-    TOKEN_WORD,       // word
-    TOKEN_PIPE,        // |
-    TOKEN_INPUT,       // <
-    TOKEN_OUTPUT,     // >
-    TOKEN_APPEND,      // >>
-    TOKEN_HEREDOC,     // <<
+    TOKEN_WORD, 
+    TOKEN_PIPE,
+    TOKEN_INPUT,
+    TOKEN_OUTPUT,
+    TOKEN_APPEND,
+    TOKEN_HEREDOC,
     TOKEN_HEREDOC_QUOTED, 
-    TOKEN_EOL        // end of
+    TOKEN_EOL
 } t_token_type;
 
 typedef struct s_token {
@@ -81,145 +80,87 @@ typedef struct s_envp
     struct s_envp *next;
 }   t_envp;
 
-void fd_collector(int fd, int mode);
-
-// tokenizer.c
-int split_token(char *s, t_envp **my_env, t_token **token);
-char *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
-
-//qouted_command.c
-int handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token);
-
-//simple_command.c
-int handel_simple_str(char *s, int i, t_envp **my_env, t_token **token);
-
-// simple_command_env.c
-char *get_var_value_and_advance(char *s, int *i, t_envp **my_env, int *q);
-
-// heredoc_command.c
-int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state);
-
-// operator_command.c
-int handel_operator(char *s, int i, t_token **token, int *state);
 
 
-
-// tokenizer_utils.c
+// tokenizer
+int     split_token(char *s, t_envp **my_env, t_token **token);
+char    *handel_env_var(char *s, int *i, t_envp **my_env, char *curnt_str);
+int     handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token);
+int     handel_simple_str(char *s, int i, t_envp **my_env, t_token **token);
+char    *get_var_value_and_advance(char *s, int *i, t_envp **my_env, int *q);
+int     handel_heredoc_delimiter(char *s, int i, t_token **token, int *state);
+int     handel_operator(char *s, int i, t_token **token, int *state);
 t_token *create_token(char *str, int type, int is_attached, int was_quoted);
-void add_token(t_token **token_lst, t_token *new_token);
-char *get_env_value(t_envp *my_env, const char *var_name);
-int was_previous_space(char *s, int i);
+void    add_token(t_token **token_lst, t_token *new_token);
+char    *get_env_value(t_envp *my_env, const char *var_name);
+int     was_previous_space(char *s, int i);
 t_token *get_last_token(t_token *lst);
 
-// parse.c
-int parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, t_envp **my_env);
-
-//parser_utils.c
-int handel_pipe(t_token **token, t_command **head, t_command **cmd_lst);
-int handel_input_redirection(t_token **token, t_command *head);
-int handel_output_redirection(t_token **token, t_command *head);
-int handel_append_redirection(t_token **token, t_command *head);
-int handel_heredoc(t_token **token, t_command *head);
-int handel_argument(t_token **token, t_command *head);
-
-//parser_utils_1.c
+// parser
+int     parse_command(t_token **token_list, t_command **token_lst, char *cmd_line, t_envp **my_env);
+int     handel_pipe(t_token **token, t_command **head, t_command **cmd_lst);
+int     handel_input_redirection(t_token **token, t_command *head);
+int     handel_output_redirection(t_token **token, t_command *head);
+int     handel_append_redirection(t_token **token, t_command *head);
+int     handel_heredoc(t_token **token, t_command *head);
+int     handel_argument(t_token **token, t_command *head);
 t_command *creat_command(void);
-void add_command(t_command **command_lst, t_command *new_command);
-int add_argument(t_command *cmd, char *arg);
-void  add_redirect(t_command *cmd, int type, const char *filename);
+void    add_command(t_command **command_lst, t_command *new_command);
+int     add_argument(t_command *cmd, char *arg);
+void    add_redirect(t_command *cmd, int type, const char *filename);
+int     validate_syntaxe(t_token **token_lst);
+int     parse_heredocs(t_command *command, t_envp *my_env);
+int     fill_herdoc(char *delimiter, int expand_var, t_envp *my_env, char *temp_filename);
 
-// validate_syntaxe.c
-
-int validate_syntaxe(t_token **token_lst);
-
-// utils.c
-int     exit_status(int new_status);
-
-
-// dispal_error.c
-void	display_error(char *command_or_file, char *error_message);
-
-
-// env_oprations.c
-int  update_env_var(t_envp **env, char *key, char *value);
-t_envp *new_env_node(char *key, char *value);
-void append_env(t_envp **env, t_envp *node);
-
-
-// execution.c
+// execution
+int     update_env_var(t_envp **env, char *key, char *value);
+t_envp  *new_env_node(char *key, char *value);
+void    append_env(t_envp **env, t_envp *node);
 int     exit_status(int new_status);
 int     execute_commands(t_command *command, t_envp **env);
 int     execute_builtin(t_command *cmd, t_envp **env);
-int    builtin_cd(t_command *cmd, t_envp **env);
-char *find_command_in_path(char *cmd, t_envp *env, int *status);
-
-// find_command_inpath.c
+int     builtin_cd(t_command *cmd, t_envp **env);
+char    *find_command_in_path(char *cmd, t_envp *env, int *status);
 char	*ft_strjoin_path(const char *dir, const char *cmd);
-int is_file_exists(const char *path);
-int is_executable(const char *path);
-int is_directory(const char *path);
+int     is_file_exists(const char *path);
+int     is_executable(const char *path);
+int     is_directory(const char *path);
 
-// parse_herdocs_1.c
-int parse_heredocs(t_command *command, t_envp *my_env);
-
-// parse_heredoc_2.c
-int fill_herdoc(char *delimiter, int expand_var, t_envp *my_env, char *temp_filename);
-
-
-// setup_signals.c
+// utils
+int     only_whitespace(char *str);
+char    **convert_env_to_array(t_envp *env);
+int	    ft_lstsize(t_envp *lst);
+int     has_input_redir(t_command *cmd);
+int     has_output_redir(t_command *cmd);
+int     exit_status(int new_status);
+void	display_error(char *command_or_file, char *error_message);
 void    setup_signals(int state);
-
-// utils_2.c
-int only_whitespace(char *str);
-char **convert_env_to_array(t_envp *env);
-int	ft_lstsize(t_envp *lst);
-int has_input_redir(t_command *cmd);
-int has_output_redir(t_command *cmd);
+void    fd_collector(int fd, int mode);
 
 // main.utils.c
-int only_whitespace(char *str);
+int     only_whitespace(char *str);
 char	*read_input(void);
 t_envp  *retrieve_envp(char **env);
 
-// for export 
+// builtin
 int     print_sorted_export(t_envp *env);
-int handle_export_arg(char *arg, t_envp **env);
+int     handle_export_arg(char *arg, t_envp **env);
 int     builtin_export(t_command *cmd, t_envp **env);
-
-// unset
-int    builtin_unset(char **args, t_envp **env);
-
-// exit
+int     builtin_unset(char **args, t_envp **env);
 int	    builtin_exit(char **args);
-
-// echo
-int    builtin_echo(char **cmd);
-
-
-//pwd
-int	builtin_pwd(t_envp *env);
-
-// env
-int   builtin_env(t_envp *envp);
-
-
-// execute single command 
-int        execute_external(t_command *cmd, t_envp *env);
-int        is_builtin(const char *cmd);
-
-// setup_redirctions 
-int setup_redirections(t_command *cmd, int exit_or_return);
-int execute_pipeline(t_command *cmd_list, t_envp *env);
-
-
-
-
-// pipeline
-int exec_command(t_command *cmd, t_envp *env);
-int execute_pipeline(t_command *cmd_list, t_envp *env);
-int create_pipe_if_needed(t_command *cmd, int pipefd[2]);
-void child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env);
-int parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2]);
+long    my_strtol(const char *str, char **endptr, int base);
+int     builtin_echo(char **cmd);
+int	    builtin_pwd(void);
+int     builtin_env(t_envp *envp);
+int     execute_external(t_command *cmd, t_envp *env);
+int     is_builtin(const char *cmd);
+int     setup_redirections(t_command *cmd, int exit_or_return);
+int     execute_pipeline(t_command *cmd_list, t_envp *env);
+int     exec_command(t_command *cmd, t_envp *env);
+int     execute_pipeline(t_command *cmd_list, t_envp *env);
+int     create_pipe_if_needed(t_command *cmd, int pipefd[2]);
+void    child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env);
+int     parent_pipe_cleanup(int prev_pipe, t_command *cmd, int pipefd[2]);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/12 13:57:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 20:52:44 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ t_token *create_token(char *str, int type, int is_attached, int was_quoted)
     t_token *new;
     
     new = (t_token *)ft_malloc(sizeof(t_token));
-    if (!new)
-        return (NULL);
     new->value = ft_strdup(str);
-    if (!new->value)
-        return (NULL);
     new->type = type;
 	new->attached = is_attached;
     new->was_quoted = was_quoted;
