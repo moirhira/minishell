@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 21:22:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 09:41:59 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,7 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-
 extern volatile sig_atomic_t g_signal_received;
-#define SIZE_ENV 1024
-
-
 
 typedef enum e_shell_state
 {
@@ -146,6 +142,8 @@ void	display_error(char *command_or_file, char *error_message);
 
 // env_oprations.c
 int  update_env_var(t_envp **env, char *key, char *value);
+t_envp *new_env_node(char *key, char *value);
+void append_env(t_envp **env, t_envp *node);
 
 
 // execution.c
@@ -178,10 +176,14 @@ int	ft_lstsize(t_envp *lst);
 int has_input_redir(t_command *cmd);
 int has_output_redir(t_command *cmd);
 
+// main.utils.c
+int only_whitespace(char *str);
+char	*read_input(void);
+t_envp  *retrieve_envp(char **env);
+
 // for export 
 int     print_sorted_export(t_envp *env);
 int     builtin_export(t_command *cmd, t_envp **env);
-int     print_sorted_export(t_envp *env);
 
 // unset
 int    builtin_unset(char **args, t_envp **env);
@@ -198,10 +200,6 @@ int	builtin_pwd(t_envp *env);
 
 // env
 int   builtin_env(t_envp *envp);
-
-
-// helper 2
-int	    print_sorted_export(t_envp *env);
 
 
 // execute single command 

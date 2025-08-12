@@ -1,7 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -g
-SRC = 	src/main.c src/utils/utils.c src/utils/utils_2.c src/utils/setup_signals.c src/utils/display_error.c \
+SRC = 	src/main.c src/utils/main_utils.c src/utils/utils.c src/utils/utils_2.c src/utils/setup_signals.c src/utils/display_error.c \
 		src/parser/tokinizition/tokenizer.c src/parser/tokinizition/tokenizer_utils.c src/parser/tokinizition/qouted_command.c src/parser/tokinizition/simple_command.c src/parser/tokinizition/simple_command_env.c src/parser/tokinizition/operator_command.c src/parser/tokinizition/heredoc_command.c \
 		src/parser/parsing/parser.c src/parser/parsing/parser_utils.c src/parser/parsing/parser_utils_1.c src/parser/parsing/parse_heredocs_1.c src/parser/parsing/parse_heredocs_2.c src/parser/parsing/validate_syntaxe.c\
       	src/executor/builtins/builtin_cd.c src/executor/builtins/builtin_cmd.c src/executor/builtins/builtin_echo.c src/executor/builtins/builtin_pwd.c src/executor/builtins/builtin_export_sorted_env.c\

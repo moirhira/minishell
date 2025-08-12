@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:28:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 23:31:03 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 09:39:12 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_envp	*ft_lstlast(t_envp *lst)
 	return (lst);
 }
 
-static t_envp *new_env_node(char *key, char *value)
+t_envp *new_env_node(char *key, char *value)
 {
     t_envp *new_node = ft_malloc(sizeof(t_envp));
     new_node->key = ft_strdup(key);
@@ -36,7 +36,7 @@ static t_envp *new_env_node(char *key, char *value)
     return (new_node);
 }
 
-static void append_env(t_envp **env, t_envp *node)
+void append_env(t_envp **env, t_envp *node)
 {
     t_envp *last;
     

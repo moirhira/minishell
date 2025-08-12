@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 13:28:21 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 09:45:16 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,11 @@
 #include "../include/minishell.h"
 #include "../libraries/libft/libft.h"
 
-char	*read_input(void)
-{
-    char *line;
-    line = readline("minishell$ ");
-    if (!line)
-        return (NULL);
-    if (*line)
-        add_history(line);
-    return (line);
-}
-
-t_envp  *retrieve_envp(char **env)
-{
-    int i = 0;
-    t_envp *head;
-    t_envp *last;
-    t_envp *new_node;
-    char *equal_sign;
-
-    head = NULL;
-    last = NULL;
-    while (env[i] != NULL)
-    {
-        equal_sign = ft_strchr(env[i], '=');
-        if (!equal_sign)
-        {
-            i++;
-            continue;
-        }
-        new_node = (t_envp *)ft_malloc(sizeof(t_envp));
-        if (!new_node)
-            return (printf("Error from malloc\n"), NULL);
-        size_t key_len = equal_sign - env[i];
-        
-        new_node->key = (char *)ft_malloc(key_len + 1);
-        if (!new_node->key)
-            return (printf("Error from malloc\n"), NULL);
-        ft_strlcpy(new_node->key, env[i], key_len + 1);
-        
-        new_node->value = ft_strdup(equal_sign + 1);
-        new_node->next = NULL;
-        if (!head)
-            head = new_node;
-        else
-            last->next = new_node;
-        last = new_node;
-        i++;
-    }
-    return (head);
-}
-
 
 int main(int ac, char **av, char **env)
 {
+    (void)ac;
+    (void)av;
     g_signal_received = 0;
     char *cmd_line;
     t_token *token_list;
@@ -120,7 +71,6 @@ int main(int ac, char **av, char **env)
         execute_commands(list_cmd,&my_env);
         token_list = NULL;
         list_cmd = NULL;
-        
     }
     fd_collector(-1, 1);
     free_all_memory();

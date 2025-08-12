@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/11 23:31:46 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 11:33:53 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char *handle_absolute_path(char *cmd, int *status)
     }
     if(!is_executable(cmd))
     {
-        display_error(cmd, "Permission denied");
+        display_error(cmd, "Permmission denied");
         *status = 126;
         return (NULL);
     }
@@ -39,8 +39,10 @@ static char *find_exec_in_path(char **paths, char *cmd, int *status)
 {
     int i;
     char *full;
+    int found_no_perms;
     
     i = 0;
+    found_no_perms = 0;
     while (paths[i])
     {
         full = ft_strjoin_path(paths[i], cmd);
@@ -51,16 +53,21 @@ static char *find_exec_in_path(char **paths, char *cmd, int *status)
                 i++;
                 continue;
             }
-            if (!is_executable(full))
+            if (is_executable(full))
+                return (full);
+            else
             {
-                display_error(cmd, "Permission denied");
-                *status = 126;
-                return (NULL);
+                found_no_perms = 1;
+                i++;
+                continue;
             }
-            return (full);
         }
         i++;
     }
+    if (found_no_perms)
+        *status = 126;
+    else
+        *status = 127;
     return (NULL);
 }
 
@@ -71,8 +78,10 @@ static char *handle_relative_path(char *cmd, int *status, char **paths)
     result = find_exec_in_path(paths, cmd, status);
     if (!result)
     {
-        display_error(cmd, "command not found");
-        *status = 127;
+        if (*status == 127)
+            display_error(cmd, "command not found");
+        else if (*status == 126)
+            display_error(cmd, "Permission denied");
     }
     return (result);
 }
@@ -100,30 +109,3 @@ char *find_command_in_path(char *cmd, t_envp *env, int *status)
         return (NULL);
     return (handle_relative_path(cmd, status, paths));
 }
-
-
-
-
-// while (paths[i])
-//     {
-//         full = ft_strjoin_path(paths[i], cmd);
-//         if (is_file_exists(full))
-//         {
-//             if(is_directory(full))
-//             {
-//                 i++;
-//                 continue;
-//             }
-//             if (is_executable(full))
-//                 return full;
-//             else
-//             {
-//                 // display_error(cmd, strerror(errno));
-//                 // *status = 126;
-//                 temp_path = full;
-//                 i++;
-//                 continue;
-//             }
-//         }
-//         i++;
-//     }

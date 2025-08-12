@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/08 12:36:51 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 09:08:31 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,75 +30,53 @@ static int f_error(int fd, t_redirect *redir, int target_fd)
     return (1);
 }
 
-int setup_redirections(t_command *cmd, int exit_or_return)
+static int open_redir_file(t_redirect *redir, int flags, int mode, int exit_return)
 {
     int fd;
+    int target_file;
+    
+    if (flags & O_WRONLY)
+        target_file = STDOUT_FILENO;
+    else
+        target_file = STDIN_FILENO;
+    fd = open(redir->filename, flags, mode);
+    if (!f_error(fd, redir, target_file))
+    {
+        if (exit_return)
+        {
+            fd_collector(-1, 1);
+            free_all_memory();
+            exit(exit_status(1));
+        }
+        return(0);
+    }
+    return (1);
+}
+
+int setup_redirections(t_command *cmd, int exit_or_return)
+{
     t_redirect *redir;
     
     redir = cmd->redirects;
     while (redir)
     {
-        fd = -1;
         if (redir->type == TOKEN_HEREDOC_QUOTED ||
             redir->type == TOKEN_HEREDOC || redir->type == TOKEN_INPUT)
         {
-            fd = open(redir->filename, O_RDONLY);
-            if (!f_error(fd, redir, STDIN_FILENO))
-            {
-                if (exit_or_return)
-                {
-                    fd_collector(-1, 1);
-                    free_all_memory();
-                    exit(exit_status(1));
-                }
+            if (!open_redir_file(redir, O_RDONLY, 0, exit_or_return))
                 return(1);
-            }
         }
         else if (redir->type == TOKEN_OUTPUT)
         {
-            fd = open(redir->filename, O_WRONLY | O_CREAT |  O_TRUNC, 0644);
-            if (!f_error(fd, redir, STDOUT_FILENO))
-            {
-                if (exit_or_return)
-                {
-                    fd_collector(-1, 1);
-                    free_all_memory();
-                    exit(exit_status(1));
-                }
+            if (!open_redir_file(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644,exit_or_return))
                 return(1);
-            }
         }
         else if (redir->type == TOKEN_APPEND)
         {
-            fd = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-            if (!f_error(fd, redir, STDOUT_FILENO))
-            {
-                if (exit_or_return)
-                {
-                    fd_collector(-1, 1);
-                    free_all_memory();
-                    exit(exit_status(1));
-                }
+            if (!open_redir_file(redir, O_WRONLY | O_CREAT | O_APPEND, 0644, exit_or_return))
                 return(1);
-            }
         }
         redir = redir->next;
     }
     return (0);
 }
-
-// s_valid_identifier(const char *str)
-// {
-//     int i = 1;
-//     if (!str || !str[0]) // check the first character of the arg 
-//         return 0;
-//     if (!ft_isalpha(str[0]) && str[0] != '_')
-//         return 0;
-//     while(str[i]) // check the rest of the arg
-//     {
-//         if (!ft_isalnum(str[i]) && str[i] != '_')
-//             return 0;
-//         i++;
-//     }
-//     return 1;
-// }

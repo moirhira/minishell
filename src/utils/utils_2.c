@@ -6,26 +6,14 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:51:44 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 23:05:19 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/12 09:28:30 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/minishell.h"
 
-int only_whitespace(char *str)
-{
-    int i;
 
-    i = 0;
-    while (str[i] != '\0')
-    {
-        if(!ft_isspace(str[i]))
-            return (0);
-        i++;
-    }
-    return (1);
-}
 
 char **convert_env_to_array(t_envp *env)
 {
