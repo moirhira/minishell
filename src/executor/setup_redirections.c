@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:59 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/13 17:36:48 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 21:33:42 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,25 @@ static int	open_redir_file(t_redirect *redir, int flags, int mode,
 int	setup_redirections(t_command *cmd, int exit_or_return)
 {
 	t_redirect	*redir;
+	int			res;
 
+	res = 0;
 	redir = cmd->redirects;
 	while (redir)
 	{
 		if (redir->type == TOKEN_HEREDOC_QUOTED || redir->type == TOKEN_HEREDOC
 			|| redir->type == TOKEN_INPUT)
 		{
-			return (open_redir_file(redir, O_RDONLY, 0, exit_or_return), 1);
+			res = open_redir_file(redir, O_RDONLY, 0, exit_or_return);
 		}
 		else if (redir->type == TOKEN_OUTPUT)
-		{
-			return (open_redir_file(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644,
-					exit_or_return), 1);
-		}
+			res = open_redir_file(redir, O_WRONLY | O_CREAT | O_TRUNC, 0644,
+					exit_or_return);
 		else if (redir->type == TOKEN_APPEND)
-		{
-			return (open_redir_file(redir, O_WRONLY | O_CREAT | O_APPEND, 0644,
-					exit_or_return), 1);
-		}
+			res = (open_redir_file(redir, O_WRONLY | O_CREAT | O_APPEND, 0644,
+						exit_or_return));
+		if (res)
+			return (1);
 		redir = redir->next;
 	}
 	return (0);

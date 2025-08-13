@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/07 23:00:53 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/12 20:38:52 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 20:36:32 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	builtin_exit(char **args)
 	char	*endptr;
 
 	code = 0;
-	write(STDOUT_FILENO, "exit\n", 5);
+	ft_putstr_fd("exit\n", 2);
 	if (args[1])
 	{
 		code = my_strtol(args[1], &endptr, 10);

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/13 17:05:20 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 20:19:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,11 @@ static char	*handle_absolute_path(char *cmd, int *status)
 {
 	if (!is_file_exists(cmd))
 	{
-		display_error(cmd, "No such file or directory");
-		*status = 127;
+		display_error(cmd, strerror(errno));
+		if (errno == ENOTDIR)
+			*status = 126;
+		else
+			*status = 127;
 		return (NULL);
 	}
 	if (is_directory(cmd))
@@ -54,7 +57,7 @@ static char	*find_exec_in_path(char **paths, char *cmd, int *found_no_perms)
 			if (is_executable(full))
 				return (full);
 			else
-				*found_no_perms = 1; 
+				*found_no_perms = 1;
 		}
 		i++;
 	}

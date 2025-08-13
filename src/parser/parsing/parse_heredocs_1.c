@@ -6,16 +6,16 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/12 22:13:37 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 22:38:24 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-void	generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
+void	generate_unique_name(char temp_name[], size_t size_temp)
 {
 	size_t	i;
-	char	*char_pid;
+	char	buffer_randp[10];
 	char	*prefix;
 	int		j;
 
@@ -26,11 +26,13 @@ void	generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
 		temp_name[i] = prefix[i];
 		i++;
 	}
-	char_pid = ft_itoa(pid);
+	int fd = open("/dev/urandom", O_RDONLY);
+	int b_read = read(fd, buffer_randp, 8);
+	buffer_randp[b_read] = '\0';
 	j = 0;
-	while (char_pid[j] && i + 1 < size_temp)
+	while (buffer_randp[j] && i + 1 < size_temp)
 	{
-		temp_name[i] = char_pid[j];
+		temp_name[i] = buffer_randp[j];
 		i++;
 		j++;
 	}
@@ -45,7 +47,7 @@ static int	process_herdoc(t_redirect *redir, t_envp *my_env)
 
 	delimiter = redir->filename;
 	expand_var = (redir->type == TOKEN_HEREDOC);
-	generate_unique_name(temp_filename, sizeof(temp_filename), getpid());
+	generate_unique_name(temp_filename, sizeof(temp_filename)); // need to be changed cause its firbien function 
 	if (fill_herdoc(delimiter, expand_var, my_env, temp_filename))
 	{
 		redir->filename = ft_strdup(temp_filename);
