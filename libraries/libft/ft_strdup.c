@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:37:35 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 20:43:07 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 09:43:47 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 char	*ft_strdup(const char *str)
 {
 	int		size;
-	char	*ptr;
 	int		i;
-	
+	char	*ptr;
+
 	if (!str)
 		return (NULL);
 	i = 0;

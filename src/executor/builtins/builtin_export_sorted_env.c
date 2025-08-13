@@ -6,35 +6,36 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:12:09 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/11 21:21:54 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:54:27 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-
-static void sort_in_tab(char **array, int size)
+static void	sort_in_tab(char **array, int size)
 {
-    int i;
-	char *temp;
-	
+	int		i;
+	char	*temp;
+	int		j;
+
 	i = 0;
-    while (i < size - 1)
-    {
-        int j = i + 1;
-        while (j < size)
-        {
-            if (ft_strcmp(array[i], array[j]) > 0)
+	while (i < size - 1)
+	{
+		j = i + 1;
+		while (j < size)
+		{
+			if (ft_strcmp(array[i], array[j]) > 0)
 			{
 				temp = array[i];
 				array[i] = array[j];
 				array[j] = temp;
 			}
-            j++;
-        }
-        i++;
-    }
+			j++;
+		}
+		i++;
+	}
 }
+
 static void	print_array(char **arr)
 {
 	int	i;
@@ -60,5 +61,3 @@ int	print_sorted_export(t_envp *env)
 	print_array(arr);
 	return (0);
 }
-
-

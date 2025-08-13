@@ -202,13 +202,8 @@ minishell$ echo $"/"✅
 $/
 the dolar not sholde be prited
 
-============================================================
-
-2 > errfile (redirecting the file descripto 0 1 2 ) to a file directly 
-
-
 ===================================================================
-minishell$  echo <"./test_files/infile" <missing <"./test_files/infile" 
+minishell$  echo <"./test_files/infile" <missing <"./test_files/infile"  ✅
 minishell$ ./test_files/infile: No such file or directory
 minishell$ echo $?
 1
@@ -234,104 +229,97 @@ minishell$
 ==1149195==    by 0x40166C: main (main.c:111)
 
 
+===========================================================================
 
-
-
-sh-5.2$ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp --track-fds=yes -s ./minishell
-==1953== Memcheck, a memory error detector
-==1953== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
-==1953== Using Valgrind-3.25.1 and LibVEX; rerun with -h for copyright info
-==1953== Command: ./minishell
-==1953== 
-minishell$ 
-minishell$ << a
-> ctrl + d
-warning: here-document delimited by end-of-file (wanted `a')
-==1966== 
-==1966== FILE DESCRIPTORS: 6 open (6 inherited) at exit.
-==1966== 
-==1966== HEAP SUMMARY:
-==1966==     in use at exit: 219,829 bytes in 233 blocks
-==1966==   total heap usage: 1,003 allocs, 770 frees, 256,119 bytes allocated
-==1966== LEAK SUMMARY:
-==1966==    definitely lost: 0 bytes in 0 blocks
-==1966==    indirectly lost: 0 bytes in 0 blocks
-==1966==      possibly lost: 0 bytes in 0 blocks
-==1966==    still reachable: 14,689 bytes in 10 blocks
-==1966==         suppressed: 205,140 bytes in 223 blocks
-==1966== 
-==1966== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
---1966-- 
---1966-- used_suppression:     64 readline_general_leak readline.supp:80 suppressed: 203,596 bytes in 221 blocks
---1966-- used_suppression:      1 readline_funmap_leak readline.supp:12 suppressed: 1,536 bytes in 1 blocks
---1966-- used_suppression:      1 readline_prompt_leak readline.supp:2 suppressed: 8 bytes in 1 blocks
-==1966== 
-==1966== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-
-minishell$ << a
-> ctrl + d
-warning: here-document delimited by end-of-file (wanted `a')
-==1967== 
-==1967== FILE DESCRIPTORS: 6 open (5 inherited) at exit.
-==1967== Open file descriptor 0: /dev/pts/0
-==1967==    at 0x49E2C1B: dup2 (in /usr/lib/x86_64-linux-gnu/libc.so.6)
-==1967==    by 0x4006122: exec_redirs_no_command (executor.c:51)
-==1967==    by 0x4006281: execute_commands (executor.c:91)
-==1967==    by 0x4001607: main (main.c:103)
-==1967== 
-==1967== 
-==1967== HEAP SUMMARY:
-==1967==     in use at exit: 219,870 bytes in 236 blocks
-==1967==   total heap usage: 1,037 allocs, 801 frees, 256,635 bytes allocated
-==1967== 
-==1967== 
-==1967== LEAK SUMMARY:
-==1967==    definitely lost: 0 bytes in 0 blocks
-==1967==    indirectly lost: 0 bytes in 0 blocks
-==1967==      possibly lost: 0 bytes in 0 blocks
-==1967==    still reachable: 14,689 bytes in 10 blocks
-==1967==         suppressed: 205,181 bytes in 226 blocks
-==1967== 
-==1967== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
---1967-- 
---1967-- used_suppression:     64 readline_general_leak readline.supp:80 suppressed: 203,637 bytes in 224 blocks
---1967-- used_suppression:      1 readline_funmap_leak readline.supp:12 suppressed: 1,536 bytes in 1 blocks
---1967-- used_suppression:      1 readline_prompt_leak readline.supp:2 suppressed: 8 bytes in 1 blocks
-==1967== 
-==1967== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
-
-
-
-
-
-===================================================
-
-
-
-
-minishell$ echo $9HOME
+minishell$ echo $9HOME ✅
 $9HOME
 
-\
-
-
-
-
-
-minishell$ wc -l | $DONTEXISt
+minishell$ wc -l | $DONTEXISt ✅
 minishell: syntax error near unexpected token `newline'
 
-
-
-
-
-
-
-
-
-
-
--===========================================
 change in pwd
 change in find_command_path 
 
+=========================================================
+void	print_commands(t_command **commads)
+{
+	t_command	*ptr;
+	int			i;
+	t_redirect	*ptr_red;
+
+	ptr = (*commads);
+	while (ptr)
+	{
+		i = 0;
+		if (ptr->args)
+		{
+			while (ptr->args[i])
+			{
+				printf("argument num[%d]: %s\n", i + 1, ptr->args[i]);
+				i++;
+			}
+		}
+		// printf("is a pipe     : %d\n", ptr->pipe);
+		printf("==============order==================\n");
+		ptr_red = ptr->redirects;
+		while (ptr_red)
+		{
+			printf("filename        : %s\n", ptr_red->filename);
+			printf("type            : %d\n", ptr_red->type);
+			ptr_red = ptr_red->next;
+		}
+		printf("=====================================\n");
+		printf("....................................\n");
+		ptr = ptr->next;
+	}
+}
+
+/*
+echo $$
+# → syntax error (unless you implement PID)
+
+echo $!
+# → syntax error (unless you implement job control)
+
+*/
+
+// t_token *ptr;
+//     ptr = *token_lst;
+//     while (ptr)
+//     {
+//         printf("value       : %s\n", ptr->value);
+//         printf("type        : %d\n", ptr->type);
+//         printf("attached    : %d\n", ptr->attached);
+//         printf("was quoted  : %d\n", ptr->was_quoted);
+//         printf("....................................\n");
+//         ptr = ptr->next;
+//     }
+
+// if (token->type == 1 || token->type == 2 || token->type == 3
+//     || token->type == 4 || token->type == 5 || token->type == 6)
+// {
+//     next_token = token->next;
+//     if (!next_token)
+//     {
+//         ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
+	2);
+//         return (0);
+//     }
+//     if (token->type == 1 && next_token->type == 1)
+//     {
+//         ft_putstr_fd("minishell: syntax error near unexpected token `||'\n",
+	2);
+//         return (0);
+//     }
+//     if (token->type != 1)
+//     {
+//         if (next_token->type != 0)
+//         {
+//             ft_putstr_fd("minishell: syntax error near unexpected token",
+	2 );
+//             ft_putstr_fd(token->next->value, 2);
+//             ft_putstr_fd("\n", 2);
+//             return (0);
+//         }
+//     }
+// }

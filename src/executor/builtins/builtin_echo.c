@@ -12,41 +12,42 @@
 
 #include "../../../include/minishell.h"
 
-int is_new_line(char *cmd)
+int	is_new_line(char *cmd)
 {
-    int i;
+	int	i;
 
-    if (!cmd || cmd[0] != '-' || cmd[1] != 'n')
-        return 0;
-    i = 2;
-    while (cmd[i])
-    {
-        if (cmd[i] != 'n')
-            return 0;
-        i++;
-    }
-    return 1;
+	if (!cmd || cmd[0] != '-' || cmd[1] != 'n')
+		return (0);
+	i = 2;
+	while (cmd[i])
+	{
+		if (cmd[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-int builtin_echo(char **cmd)
+int	builtin_echo(char **cmd)
 {
-    int i = 1;
-    int newline = 1;
+	int	i;
+	int	newline;
 
-    while (cmd[i] && is_new_line(cmd[i]))
-    {
-        newline = 0;
-        i++;
-    }
-    while (cmd[i])
-    {
-        ft_putstr_fd(cmd[i], STDOUT_FILENO);
-        if (cmd[i + 1])
-            ft_putstr_fd(" ", STDOUT_FILENO);
-        i++;
-    }
-
-    if (newline)
-        ft_putstr_fd("\n", STDOUT_FILENO);
-    return (0);
+	i = 1;
+	newline = 1;
+	while (cmd[i] && is_new_line(cmd[i]))
+	{
+		newline = 0;
+		i++;
+	}
+	while (cmd[i])
+	{
+		ft_putstr_fd(cmd[i], STDOUT_FILENO);
+		if (cmd[i + 1])
+			ft_putstr_fd(" ", STDOUT_FILENO);
+		i++;
+	}
+	if (newline)
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	return (0);
 }

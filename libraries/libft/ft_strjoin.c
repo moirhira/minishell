@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 22:22:07 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/04 16:03:11 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 09:44:18 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static void	ft_strcoopy(char *dest, const char *src, size_t start)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char		*ptr;
-	size_t		s1len;
-	size_t		s2len;
+	char	*ptr;
+	size_t	s1len;
+	size_t	s2len;
 
 	if (!s1 || !s2)
 		return (NULL);

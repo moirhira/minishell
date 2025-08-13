@@ -14,13 +14,13 @@
 
 int	builtin_pwd(void)
 {
-	char cwd[PATH_MAX];
+	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		ft_putstr_fd(cwd, STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
-        return (0);
+		return (0);
 	}
 	else
 	{
@@ -28,5 +28,3 @@ int	builtin_pwd(void)
 		return (1);
 	}
 }
-
-

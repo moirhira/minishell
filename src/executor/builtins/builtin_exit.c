@@ -12,37 +12,37 @@
 
 #include "../../../include/minishell.h"
 
-static void exit_with_cleanup(int code)
+static void	exit_with_cleanup(int code)
 {
-    fd_collector(-1, 1);
-    free_all_memory();
-    exit(code);
+	fd_collector(-1, 1);
+	free_all_memory();
+	exit(code);
 }
 
-int builtin_exit(char **args)
+int	builtin_exit(char **args)
 {
-    long code = 0;
-    char *endptr;
+	long	code;
+	char	*endptr;
 
-    write(STDOUT_FILENO, "exit\n", 5);
-    if (args[1])
-    {
-        code = my_strtol(args[1], &endptr, 10);
-        if (*endptr != '\0')
-        {
-            display_error(ft_strjoin("exit: ", args[1]), "numeric argument required");
-            exit_with_cleanup(exit_status(2));
-        }
-        if (args[2])
-        {
-            display_error("exit", "too many arguments");
-            return (exit_status(1));
-        }
-        exit_status((unsigned char)code);
-        exit_with_cleanup((unsigned char)code);
-    }
-    exit_with_cleanup(exit_status(-1));
-    return (0);
+	code = 0;
+	write(STDOUT_FILENO, "exit\n", 5);
+	if (args[1])
+	{
+		code = my_strtol(args[1], &endptr, 10);
+		if (*endptr != '\0')
+		{
+			display_error(ft_strjoin("exit: ", args[1]),
+				"numeric argument required");
+			exit_with_cleanup(exit_status(2));
+		}
+		if (args[2])
+		{
+			display_error("exit", "too many arguments");
+			return (exit_status(1));
+		}
+		exit_status((unsigned char)code);
+		exit_with_cleanup((unsigned char)code);
+	}
+	exit_with_cleanup(exit_status(-1));
+	return (0);
 }
-
-

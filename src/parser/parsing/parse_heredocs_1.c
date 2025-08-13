@@ -12,73 +12,74 @@
 
 #include "../../../include/minishell.h"
 
-void generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
+void	generate_unique_name(char temp_name[], size_t size_temp, pid_t pid)
 {
-    size_t i;
-    char *char_pid;
-    char *prefix;
+	size_t	i;
+	char	*char_pid;
+	char	*prefix;
+	int		j;
 
-    prefix = "/tmp/minishell_herdoc_";
-    i = 0;
-    while(prefix[i] && i + 1 < size_temp)
-    {
-        temp_name[i] = prefix[i];
-        i++;
-    }
-    char_pid = ft_itoa(pid);
-    int j = 0;
-    while(char_pid[j] && i + 1 < size_temp)
-    {
-        temp_name[i] = char_pid[j];
-        i++;
-        j++;
-    }
-    temp_name[i] = '\0';
+	prefix = "/tmp/minishell_herdoc_";
+	i = 0;
+	while (prefix[i] && i + 1 < size_temp)
+	{
+		temp_name[i] = prefix[i];
+		i++;
+	}
+	char_pid = ft_itoa(pid);
+	j = 0;
+	while (char_pid[j] && i + 1 < size_temp)
+	{
+		temp_name[i] = char_pid[j];
+		i++;
+		j++;
+	}
+	temp_name[i] = '\0';
 }
 
-static int process_herdoc(t_redirect *redir, t_envp *my_env)
+static int	process_herdoc(t_redirect *redir, t_envp *my_env)
 {
-    int expand_var;
-    char *delimiter;
-    char temp_filename[256];
-    
-    delimiter = redir->filename;
-    expand_var = (redir->type == TOKEN_HEREDOC);
-    generate_unique_name(temp_filename,sizeof(temp_filename), getpid());
-    if (fill_herdoc(delimiter, expand_var, my_env, temp_filename))
-    {
-       redir->filename = ft_strdup(temp_filename);
-       return (0);
-    }
-    else if (g_signal_received)
-        return (1);
-    return (0);
+	int		expand_var;
+	char	*delimiter;
+	char	temp_filename[256];
+
+	delimiter = redir->filename;
+	expand_var = (redir->type == TOKEN_HEREDOC);
+	generate_unique_name(temp_filename, sizeof(temp_filename), getpid());
+	if (fill_herdoc(delimiter, expand_var, my_env, temp_filename))
+	{
+		redir->filename = ft_strdup(temp_filename);
+		return (0);
+	}
+	else if (g_signal_received)
+		return (1);
+	return (0);
 }
 
-int parse_heredocs(t_command *command, t_envp *my_env)
+int	parse_heredocs(t_command *command, t_envp *my_env)
 {
-    t_redirect  *redir;
-    t_command *cmd;
-    
-    cmd = command;
-    g_signal_received = 0;
-    while (cmd)
-    {
-        if (cmd->heredoc_count > 0)
-        {
-            redir = cmd->redirects;
-            while (redir)
-            {
-                if (redir->type == TOKEN_HEREDOC 
-                    || redir->type == TOKEN_HEREDOC_QUOTED)
-                {
-                    if (process_herdoc(redir, my_env))
-                        return (1);
-                }
-                redir = redir->next;
-            }
-        }
-        cmd = cmd->next;
-    }
-    return (0);
+	t_redirect	*redir;
+	t_command	*cmd;
+
+	cmd = command;
+	g_signal_received = 0;
+	while (cmd)
+	{
+		if (cmd->heredoc_count > 0)
+		{
+			redir = cmd->redirects;
+			while (redir)
+			{
+				if (redir->type == TOKEN_HEREDOC
+					|| redir->type == TOKEN_HEREDOC_QUOTED)
+				{
+					if (process_herdoc(redir, my_env))
+						return (1);
+				}
+				redir = redir->next;
+			}
+		}
+		cmd = cmd->next;
+	}
+	return (0);
 }

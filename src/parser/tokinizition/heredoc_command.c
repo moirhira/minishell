@@ -6,19 +6,13 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 20:27:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/11 16:25:39 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:23:29 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#include "tokinizition.h"
 
-typedef struct s_hd_data {
-    char *delimiter_val;
-    int k;
-    int was_quote;
-} t_hd_data;
-
-static int process_quote(char *s, int i, t_hd_data *data, char quote)
+static int	process_quote(char *s, int i, t_herdoc_command *data, char quote)
 {
 	data->was_quote = 1;
 	i++;
@@ -29,51 +23,51 @@ static int process_quote(char *s, int i, t_hd_data *data, char quote)
 	if (s[i] == quote)
 		return (i + 1);
 	ft_putstr_fd("minishell: Unclosed quote: ", 2);
-    write(2, &quote, 1);
-    ft_putstr_fd("\n", 2);
-    return (-1);
+	write(2, &quote, 1);
+	ft_putstr_fd("\n", 2);
+	return (-1);
 }
 
-static int heredoc_heleper(char *s, int i, t_hd_data *data)
+static int	heredoc_heleper(char *s, int i, t_herdoc_command *data)
 {
-	while (s[i] != '\0' && s[i] != ' ' && s[i] != '\t' 
-        && s[i] != '|' && s[i] != '<' && s[i] != '>')
-    {
-        if (s[i] == '\'' || s[i] == '"')
-        {
+	while (s[i] != '\0' && s[i] != ' ' && s[i] != '\t' && s[i] != '|'
+		&& s[i] != '<' && s[i] != '>')
+	{
+		if (s[i] == '\'' || s[i] == '"')
+		{
 			i = process_quote(s, i, data, s[i]);
 			if (i == -1)
 				return (-1);
-        }
-        else
-            data->delimiter_val[data->k++] = s[i++];
-    }
+		}
+		else
+			data->delimiter_val[data->k++] = s[i++];
+	}
 	return (i);
 }
-int handel_heredoc_delimiter(char *s, int i, t_token **token, int *state)
+
+int	handel_heredoc_delimiter(char *s, int i, t_token **token, int *state)
 {
-	t_hd_data data;
-	int result;
-	
-    while (ft_isspace(s[i]))
+	t_herdoc_command	data;
+	int					result;
+
+	while (ft_isspace(s[i]))
 		i++;
 	if (s[i] == '<' || s[i] == '>' || s[i] == '|')
-    {
-        ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-        ft_putchar_fd(s[i], 1);
-        ft_putstr_fd("'\n", 2);
-        return (-1);
-    }
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+		ft_putchar_fd(s[i], 1);
+		ft_putstr_fd("'\n", 2);
+		return (-1);
+	}
 	data.delimiter_val = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!data.delimiter_val)
 		return (-1);
-	data.k = 0 ;
+	data.k = 0;
 	data.was_quote = 0;
-    result = heredoc_heleper(s, i, &data);
+	result = heredoc_heleper(s, i, &data);
 	if (result == -1)
 		return (-1);
 	add_token(token, create_token(data.delimiter_val, 0, 0, data.was_quote));
 	*state = 0;
-    return (result);
+	return (result);
 }
-

@@ -12,34 +12,37 @@
 
 #include "../../../include/minishell.h"
 
-void    unset_variable(t_envp **env, char *var)
+void	unset_variable(t_envp **env, char *var)
 {
-    t_envp *tmp = *env;
-    t_envp *prev = NULL;
-    
-    while(tmp)
-    {
-        if(ft_strcmp(tmp->key, var) == 0)
-        {
-            if(prev)
-                prev->next = tmp->next;
-            else
-                *env = tmp->next;
-            return;    
-        }
-        prev = tmp;
-        tmp = tmp->next;
-    }
+	t_envp	*tmp;
+	t_envp	*prev;
+
+	tmp = *env;
+	prev = NULL;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->key, var) == 0)
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*env = tmp->next;
+			return ;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
 }
 
-int builtin_unset(char **args, t_envp **env)
+int	builtin_unset(char **args, t_envp **env)
 {
-    int i = 1;
+	int	i;
 
-    while (args[i])
-    {
-        unset_variable(env, args[i]);
-        i++;
-    }
-    return (0);
+	i = 1;
+	while (args[i])
+	{
+		unset_variable(env, args[i]);
+		i++;
+	}
+	return (0);
 }

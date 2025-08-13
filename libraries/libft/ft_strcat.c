@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 15:04:27 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/03 14:31:29 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 09:43:04 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*ft_strcat(char *dest, const char *src)
 
 	if (!dest || !src)
 		return (NULL);
-
 	dest_len = ft_strlen(dest);
 	i = 0;
 	while (src[i])
@@ -28,6 +27,5 @@ char	*ft_strcat(char *dest, const char *src)
 		i++;
 	}
 	dest[dest_len + i] = '\0';
-
 	return (dest);
 }

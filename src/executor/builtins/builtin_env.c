@@ -12,21 +12,18 @@
 
 #include "../../../include/minishell.h"
 
-int builtin_env(t_envp *envp)
+int	builtin_env(t_envp *envp)
 {
-    t_envp *env;
-    
-    if (!envp)
-        return (1);
-    env = envp;
-    while (env)
-    {
-        if (env->value)
-            printf("%s=%s\n", env->key, env->value);
-        env = env->next;
-    }
-    return (0);
+	t_envp	*env;
+
+	if (!envp)
+		return (1);
+	env = envp;
+	while (env)
+	{
+		if (env->value)
+			printf("%s=%s\n", env->key, env->value);
+		env = env->next;
+	}
+	return (0);
 }
-
-
-

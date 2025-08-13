@@ -6,21 +6,13 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 20:55:19 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/10 15:33:56 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/13 11:22:31 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#include "tokinizition.h"
 
-typedef struct s_split_data
-{
-    t_envp **my_env;
-    t_token **token;
-    int state;
-} t_split_data;
-
-
-int process_token(char *s, int i, t_split_data *data)
+int	process_token(char *s, int i, t_tokinizer *data)
 {
 	if (data->state == 1)
 	{
@@ -48,13 +40,12 @@ int process_token(char *s, int i, t_split_data *data)
 	return (i);
 }
 
-
-int split_token(char *s, t_envp **my_env, t_token **token)
+int	split_token(char *s, t_envp **my_env, t_token **token)
 {
-	int i;
-	t_split_data data;
-	int result;
-	
+	int				i;
+	t_tokinizer		data;
+	int				result;
+
 	i = 0;
 	data.my_env = my_env;
 	data.token = token;
@@ -64,7 +55,7 @@ int split_token(char *s, t_envp **my_env, t_token **token)
 		while (s[i] == ' ' || s[i] == '\t')
 			i++;
 		if (!s[i])
-			break;
+			break ;
 		result = process_token(s, i, &data);
 		if (result == -1)
 			return (0);

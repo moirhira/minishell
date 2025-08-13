@@ -32,8 +32,8 @@ static int	ft_ctrword(char const *s, char c)
 
 static char	*ft_memalloc(char const *s, size_t len)
 {
-	size_t		i;
-	char		*ptr;
+	size_t	i;
+	char	*ptr;
 
 	ptr = (char *)ft_malloc(sizeof(char) * (len + 1));
 	if (!ptr)
@@ -49,7 +49,8 @@ static char	*ft_memalloc(char const *s, size_t len)
 }
 
 static char	*copy_word(const char **s, char c)
-{	const char	*start;
+{
+	const char	*start;
 	size_t		len;
 
 	start = *s;
