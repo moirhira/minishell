@@ -6,37 +6,34 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 09:39:57 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 22:38:24 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:18:49 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-void	generate_unique_name(char temp_name[], size_t size_temp)
+void	generate_unique_name(char temp_name[])
 {
-	size_t	i;
-	char	buffer_randp[10];
-	char	*prefix;
-	int		j;
+	unsigned int	random_num;
+	int				fd;
+	int				b_read;
+	static int		counter;
+	char			*random_str;
 
-	prefix = "/tmp/minishell_herdoc_";
-	i = 0;
-	while (prefix[i] && i + 1 < size_temp)
+	ft_strcpy(temp_name, "/tmp/minishell_herdoc_");
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd != -1)
 	{
-		temp_name[i] = prefix[i];
-		i++;
+		b_read = read(fd, &random_num, sizeof(random_num));
+		close(fd);
+		if (b_read != sizeof(random_num))
+			random_num = counter;
 	}
-	int fd = open("/dev/urandom", O_RDONLY);
-	int b_read = read(fd, buffer_randp, 8);
-	buffer_randp[b_read] = '\0';
-	j = 0;
-	while (buffer_randp[j] && i + 1 < size_temp)
-	{
-		temp_name[i] = buffer_randp[j];
-		i++;
-		j++;
-	}
-	temp_name[i] = '\0';
+	else
+		random_num = counter;
+	counter++;
+	random_str = ft_itoa((int)(random_num & 0xFFFFFF));
+	ft_strcat(temp_name, random_str);
 }
 
 static int	process_herdoc(t_redirect *redir, t_envp *my_env)
@@ -47,7 +44,7 @@ static int	process_herdoc(t_redirect *redir, t_envp *my_env)
 
 	delimiter = redir->filename;
 	expand_var = (redir->type == TOKEN_HEREDOC);
-	generate_unique_name(temp_filename, sizeof(temp_filename)); // need to be changed cause its firbien function 
+	generate_unique_name(temp_filename);
 	if (fill_herdoc(delimiter, expand_var, my_env, temp_filename))
 	{
 		redir->filename = ft_strdup(temp_filename);
