@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/14 11:22:56 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 21:57:57 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void							add_token(t_token **token_lst,
 									t_token *new_token);
 char							*get_env_value(t_envp *my_env,
 									const char *var_name);
-int								was_previous_space(char *s, int i);
+int								should_attach_token(char *s, int i);
 t_token							*get_last_token(t_token *lst);
 
 // parser

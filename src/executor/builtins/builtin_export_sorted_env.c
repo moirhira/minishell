@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 22:12:09 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/13 11:54:27 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 22:47:21 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,23 @@ static void	sort_in_tab(char **array, int size)
 
 static void	print_array(char **arr)
 {
-	int	i;
+	int		i;
+	char	*equal_sign;
 
 	i = 0;
 	while (arr[i])
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		ft_putstr_fd(arr[i], STDOUT_FILENO);
+		equal_sign = ft_strchr(arr[i], '=');
+		if (equal_sign)
+		{
+			write(STDOUT_FILENO, arr[i], equal_sign - arr[i] + 1);
+			ft_putstr_fd("\"", STDOUT_FILENO);
+			ft_putstr_fd(equal_sign + 1, STDOUT_FILENO);
+			ft_putstr_fd("\"", STDOUT_FILENO);
+		}
+		else
+			ft_putstr_fd(arr[i], STDOUT_FILENO);
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		i++;
 	}

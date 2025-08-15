@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:28:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 11:31:22 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 20:15:42 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ t_envp	*new_env_node(char *key, char *value)
 
 	new_node = ft_malloc(sizeof(t_envp));
 	new_node->key = ft_strdup(key);
-	if (value)
+	if (value != NULL)
+	{
 		new_node->value = ft_strdup(value);
+	}
 	else
+	{
 		new_node->value = NULL;
+	}
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -59,7 +63,7 @@ int	update_env_var(t_envp **env, char *key, char *value)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			if (value)
+			if (value != NULL)
 				tmp->value = ft_strdup(value);
 			else
 				tmp->value = NULL;

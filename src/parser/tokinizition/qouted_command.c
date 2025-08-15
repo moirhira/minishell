@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 13:42:05 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 11:25:41 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 21:57:57 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	handel_quoted_str(char *s, int i, t_envp **my_env, t_token **token)
 	int					attached;
 	t_quoted_command	data;
 
-	attached = was_previous_space(s, i);
+	attached = should_attach_token(s, i);
 	data.quote = s[i++];
 	data.final_str = ft_calloc(ft_strlen(s), 1);
 	data.my_env = my_env;

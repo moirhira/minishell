@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 13:40:58 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 11:23:46 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 22:24:13 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ static int	extract_simple_str(char *s, int i, t_simple_command *data)
 		&& s[i] != '|' && s[i] != '>' && s[i] != '<')
 	{
 		if (s[i] == '=' && s[i + 1] && s[i + 1] == '$')
+		{
 			data->dont_trim = 1;
+		}
 		if (s[i] == '$')
 		{
 			process_dolar(s, &i, data);
@@ -68,28 +70,37 @@ static int	extract_simple_str(char *s, int i, t_simple_command *data)
 	return (i);
 }
 
-static void	process_split_words(char **split_words, t_simple_command *data)
+static void	process_split_words(t_token **token, t_simple_command *data)
 {
+	char	**split_words;
 	int		k;
 	t_token	*new;
 
-	k = 0;
-	while (split_words[k] != NULL)
+	split_words = ft_split_advanced(data->simple_str, " \t\n");
+	if (!split_words || !split_words[0])
 	{
-		new = create_token(ft_strdup(split_words[k]), 0, 0, 0);
-		if (*(data->token) && data->attached)
-			get_last_token(*(data->token))->attached = 1;
-		add_token(data->token, new);
-		k++;
+		add_token(token, create_token(ft_strdup(""), 0, 0, 0));
+		get_last_token(*token)->ignored = 1;
+	}
+	else
+	{
+		k = 0;
+		while (split_words[k] != NULL)
+		{
+			new = create_token(ft_strdup(split_words[k]), 0, 0, 0);
+			if (*(data->token) && data->attached && k == 0)
+				get_last_token(*(data->token))->attached = 1;
+			add_token(data->token, new);
+			k++;
+		}
 	}
 }
 
 int	handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 {
 	t_simple_command	data;
-	char				**split_words;
 
-	data.attached = was_previous_space(s, i);
+	data.attached = should_attach_token(s, i);
 	data.dont_trim = 0;
 	data.unclose_quote = 0;
 	data.simple_str = ft_calloc(1, 1);
@@ -100,14 +111,14 @@ int	handel_simple_str(char *s, int i, t_envp **my_env, t_token **token)
 		return (-1);
 	if (data.simple_str && *(data.simple_str))
 	{
-		split_words = ft_split_advanced(data.simple_str, " \t\n");
-		if (!split_words || !split_words[0])
+		if (data.dont_trim)
 		{
-			add_token(token, create_token(ft_strdup(""), 0, 0, 0));
-			get_last_token(*token)->ignored = 1;
+			add_token(token, create_token(ft_strdup(data.simple_str), 0, 0, 0));
+			if (data.attached)
+				get_last_token(*token)->attached = 1;
 		}
 		else
-			process_split_words(split_words, &data);
+			process_split_words(token, &data);
 	}
 	return (i);
 }

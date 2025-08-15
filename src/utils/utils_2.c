@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 15:51:44 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 10:49:58 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 22:50:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,30 @@
 
 char	**convert_env_to_array(t_envp *env)
 {
-	int		count;
 	t_envp	*tmp;
 	char	**envp;
 	int		i;
 
-	count = 0;
 	tmp = env;
-	count = ft_lstsize(env);
-	envp = ft_malloc(sizeof(char *) * (count + 1));
+	envp = ft_malloc(sizeof(char *) * (ft_lstsize(env) + 1));
 	tmp = env;
 	i = 0;
 	while (tmp)
 	{
-		envp[i] = ft_malloc(ft_strlen(tmp->key) + ft_strlen(tmp->value) + 2);
-		ft_strcpy(envp[i], tmp->key);
-		ft_strcat(envp[i], "=");
-		ft_strcat(envp[i], tmp->value);
+		if (tmp->value == NULL)
+			envp[i] = ft_strdup(tmp->key);
+		else
+		{
+			envp[i] = ft_malloc(ft_strlen(tmp->key) + ft_strlen(tmp->value)
+					+ 2);
+			ft_strcpy(envp[i], tmp->key);
+			ft_strcat(envp[i], "=");
+			ft_strcat(envp[i], tmp->value);
+		}
 		tmp = tmp->next;
 		i++;
 	}
-	envp[count] = NULL;
+	envp[ft_lstsize(env)] = NULL;
 	return (envp);
 }
 

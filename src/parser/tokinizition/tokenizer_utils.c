@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 15:50:34 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 11:08:23 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 21:57:57 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*get_env_value(t_envp *my_env, const char *var_name)
 	return (NULL);
 }
 
-int	was_previous_space(char *s, int i)
+int	should_attach_token(char *s, int i)
 {
 	if (i == 0)
 	{
