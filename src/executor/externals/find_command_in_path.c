@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/13 20:19:47 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 15:12:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*find_command_in_path(char *cmd, t_envp *env, int *status)
 	char	*path_env;
 	char	**paths;
 
-	if (!cmd || !*cmd)
+	if (!cmd)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
 		return (handle_absolute_path(cmd, status));

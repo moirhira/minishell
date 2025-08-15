@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 20:27:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 11:23:29 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/15 16:55:55 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ static int	heredoc_heleper(char *s, int i, t_herdoc_command *data)
 	return (i);
 }
 
+static int	validate_err(char c, char c_p)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	if (c_p != '\0' && c_p == c)
+	{
+		ft_putchar_fd(c, 2);
+		ft_putchar_fd(c, 2);
+	}
+	else
+		ft_putchar_fd(c, 2);
+	ft_putstr_fd("'\n", 2);
+	return (-1);
+}
+
 int	handel_heredoc_delimiter(char *s, int i, t_token **token, int *state)
 {
 	t_herdoc_command	data;
@@ -54,10 +68,7 @@ int	handel_heredoc_delimiter(char *s, int i, t_token **token, int *state)
 		i++;
 	if (s[i] == '<' || s[i] == '>' || s[i] == '|')
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-		ft_putchar_fd(s[i], 1);
-		ft_putstr_fd("'\n", 2);
-		return (-1);
+		return (validate_err(s[i], s[i + 1]));
 	}
 	data.delimiter_val = ft_calloc(ft_strlen(s) + 1, sizeof(char));
 	if (!data.delimiter_val)

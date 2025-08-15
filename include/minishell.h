@@ -6,25 +6,25 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 13:25:31 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:22:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libraries/libft/libft.h"
-# include <errno.h> // 
+# include <errno.h>
 # include <fcntl.h>
-# include <limits.h>  //
+# include <limits.h> 
 # include <linux/limits.h>
-# include <readline/history.h> //
-# include <readline/readline.h> // 
-# include <signal.h>  //
-# include <stdio.h> //
-# include <stdlib.h>   //
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <sys/stat.h>
-# include <sys/wait.h> // 
-# include <unistd.h> // 
+# include <sys/wait.h>
+# include <unistd.h>
 
 extern volatile sig_atomic_t	g_signal_received;
 

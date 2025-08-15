@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 SRC = 	src/main.c src/utils/main_utils.c src/utils/utils.c src/utils/utils_2.c src/utils/setup_signals.c src/utils/display_error.c \
 		src/parser/tokinizition/tokenizer.c src/parser/tokinizition/tokenizer_utils.c src/parser/tokinizition/qouted_command.c src/parser/tokinizition/simple_command.c\
 		src/parser/tokinizition/simple_command_env.c src/parser/tokinizition/operator_command.c src/parser/tokinizition/heredoc_command.c \

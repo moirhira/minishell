@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/15 22:12:27 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 09:42:44 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/14 11:42:35 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 void	ft_putstr_fd(char *s, int fd)
 {
-	int	i;
+	size_t	len;
 
-	if (s == NULL)
+	if (s == NULL || fd < 0)
 		return ;
-	i = 0;
-	while (s[i] != '\0')
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
+	len = 0;
+	while (s[len])
+		len++;
+	write(fd, s, len);
 }
