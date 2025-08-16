@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/11 23:15:23 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 08:57:11 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static int	wait_for_child(pid_t pid)
 	{
 		if (WTERMSIG(status) == SIGINT)
 		{
-			write(STDERR_FILENO, "\n", 1);
+			ft_putstr_fd("\n", STDERR_FILENO);
 			return (130);
 		}
 		else if (WTERMSIG(status) == SIGQUIT)
 		{
-			write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			return (131);
 		}
 	}

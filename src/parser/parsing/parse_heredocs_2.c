@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:46:55 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 18:00:40 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 08:59:56 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ void	read_from_heredoc(int fd, char *line, t_envp *my_env, int expand_var)
 	if (expand_var)
 	{
 		processed_line = expand_variabels(line, my_env);
-		write(fd, processed_line, ft_strlen(processed_line));
-		write(fd, "\n", 1);
+		ft_putstr_fd(processed_line, fd);
+		ft_putstr_fd("\n", fd);
 	}
 	else
 	{
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
+		ft_putstr_fd(line, fd);
+		ft_putstr_fd("\n", fd);
 	}
 }
 

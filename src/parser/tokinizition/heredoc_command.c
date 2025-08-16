@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/09 20:27:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/15 16:55:55 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 09:00:28 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	process_quote(char *s, int i, t_herdoc_command *data, char quote)
 	if (s[i] == quote)
 		return (i + 1);
 	ft_putstr_fd("minishell: Unclosed quote: ", 2);
-	write(2, &quote, 1);
+	ft_putchar_fd(quote, 2);
 	ft_putstr_fd("\n", 2);
 	return (-1);
 }

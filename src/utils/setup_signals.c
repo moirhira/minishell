@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 09:14:12 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 10:49:23 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 09:02:07 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	sig_handler_inter(int sig)
 	if (sig == SIGINT)
 	{
 		g_signal_received = 128 + SIGINT;
-		write(STDOUT_FILENO, "\n", 1);
+		ft_putstr_fd("\n", STDERR_FILENO);
 		exit_status(130);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -30,7 +30,7 @@ void	sig_handler_inter(int sig)
 void	sig_handler_heredoc(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	free_all_memory();
 	fd_collector(-1, 1);
 	exit(130);
