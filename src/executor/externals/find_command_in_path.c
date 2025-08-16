@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/15 15:12:07 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 18:58:54 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@ static char	*handle_absolute_path(char *cmd, int *status)
 	if (!is_file_exists(cmd))
 	{
 		display_error(cmd, strerror(errno));
-		if (errno == ENOTDIR)
+		if (errno == ENOENT)
 			*status = 126;
-		else
-			*status = 127;
+		*status = 127;
 		return (NULL);
 	}
 	if (is_directory(cmd))
@@ -71,16 +70,18 @@ static char	*handle_relative_path(char *cmd, int *status, char **paths)
 
 	found_no_perms = 0;
 	result = find_exec_in_path(paths, cmd, &found_no_perms);
-	if (found_no_perms)
-		*status = 126;
-	else
-		*status = 127;
 	if (!result)
 	{
-		if (*status == 127)
-			display_error(cmd, "command not found");
-		else if (*status == 126)
+		if (found_no_perms)
+		{
+			*status = 126;
 			display_error(cmd, "Permission denied");
+		}
+		else
+		{
+			*status = 127;
+			display_error(cmd, "command not found");
+		}
 	}
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:07:38 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/15 21:57:57 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 18:02:54 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "../libraries/libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
-# include <limits.h> 
+# include <limits.h>
 # include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -62,7 +62,6 @@ typedef struct s_redirect
 {
 	char						*filename;
 	int							type;
-	char						*content;
 	struct s_redirect			*next;
 }								t_redirect;
 
@@ -151,6 +150,8 @@ char							*ft_strjoin_path(const char *dir,
 int								is_file_exists(const char *path);
 int								is_executable(const char *path);
 int								is_directory(const char *path);
+int								catch_execve_fail(t_command *cmd, char **envp,
+									char *path);
 
 // utils
 int								only_whitespace(char *str);

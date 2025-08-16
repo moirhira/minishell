@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/01 19:28:40 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/15 20:15:42 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 12:23:50 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ int	update_env_var(t_envp **env, char *key, char *value)
 		{
 			if (value != NULL)
 				tmp->value = ft_strdup(value);
-			else
-				tmp->value = NULL;
 			return (0);
 		}
 		tmp = tmp->next;

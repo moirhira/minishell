@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 20:55:09 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 11:00:05 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 16:26:39 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	add_redirect(t_command *cmd, int type, const char *filename)
 	new = (t_redirect *)ft_malloc(sizeof(t_redirect));
 	new->filename = ft_strdup(filename);
 	new->type = type;
-	new->content = NULL;
 	new->next = NULL;
 	if (!cmd->redirects)
 		cmd->redirects = new;

@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/26 05:17:32 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/13 11:51:17 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 18:52:58 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,33 @@ int	is_builtin(const char *cmd)
 	return (0);
 }
 
+int	catch_execve_fail(t_command *cmd, char **envp, char *path)
+{
+	char	*argv[3];
+
+	if (errno == ENOENT)
+	{
+		display_error(cmd->args[0], "No such file or directory");
+		return (127);
+	}
+	else if (errno == EACCES)
+	{
+		display_error(cmd->args[0], "Permission denied");
+		return (126);
+	}
+	else if (errno == ENOEXEC)
+	{
+		argv[0] = "sh";
+		argv[1] = path;
+		argv[2] = NULL;
+		execve("/bin/sh", argv, envp);
+		display_error(cmd->args[0], "cannot execute binary file");
+		return (126);
+	}
+	else
+		return (display_error(cmd->args[0], strerror(errno)), 126);
+}
+
 int	exec_command(t_command *cmd, t_envp *env)
 {
 	char	*path;
@@ -37,21 +64,13 @@ int	exec_command(t_command *cmd, t_envp *env)
 	status = 0;
 	path = find_command_in_path(cmd->args[0], env, &status);
 	if (!path)
-	{
-		if (status == 126 || status == 127)
-			return (status);
-		else
-		{
-			display_error(cmd->args[0], ": command not found");
-			return (127);
-		}
-	}
+		return (status);
 	envp = convert_env_to_array(env);
 	if (!envp)
 		return (1);
 	execve(path, cmd->args, envp);
-	display_error(cmd->args[0], strerror(errno));
-	return (126);
+	status = catch_execve_fail(cmd, envp, path);
+	return (status);
 }
 
 void	child_process(t_command *cmd, int prev_pipe, int pipefd[2], t_envp *env)

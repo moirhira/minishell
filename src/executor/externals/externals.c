@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:49:13 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/16 08:57:11 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 18:54:19 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	wait_for_child(pid_t pid)
 			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			return (131);
 		}
+		else
+			return (128 + WTERMSIG(status));
 	}
 	if (WIFEXITED(status))
 		return (exit_status(WEXITSTATUS(status)));
@@ -38,6 +40,9 @@ static int	wait_for_child(pid_t pid)
 
 void	process_child_external(t_command *cmd, char *path, char **envp)
 {
+	int	st;
+
+	st = 0;
 	setup_signals(CHILD_PROCESS);
 	if (setup_redirections(cmd, 1) == 1)
 	{
@@ -46,10 +51,10 @@ void	process_child_external(t_command *cmd, char *path, char **envp)
 		exit(1);
 	}
 	execve(path, cmd->args, envp);
-	display_error(cmd->args[0], strerror(errno));
+	st = catch_execve_fail(cmd, envp, path);
 	fd_collector(-1, 1);
 	free_all_memory();
-	exit(126);
+	exit(st);
 }
 
 int	execute_external(t_command *cmd, t_envp *env)
