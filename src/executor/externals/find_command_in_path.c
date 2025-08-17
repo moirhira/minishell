@@ -6,7 +6,7 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 06:48:46 by ekhallaf          #+#    #+#             */
-/*   Updated: 2025/08/16 18:58:54 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/16 21:59:15 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ static char	*handle_absolute_path(char *cmd, int *status)
 	{
 		display_error(cmd, strerror(errno));
 		if (errno == ENOENT)
+			*status = 127;
+		else
 			*status = 126;
-		*status = 127;
 		return (NULL);
 	}
 	if (is_directory(cmd))

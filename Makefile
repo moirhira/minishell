@@ -1,6 +1,7 @@
-NAME = minishell
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+NAME		= minishell
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror
+
 SRC = 	src/main.c src/utils/main_utils.c src/utils/utils.c src/utils/utils_2.c src/utils/setup_signals.c src/utils/display_error.c \
 		src/parser/tokinizition/tokenizer.c src/parser/tokinizition/tokenizer_utils.c src/parser/tokinizition/qouted_command.c src/parser/tokinizition/simple_command.c\
 		src/parser/tokinizition/simple_command_env.c src/parser/tokinizition/operator_command.c src/parser/tokinizition/heredoc_command.c \
@@ -12,28 +13,34 @@ SRC = 	src/main.c src/utils/main_utils.c src/utils/utils.c src/utils/utils_2.c s
 		src/executor/executor.c src/executor/pipe/pipeline.c src/executor/pipe/executor_pipe_helpers.c src/executor/env_operations.c \
 
 OBJ = ${SRC:.c=.o}
-LIBFT_DIR = libraries/libft
-LIBFT_LIB = $(LIBFT_DIR)/libft.a
-all: $(NAME)
-	@echo "Compiling..."
 
-$(NAME): $(OBJ) $(LIBFT_LIB) $(LIBFT_DIR)/libft.h
-	@$(CC) $(OBJ) -L$(LIBFT_DIR) -lft -lreadline -o $(NAME)
+LIBFT_DIR = libraries/libft
+
+LIBFT_LIB = $(LIBFT_DIR)/libft.a
+
+LDFLAGS	  = -L$(LIBFT_DIR) -lft -lreadline
+
+INCLUDES    = -Iinclude -I$(LIBFT_DIR) -Isrc/parser/tokinizition
+
+all: $(NAME)
+
+$(NAME): $(OBJ) $(LIBFT_LIB) 
+	$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
 
 $(LIBFT_LIB):
-	@make -s -C $(LIBFT_DIR)
+	make -s -C $(LIBFT_DIR)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	@make -s clean -C $(LIBFT_DIR)
-	@rm -f $(OBJ)
+	make -s clean -C $(LIBFT_DIR)
+	rm -f $(OBJ)
 
 fclean:clean
-	@make -s fclean -C $(LIBFT_DIR)
-	@rm -f $(NAME)
+	make -s fclean -C $(LIBFT_DIR)
+	rm -f $(NAME)
 
 re:fclean all
 
-.PHONY: re fclean clean 
+.PHONY: all clean fclean re

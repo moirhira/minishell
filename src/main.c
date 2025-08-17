@@ -6,12 +6,11 @@
 /*   By: moirhira <moirhira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 21:08:03 by moirhira          #+#    #+#             */
-/*   Updated: 2025/08/13 20:34:01 by moirhira         ###   ########.fr       */
+/*   Updated: 2025/08/17 09:29:06 by moirhira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include "../libraries/libft/libft.h"
 
 static void	reset_structs(t_token **t_list, t_command **c_list)
 {
